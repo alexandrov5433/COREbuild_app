@@ -1,0 +1,115 @@
+footer {
+    background-color: var(--bs-tertiary-bg);
+    
+    padding-top: 2rem;
+
+    ul {
+        padding: 0;
+    }
+
+    h5 {
+        display: flex;
+        gap: 1rem;
+        font-size: 2.5rem;
+    }
+    p {
+        font-size: 2rem;
+    }
+    .logo-svg {
+        width: 15rem;
+        height: auto;
+    }
+
+    .useful-links {
+        font-size: 2rem;
+        .link {
+            color: var(--green);
+
+            &:hover {
+                opacity: 0.5;
+            }
+        }
+
+    }
+    .social-links {
+        li {
+            font-size: 2rem;
+            padding: 0.5rem 0;
+            max-width: fit-content;
+            
+            &:hover {
+                color: var(--green);
+            }
+        }
+        .icon {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+    }
+
+    .dev-info {        
+        background-color: black;
+        text-align: center;
+        padding: 2rem 0;
+        p {
+            margin: 0;
+            font-size: 2rem;
+        }
+        .my-social-link {
+            color: var(--green);
+        }
+    }
+}
+
+@media (min-width: 992px) {
+   footer {
+       .container {
+           display: flex;
+           gap: 5rem;
+           justify-content: center;
+
+           h5 {
+               font-size: 2rem;
+           }
+           p {
+               font-size: 0.8rem;
+           }
+           .logo-svg {
+               width: 10rem;
+               height: auto;
+           }
+   
+   
+           .about {
+               flex: 0 1;
+           }
+   
+           .useful-links {
+               flex: 1 0 1fr;
+               font-size: 1.2rem;
+           }
+           .social-links {
+               flex: 1 0 2fr;
+               li {
+                font-size: 1.2rem;
+                padding: 0.5rem 0;
+                max-width: fit-content;
+                
+                &:hover {
+                    color: var(--green);
+                }
+            }
+               
+           }
+       }
+   
+       .dev-info {        
+           padding: 0.5rem 0;
+           p {
+               font-size: 1rem;
+           }
+       }
+
+   } 
+}

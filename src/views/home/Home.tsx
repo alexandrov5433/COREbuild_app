@@ -1,0 +1,12 @@
+
+
+export default function Home() {
+    return (
+        <div className="container">
+            <h1>Home</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laboriosam laudantium hic autem, culpa, doloribus quasi provident obcaecati quo blanditiis fugiat exercitationem reiciendis fugit doloremque quas corrupti porro quos dolorem possimus tempora consequuntur dolor illo omnis facilis id! Porro a totam harum error quam quasi eaque suscipit magnam nobis necessitatibus autem quo, adipisci qui reprehenderit commodi minima optio numquam dolorem corrupti! Ipsum, cum quas quaerat sint iure similique ipsam. Ratione, culpa suscipit esse ducimus quos ut pariatur modi sed ipsa saepe quia! Eos vero consequatur maxime sequi, earum qui officia sed atque est quia molestiae laborum, cumque odio exercitationem rem aperiam!</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laboriosam laudantium hic autem, culpa, doloribus quasi provident obcaecati quo blanditiis fugiat exercitationem reiciendis fugit doloremque quas corrupti porro quos dolorem possimus tempora consequuntur dolor illo omnis facilis id! Porro a totam harum error quam quasi eaque suscipit magnam nobis necessitatibus autem quo, adipisci qui reprehenderit commodi minima optio numquam dolorem corrupti! Ipsum, cum quas quaerat sint iure similique ipsam. Ratione, culpa suscipit esse ducimus quos ut pariatur modi sed ipsa saepe quia! Eos vero consequatur maxime sequi, earum qui officia sed atque est quia molestiae laborum, cumque odio exercitationem rem aperiam!</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laboriosam laudantium hic autem, culpa, doloribus quasi provident obcaecati quo blanditiis fugiat exercitationem reiciendis fugit doloremque quas corrupti porro quos dolorem possimus tempora consequuntur dolor illo omnis facilis id! Porro a totam harum error quam quasi eaque suscipit magnam nobis necessitatibus autem quo, adipisci qui reprehenderit commodi minima optio numquam dolorem corrupti! Ipsum, cum quas quaerat sint iure similique ipsam. Ratione, culpa suscipit esse ducimus quos ut pariatur modi sed ipsa saepe quia! Eos vero consequatur maxime sequi, earum qui officia sed atque est quia molestiae laborum, cumque odio exercitationem rem aperiam!</p>
+        </div>
+    );
+}
