@@ -1,13 +1,10 @@
 import './header.css';
 import logo from '../../assets/COREbuild.svg';
-
 import { NavLink } from "react-router";
-
-import { useState } from 'react';
+import { useAppSelector } from '../../lib/hooks/reduxTypedHooks';
 
 export default function Header() {
-    const [userEmail, setUserEmail] = useState('alexandrov5433@gmail.com');
-    const isLoggedIn = true;
+    const userData = useAppSelector(state => state.user);
 
     return (
         <header>
@@ -47,10 +44,10 @@ export default function Header() {
 
                         <ul className="navbar-nav me-3 mb-2 mb-lg-0">
                             {
-                                isLoggedIn ?
+                                userData.userID > 0 ?
                                     <li className="nav-item dropdown">
                                         <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            {userEmail}
+                                            {userData.username}
                                         </a>
                                         <ul className="dropdown-menu">
                                             <li><a className="dropdown-item" href="#">TODO Profile</a></li>

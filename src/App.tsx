@@ -1,21 +1,36 @@
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router';
 
-import { Provider } from 'react-redux';
-import { store } from './redux/store';
-
 import Header from './core/header/Header';
 import Main from './core/main/Main';
 import Footer from './core/footer/Footer';
 import Home from './views/home/Home';
 
+import { useAppDispatch } from './lib/hooks/reduxTypedHooks';
+import { useEffect } from 'react';
+import validateCoookie from './lib/actions/validateCookie';
+import { setUserToGuest, updateUserData } from './redux/userSlice';
 
-function App() {
-
+export default function App() {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    console.log('checkCookieAndData');
+    
+    async function checkCookieAndData() {
+      const userDataAfterValidation = await validateCoookie();
+      console.log('userDataAfterValidation', userDataAfterValidation);
+      
+      if (userDataAfterValidation) {
+        dispatch(updateUserData(userDataAfterValidation));
+      } else {
+        dispatch(setUserToGuest());
+      }
+    }
+    checkCookieAndData();
+  }, []);
 
   return (
     <>
-      <Provider store={store}>
         <BrowserRouter>
           <Header />
           <Routes>
@@ -27,9 +42,6 @@ function App() {
           </Routes>
           <Footer />
         </BrowserRouter>
-      </Provider>
     </>
   )
 }
-
-export default App
