@@ -55,7 +55,7 @@ export default function Header() {
                                         </ul>
                                     </li>
                                     : <li className="nav-item">
-                                        <NavLink className="nav-link" aria-current="page" to="/">Log In</NavLink>
+                                        <NavLink className="nav-link" aria-current="page" to="login">Log In</NavLink>
                                     </li>
                             }
                         </ul>
