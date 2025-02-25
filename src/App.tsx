@@ -10,6 +10,7 @@ import Main from './core/main/Main';
 import Footer from './core/footer/Footer';
 import Home from './views/home/Home';
 import Login from './account/login/Login';
+import Register from './account/register/Register';
 
 export default function App() {
   const dispatch = useAppDispatch();
@@ -38,6 +39,7 @@ export default function App() {
 
               <Route index element={<Home />}></Route>
               <Route path='login' element={<Login />}></Route>
+              <Route path='register' element={<Register />}></Route>
 
             </Route>
           </Routes>

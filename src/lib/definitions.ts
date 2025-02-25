@@ -39,5 +39,23 @@ export type FileData = {
 
 export type ApiJsonResponce = {
     msg: string,
-    payload?: UserData
+    payload?: UserData | RegistrationValidationError
+}
+
+export type RegistrationValidationErrorProperty = {
+    valid: boolean,
+    msg: string
+}
+
+export type RegistrationValidationError = {
+    is_employee: RegistrationValidationErrorProperty,
+    username: RegistrationValidationErrorProperty,
+    password: RegistrationValidationErrorProperty,
+    repeat_password: RegistrationValidationErrorProperty,
+    authentication_code?: RegistrationValidationErrorProperty,
+    email?: RegistrationValidationErrorProperty,
+    firstname?: RegistrationValidationErrorProperty,
+    lastname?: RegistrationValidationErrorProperty,
+    prefered_payment_method?: RegistrationValidationErrorProperty,
+    address?: RegistrationValidationErrorProperty,
 }

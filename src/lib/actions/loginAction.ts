@@ -25,7 +25,7 @@ export default async function loginAction(
             state.success = true;
             const newData = await res.json() as ApiJsonResponce;
             state.msg = newData.msg;
-            state.data = newData.payload || {
+            state.data = newData.payload as UserData || {
                 userID: 0,
                 is_employee: false,
                 username: ''

@@ -1,0 +1,80 @@
+.wrapper {
+    padding: 3rem 1rem;
+}
+
+.inputContainer {
+    margin-bottom: 2.5rem;
+    font-size: 2.5rem;
+    input {
+        font-size: 2.5rem;
+
+    }
+}
+
+.submitButton {
+    font-size: 2.5rem;
+}
+
+.labelWithLogo {
+    display: flex;
+    align-items: center;
+    gap: 0.1rem;
+    font-size: 2rem;
+    line-height: 2;
+    img {
+        width: 10rem;
+        height: auto;
+    }
+}
+
+.paymentMethods {
+    input {
+        display: none;
+        pointer-events: none;
+    }
+
+    label {
+        font-size: 3rem;
+
+        &:first-of-type {
+            margin-right: 3rem;
+        }
+    }
+}
+
+@media (min-width: 992px) {
+    .wrapper {
+        padding: 2rem 10rem;
+    }
+    
+    .inputContainer {
+        margin-bottom: 2.5rem;
+        font-size: 1rem;
+        input {
+            font-size: 1rem;
+    
+        }
+    }
+    
+    .submitButton {
+        font-size: 1rem;
+    }
+
+    .labelWithLogo {
+        font-size: 1.1rem;
+        line-height: 1.4;
+        img {
+            width: 6rem;
+            height: auto;
+        }
+    }
+
+    .paymentMethods {   
+        label {
+            font-size: 1rem;
+            &:first-of-type {
+                margin-right: 1rem;
+            }
+        }
+    }
+}

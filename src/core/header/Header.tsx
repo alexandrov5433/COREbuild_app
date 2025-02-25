@@ -54,9 +54,15 @@ export default function Header() {
                                             <li><NavLink className="dropdown-item" to="#">TODO Log Out</NavLink></li>
                                         </ul>
                                     </li>
-                                    : <li className="nav-item">
-                                        <NavLink className="nav-link" aria-current="page" to="login">Log In</NavLink>
-                                    </li>
+                                    :
+                                    <>
+                                        <li className="nav-item">
+                                            <NavLink className="nav-link" aria-current="page" to="login">Log In</NavLink>
+                                        </li>
+                                        <li className="nav-item">
+                                            <NavLink className="nav-link" aria-current="page" to="register">Register</NavLink>
+                                        </li>
+                                    </>
                             }
                         </ul>
 
