@@ -1,0 +1,47 @@
+.wrapper {
+    padding: 5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    h1 {
+        font-size: 4rem;
+    }
+    p {
+        font-size: 2rem;
+    }
+}
+
+.linkToHome {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: fit-content;
+    font-size: 2.5rem;
+    & .arrow {
+        color: var(--green);
+    }
+
+    &:hover {
+        color: var(--green);
+    }
+}
+
+@media (min-width: 992px) {
+    .wrapper {
+        padding: 5rem 0;
+        display: block;
+
+        h1 {
+            font-size: 3rem;
+        }
+        p {
+            font-size: 1rem;
+        }
+    }
+
+    .linkToHome {
+        font-size: 1.2rem;
+    }
+}

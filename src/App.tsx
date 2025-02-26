@@ -12,6 +12,7 @@ import Home from './components/general/home/Home';
 import Login from './components/account/login/Login';
 import Register from './components/account/register/Register';
 import Profile from './components/account/profile/Profile';
+import Page404 from './components/general/notFound/page404/Page404';
 
 export default function App() {
   const dispatch = useAppDispatch();
@@ -42,7 +43,7 @@ export default function App() {
               <Route path='login' element={<Login />}></Route>
               <Route path='register' element={<Register />}></Route>
               <Route path='profile' element={<Profile />}></Route>
-              <Route path='*' element={<Profile />}></Route>
+              <Route path='*' element={<Page404 />}></Route>
               
             </Route>
           </Routes>
