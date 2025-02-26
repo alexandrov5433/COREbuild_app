@@ -26,7 +26,8 @@ export default async function login(
             },
             body: JSON.stringify({
                 username: formData.get('username') || '',
-                password: formData.get('password') || ''
+                password: formData.get('password') || '',
+                stayLoggedIn: formData.get('stayLoggedIn') || ''
             }),
             credentials: "include"
         });
