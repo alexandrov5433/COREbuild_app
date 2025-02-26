@@ -49,9 +49,9 @@ export default function Header() {
                                         <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             {userData.username}
                                         </a>
-                                        <ul className="dropdown-menu">
-                                            <li><a className="dropdown-item" href="#">TODO Profile</a></li>
-                                            <li><NavLink className="dropdown-item" to="#">TODO Log Out</NavLink></li>
+                                        <ul className="dropdown-menu userAccountActionsDropdown">
+                                            <li><a className="dropdown-item" href="#">Profile</a></li>
+                                            <li><NavLink className="dropdown-item" to="#">Log Out</NavLink></li>
                                         </ul>
                                     </li>
                                     :
