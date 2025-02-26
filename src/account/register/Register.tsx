@@ -2,21 +2,16 @@ import { useActionState, useEffect, useState } from 'react';
 import styles from './register.module.css';
 import logo from '../../assets/COREbuild.svg';
 import register from '../../lib/actions/register';
-import { RegistrationValidationError } from '../../lib/definitions';
+import { RegistrationValidationError, UserData } from '../../lib/definitions';
+import { useAppDispatch } from '../../lib/hooks/reduxTypedHooks';
+import { updateUserData } from '../../redux/userSlice';
+import { useNavigate } from 'react-router';
 
 export default function Register() {
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const [passwordInputType, setPasswordInputType] = useState('password');
     const [isEmployee, setIsEmployee] = useState(false);
-    // const [inputValues, setInputValues] = useState({
-    //         is_employee: false,
-    //         username: '',
-    //         email: '',
-    //         firstname: '',
-    //         lastname: '',
-    //         prefered_payment_method_paypal: false,
-    //         prefered_payment_method_bank: false,
-    //         address: '',
-    // });
     const showHidePassword = function (e: React.SyntheticEvent) {
         const isChecked = (e.target as HTMLInputElement).checked;
         if (isChecked) {
@@ -86,13 +81,10 @@ export default function Register() {
             username: 'a',
         },
         responseStatus: 0,
-        trigger: false,
         inputValues: {}
     });
     useEffect(() => {
         if (!isRegistrationPending && isFormTouched) {
-
-            console.log('registerState.data', registerState.data);
             const newState = {};
             Object.keys(validationState).forEach(p => {
                 if (Object.hasOwn(registerState.data, p)) {
@@ -104,10 +96,16 @@ export default function Register() {
                     }
                 }
             });
-            console.log('newState', newState);
             setValidationState(newState as any);
         }
-    }, [registerState.trigger]);
+    }, [registerState]);
+    useEffect(() => {
+        if (!isRegistrationPending && isFormTouched && registerState.success) {
+            dispatch(updateUserData(registerState.data as UserData));
+            navigate('/');
+            return;
+        }
+    }, [registerState]);
 
     return (
         <div className={styles.wrapper}>
