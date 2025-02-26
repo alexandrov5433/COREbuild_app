@@ -5,13 +5,13 @@ import { useEffect } from 'react';
 import validateCoookie from './lib/actions/validateCookie';
 import { setUserToGuest, updateUserData } from './redux/userSlice';
 
-import Header from './core/header/Header';
-import Main from './core/main/Main';
-import Footer from './core/footer/Footer';
-import Home from './views/home/Home';
-import Login from './account/login/Login';
-import Register from './account/register/Register';
-import Profile from './account/profile/Profile';
+import Header from './components/core/header/Header';
+import Main from './components/core/main/Main';
+import Footer from './components/core/footer/Footer';
+import Home from './components/general/home/Home';
+import Login from './components/account/login/Login';
+import Register from './components/account/register/Register';
+import Profile from './components/account/profile/Profile';
 
 export default function App() {
   const dispatch = useAppDispatch();
@@ -42,6 +42,7 @@ export default function App() {
               <Route path='login' element={<Login />}></Route>
               <Route path='register' element={<Register />}></Route>
               <Route path='profile' element={<Profile />}></Route>
+              <Route path='*' element={<Profile />}></Route>
               
             </Route>
           </Routes>

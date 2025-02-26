@@ -1,5 +1,5 @@
 import './footer.css';
-import logo from '../../assets/COREbuild.svg';
+import logo from '../../../assets/COREbuild.svg';
 import { NavLink } from 'react-router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLinkedin, faFacebookSquare, faSquareXTwitter, faTiktok } from '@fortawesome/free-brands-svg-icons';

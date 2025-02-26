@@ -1,8 +1,8 @@
 import { useActionState, useEffect, useState } from 'react';
 import styles from './login.module.css';
-import login from '../../lib/actions/login';
+import login from '../../../lib/actions/login';
 import { useDispatch } from 'react-redux';
-import { updateUserData } from '../../redux/userSlice';
+import { updateUserData } from '../../../redux/userSlice';
 import { useNavigate } from 'react-router';
 
 export default function Login() {

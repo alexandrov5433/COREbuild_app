@@ -1,10 +1,10 @@
 import { useActionState, useEffect, useState } from 'react';
 import styles from './register.module.css';
-import logo from '../../assets/COREbuild.svg';
-import register from '../../lib/actions/register';
-import { RegistrationValidationError, UserData } from '../../lib/definitions';
-import { useAppDispatch } from '../../lib/hooks/reduxTypedHooks';
-import { updateUserData } from '../../redux/userSlice';
+import logo from '../../../assets/COREbuild.svg';
+import register from '../../../lib/actions/register';
+import { RegistrationValidationError, UserData } from '../../../lib/definitions';
+import { useAppDispatch } from '../../../lib/hooks/reduxTypedHooks';
+import { updateUserData } from '../../../redux/userSlice';
 import { useNavigate } from 'react-router';
 
 export default function Register() {

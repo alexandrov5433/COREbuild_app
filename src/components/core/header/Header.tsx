@@ -1,10 +1,10 @@
 import './header.css';
-import logo from '../../assets/COREbuild.svg';
+import logo from '../../../assets/COREbuild.svg';
 import { NavLink, useNavigate } from "react-router";
-import { useAppDispatch, useAppSelector } from '../../lib/hooks/reduxTypedHooks';
+import { useAppDispatch, useAppSelector } from '../../../lib/hooks/reduxTypedHooks';
 import { useEffect, useState } from 'react';
-import logout from '../../lib/actions/logout';
-import { setUserToGuest } from '../../redux/userSlice';
+import logout from '../../../lib/actions/logout';
+import { setUserToGuest } from '../../../redux/userSlice';
 
 export default function Header() {
     const dispatch = useAppDispatch();
