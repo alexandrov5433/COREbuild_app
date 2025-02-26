@@ -9,4 +9,14 @@ header {
         right: 0;
         left: auto;
     }
+
+    .logoutButton {
+        color: red !important;
+        &:hover {
+            opacity: 0.8;
+        }
+        &.active {
+            background-color: transparent;
+        }
+    }
 }
