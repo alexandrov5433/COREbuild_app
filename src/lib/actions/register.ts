@@ -47,12 +47,21 @@ export default async function register(
         } else if (res.status === 500) {
             state.msg = (await res.json() as ApiJsonResponce).msg;
             state.responseStatus = 500;
+            state.data = {
+                userID: 0,
+                is_employee: false,
+                username: ''
+            };
         }
-        // state.trigger = !state.trigger;
         return state;
     } catch (e) {
         state.success = false;
         state.msg = (e as Error).message;
+        state.data = {
+            userID: 0,
+            is_employee: false,
+            username: ''
+        };
         return state;
     }
 }
