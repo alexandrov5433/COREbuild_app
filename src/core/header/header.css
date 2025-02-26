@@ -3,4 +3,10 @@ header {
         width: 10rem;
         height: auto;
     }
+
+    .userAccountActionsDropdown.show {
+        /* .show is class which Bootstrap adds on click to display the dropdown ul container */
+        right: 0;
+        left: auto;
+    }
 }
