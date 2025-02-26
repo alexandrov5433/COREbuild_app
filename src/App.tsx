@@ -21,7 +21,7 @@ export default function App() {
       const userDataAfterValidation = await validateCoookie();
       console.log('userDataAfterValidation', userDataAfterValidation);
       
-      if (userDataAfterValidation) {
+      if (userDataAfterValidation?.userID) {
         dispatch(updateUserData(userDataAfterValidation));
       } else {
         dispatch(setUserToGuest());
