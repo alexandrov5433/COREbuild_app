@@ -1,11 +1,30 @@
 import './header.css';
 import logo from '../../assets/COREbuild.svg';
-import { NavLink } from "react-router";
-import { useAppSelector } from '../../lib/hooks/reduxTypedHooks';
+import { NavLink, useNavigate } from "react-router";
+import { useAppDispatch, useAppSelector } from '../../lib/hooks/reduxTypedHooks';
+import { useEffect, useState } from 'react';
+import logout from '../../lib/actions/logout';
+import { setUserToGuest } from '../../redux/userSlice';
 
 export default function Header() {
+    const dispatch = useAppDispatch();
     const userData = useAppSelector(state => state.user);
-
+    const navigate = useNavigate();
+    const [trigger, setTrigger] = useState(false);
+    useEffect(() => {
+        async function logoutUser() {
+            if (trigger) {
+                await logout();
+                dispatch(setUserToGuest());
+                navigate('/');
+                setTrigger(false);
+            }
+        }
+        logoutUser();
+    }, [trigger]);
+    const triggerLogout = function() {
+        setTrigger(true);
+    }
     return (
         <header>
             <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -50,8 +69,8 @@ export default function Header() {
                                             {userData.username}
                                         </a>
                                         <ul className="dropdown-menu userAccountActionsDropdown">
-                                            <li><a className="dropdown-item" href="#">Profile</a></li>
-                                            <li><NavLink className="dropdown-item" to="#">Log Out</NavLink></li>
+                                            <li><NavLink className="dropdown-item" to="/profile">Profile</NavLink></li>
+                                            <li><NavLink className="dropdown-item logoutButton" to="#" onClick={triggerLogout}>Log Out</NavLink></li>
                                         </ul>
                                     </li>
                                     :

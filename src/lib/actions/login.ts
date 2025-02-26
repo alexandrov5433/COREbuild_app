@@ -1,15 +1,24 @@
 import { UserData, ApiJsonResponce } from "../definitions";
 
-export default async function loginAction(
-    state: {
+export default async function login(
+    previousState: {
         success: boolean,
         msg: string,
-        data: UserData
+        data: UserData,
+        responseStatus: number,
+        inputedUsername: string
     },
     formData: FormData
 ) {
+    const state = {
+        success: false,
+        msg: previousState.msg,
+        data: previousState.data,
+        responseStatus: previousState.responseStatus,
+        inputedUsername: previousState.inputedUsername
+    }
     try {
-
+        state.inputedUsername = Object.fromEntries(formData.entries()).username as string || '';
         const res = await fetch(`/api/login`, {
             method: 'POST',
             headers: {
@@ -21,6 +30,7 @@ export default async function loginAction(
             }),
             credentials: "include"
         });
+        state.responseStatus = res.status;
         if (res.status === 200) {
             state.success = true;
             const newData = await res.json() as ApiJsonResponce;
@@ -31,13 +41,21 @@ export default async function loginAction(
                 username: ''
             };
         } else {
-            state.success = false;
             state.msg = (await res.json() as ApiJsonResponce).msg;
+            state.data = {
+                userID: 0,
+                is_employee: false,
+                username: 'a',
+            };
         }
         return state;
     } catch (e) {
-        state.success = false;
         state.msg = (e as Error).message;
+        state.data = {
+            userID: 0,
+            is_employee: false,
+            username: 'a',
+        };
         return state;
     }
 }
