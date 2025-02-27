@@ -1,0 +1,34 @@
+.wrapper {
+    padding: var(--wrapper-pad-mobile);
+}
+
+.inputContainer {
+    margin-bottom: 2.5rem;
+    font-size: 2.5rem;
+    input {
+        font-size: 2.5rem;
+    }
+}
+
+.submitButton {
+    font-size: 2.5rem;
+}
+
+@media (min-width: 992px) {
+    .wrapper {
+        padding: var(--wrapper-pad-desktop);
+    }
+
+    .inputContainer {
+        margin-bottom: 2.5rem;
+        font-size: 1rem;
+        input {
+            font-size: 1rem;
+        }
+    }
+    
+    .submitButton {
+        font-size: 1rem;
+    }
+
+}
