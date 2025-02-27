@@ -22,7 +22,7 @@ export default function Header() {
         }
         logoutUser();
     }, [trigger]);
-    const triggerLogout = function() {
+    const triggerLogout = function () {
         setTrigger(true);
     }
     return (
@@ -69,8 +69,21 @@ export default function Header() {
                                             {userData.username}
                                         </a>
                                         <ul className="dropdown-menu userAccountActionsDropdown">
-                                            <li><NavLink className="dropdown-item" to="/profile">Profile</NavLink></li>
-                                            <li><NavLink className="dropdown-item logoutButton" to="#" onClick={triggerLogout}>Log Out</NavLink></li>
+                                            {
+                                                userData.is_employee ?
+                                                    <>
+                                                        <li>
+                                                            <NavLink className="dropdown-item" to="/add-product">Add Product</NavLink>
+                                                        </li>
+                                                    </>
+                                                    : ''
+                                            }
+                                            <li>
+                                                <NavLink className="dropdown-item" to="/profile">Profile</NavLink>
+                                            </li>
+                                            <li>
+                                                <NavLink className="dropdown-item logoutButton" to="#" onClick={triggerLogout}>Log Out</NavLink>
+                                            </li>
                                         </ul>
                                     </li>
                                     :
