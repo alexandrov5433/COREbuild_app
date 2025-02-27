@@ -1,6 +1,5 @@
+@import url(../../../lib/styling/generalWrapper.module.css);
 .wrapper {
-    padding: 5rem 1rem;
-
     h1 {
         font-size: 4rem;
     }
@@ -11,7 +10,6 @@
 
 @media (min-width: 992px) {
     .wrapper {
-        padding: 5rem 0;
 
         h1 {
             font-size: 3rem;

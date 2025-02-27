@@ -21,6 +21,9 @@ html, body {
 
 body {
   --green: #27AE60;
+
+  --wrapper-pad-desktop: 3rem 6rem;
+  --wrapper-pad-mobile: 3rem 1rem;
 }
 
 * {
