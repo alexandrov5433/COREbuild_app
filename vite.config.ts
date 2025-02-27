@@ -19,5 +19,8 @@ export default defineConfig({
         quietDeps: true
       }
     }
+  },
+  build: {
+    outDir: 'dist_app'
   }
 })
