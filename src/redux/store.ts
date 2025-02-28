@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import userReducer from './userSlice';
+import popupMessageReducer from './popupMessageSlice';
 
 export const store = configureStore({
   reducer: {
-    user: userReducer
+    user: userReducer,
+    popupMessage: popupMessageReducer
   },
 })
 

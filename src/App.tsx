@@ -14,6 +14,7 @@ import Register from './components/account/register/Register';
 import Profile from './components/account/profile/Profile';
 import Page404 from './components/general/notFound/page404/Page404';
 import AddProduct from './components/product/addProduct/AddProduct';
+import PopupMessage from './components/general/popupMessage/PopupMessage';
 
 export default function App() {
   const dispatch = useAppDispatch();
@@ -35,28 +36,31 @@ export default function App() {
   return (
     <>
       <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route element={<Main />}>
+          <Header />
+          <Routes>
+            <Route element={<Main />}>
 
-            <Route index element={<Home />}></Route>
-            <Route path='login' element={<Login />}></Route>
-            <Route path='register' element={<Register />}></Route>
-            <Route path='profile' element={<Profile />}></Route>
-            {/* employees only */}
-            {
-              userData.is_employee ?
-                <>
-                  <Route path='add-product' element={<AddProduct />}></Route>
+              <Route index element={<Home />}></Route>
+              <Route path='login' element={<Login />}></Route>
+              <Route path='register' element={<Register />}></Route>
+              <Route path='profile' element={<Profile />}></Route>
+              {/* employees only */}
+              {
+                userData.is_employee ?
+                  <>
+                    <Route path='add-product' element={<AddProduct />}></Route>
 
-                </>
-                : ''
-            }
-            <Route path='*' element={<Page404 />}></Route>
+                  </>
+                  : ''
+              }
+              <Route path='*' element={<Page404 />}></Route>
 
-          </Route>
-        </Routes>
-        <Footer />
+            </Route>
+          </Routes>
+          <Footer />
+
+          <PopupMessage/>
+
       </BrowserRouter>
     </>
   )

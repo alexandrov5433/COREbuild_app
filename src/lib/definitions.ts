@@ -59,3 +59,10 @@ export type RegistrationValidationError = {
     prefered_payment_method?: RegistrationValidationErrorProperty,
     address?: RegistrationValidationErrorProperty,
 }
+
+export type MessageData = {
+    isShown: boolean,
+    text: string,
+    type: 'success' | 'error' | 'neutral',
+    duration: number
+}
