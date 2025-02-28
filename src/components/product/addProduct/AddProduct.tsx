@@ -30,12 +30,28 @@ export default function AddProduct() {
         }
     }
 
-    function fileExtentionWarden(e: React.ChangeEvent, allowedFileTypes: Array<string>, inputRefToClear: React.RefObject<null | HTMLInputElement>) {
-        const currentTypes = Object.values(inputRefToClear.current?.files as FileList).map(f => f.type);
+    function fileWarden(e: React.ChangeEvent, allowedFileTypes: Array<string>, inputRefToClear: React.RefObject<null | HTMLInputElement>, maxFileSizeInMB: number) {
+        const currentTypes = Object.values(inputRefToClear.current?.files as FileList).map(f => [f.type, Number(f.size)]);
         for (let i = 0; i < currentTypes.length; i++) {
-            const type = currentTypes[i];
-            if (!allowedFileTypes.includes(type)) {
+            const [type, size] = currentTypes[i];
+            if (!allowedFileTypes.includes(type as string)) {
                 clearSelectedFiles(inputRefToClear);
+                dispatch(setMessageData({
+                    duration: 3000,
+                    isShown: true,
+                    text: 'Unsupported file type.',
+                    type: 'error'
+                }))
+                return;
+            }
+            if (((size as number) / 1024 / 1024) > maxFileSizeInMB) {
+                clearSelectedFiles(inputRefToClear);
+                dispatch(setMessageData({
+                    duration: 3000,
+                    isShown: true,
+                    text: 'Too large file size.',
+                    type: 'error'
+                }))
                 return;
             }
         }
@@ -44,15 +60,6 @@ export default function AddProduct() {
     function chosenPicturesWatcher(e: React.ChangeEvent<HTMLInputElement>) {
         const pics = Object.values(e.target.files!).map(f => f.name);
         setChosenPictures(pics);
-    }
-
-    function testPopup() {
-        dispatch(setMessageData({
-            duration: 3000,
-            isShown: true,
-            text: 'Testing the popup.',
-            type: 'success'
-        }))
     }
 
     return (
@@ -91,7 +98,7 @@ export default function AddProduct() {
                     <label htmlFor="thumbnail" className="form-label">Thumbnail</label>
                     <div className="input-group mb-3">
                         <button onClick={clearSelectedFiles.bind(null, thumbnailInputRef)} className="btn btn-outline-danger" type="button">Remove</button>
-                        <input ref={thumbnailInputRef} onChange={e => fileExtentionWarden(e, ['image/png', 'image/jpeg'], thumbnailInputRef)} type="file" accept='.png,.jpg,.jpeg' className="form-control" id="thumbnail" name='thumbnail' aria-describedby="thumbnailHelp" aria-label="Upload thumbnail" />
+                        <input ref={thumbnailInputRef} onChange={e => fileWarden(e, ['image/png', 'image/jpeg'], thumbnailInputRef, 0.5)} type="file" accept='.png,.jpg,.jpeg' className="form-control" id="thumbnail" name='thumbnail' aria-describedby="thumbnailHelp" aria-label="Upload thumbnail" />
                     </div>
                     <div id="thumbnailHelp" className="form-text">Please select a picture for the product's thumbnail. PNG, JPG and JPEG files are supported, with a 0.5MB size limit.</div>
                 </div>
@@ -101,7 +108,7 @@ export default function AddProduct() {
                     <div className="input-group mb-3">
                         <button onClick={clearSelectedFiles.bind(null, picturesInputRef)} className="btn btn-outline-danger" type="button">Remove</button>
                         <input ref={picturesInputRef} onChange={e => {
-                            fileExtentionWarden(e, ['image/png', 'image/jpeg'], picturesInputRef);
+                            fileWarden(e, ['image/png', 'image/jpeg'], picturesInputRef, 0.5);
                             chosenPicturesWatcher(e);
                         }} type="file" accept='.png,.jpg,.jpeg' className="form-control" name='pictures' id="pictures" aria-describedby="picturesHelp" aria-label="Upload additional images" multiple />
                     </div>
@@ -115,7 +122,7 @@ export default function AddProduct() {
                     <label htmlFor="specsDoc" className="form-label">Specification Sheet</label>
                     <div className="input-group mb-3">
                         <button onClick={clearSelectedFiles.bind(null, specsDocInputRef)} className="btn btn-outline-danger" type="button">Remove</button>
-                        <input ref={specsDocInputRef} onChange={e => fileExtentionWarden(e, ['application/pdf'], specsDocInputRef)} type="file" accept='.pdf' className="form-control" id="specsDoc" name='specsDoc' aria-describedby="specsDocHelp" aria-label="Upload specification sheet" />
+                        <input ref={specsDocInputRef} onChange={e => fileWarden(e, ['application/pdf'], specsDocInputRef, 4)} type="file" accept='.pdf' className="form-control" id="specsDoc" name='specsDoc' aria-describedby="specsDocHelp" aria-label="Upload specification sheet" />
                     </div>
                     <div id="specsDocHelp" className="form-text">Optionally, you may add a product specification sheet. PDF files are supported, with a 4MB size limit.</div>
                 </div>
@@ -124,7 +131,7 @@ export default function AddProduct() {
                 {/* <div className="spinner-border text-success" role="status">
                     <span className="visually-hidden">Loading...</span>
                 </div> */}
-                <button type="button" onClick={testPopup} className={`btn btn-success ${styles.submitButton}`}>Add Product</button>
+                <button type="button" className={`btn btn-success ${styles.submitButton}`}>Add Product</button>
 
             </form>
         </div>
