@@ -1,7 +1,8 @@
+import addProduct from '../../../lib/actions/addProduct';
 import { useAppDispatch } from '../../../lib/hooks/reduxTypedHooks';
 import { setMessageData } from '../../../redux/popupMessageSlice';
 import styles from './addProduct.module.css';
-import { SyntheticEvent, useRef, useState } from 'react';
+import { SyntheticEvent, useActionState, useRef, useState } from 'react';
 
 
 export default function AddProduct() {
@@ -20,6 +21,14 @@ export default function AddProduct() {
     const picturesInputRef = useRef(null);
     const specsDocInputRef = useRef(null);
     const [chosenPicturesList, setChosenPictures] = useState([] as Array<string>);
+
+    const [addProductState, addProductAction, isProcessPending] = useActionState(addProduct, {
+        success: false,
+        msg: '',
+        data: null,
+        responseStatus: 0,
+        inputValues: {}
+    });
 
     function clearSelectedFiles(ref: React.RefObject<null | HTMLInputElement>) {
         if (ref.current?.value) {
@@ -44,7 +53,7 @@ export default function AddProduct() {
                 }))
                 return;
             }
-            if (((size as number) / 1024 / 1024) > maxFileSizeInMB) {
+            if ((size as number) > maxFileSizeInMB * 1024 * 1024) {
                 clearSelectedFiles(inputRefToClear);
                 dispatch(setMessageData({
                     duration: 3000,
@@ -65,7 +74,7 @@ export default function AddProduct() {
     return (
         <div className={styles.wrapper}>
             <h1>Add A New Product</h1>
-            <form>
+            <form action={addProductAction}>
                 <div className={`${styles.inputContainer}`}>
                     <label htmlFor="name" className="form-label">Name</label>
                     <input type="text" className={`form-control`} id="name" name="name" aria-describedby="nameHelp" />
@@ -113,7 +122,7 @@ export default function AddProduct() {
                         }} type="file" accept='.png,.jpg,.jpeg' className="form-control" name='pictures' id="pictures" aria-describedby="picturesHelp" aria-label="Upload additional images" multiple />
                     </div>
                     <ul className={styles.chosenFilesList}>
-                        {chosenPicturesList.map((name, index) =>  <li key={index}>{name}</li>)}
+                        {chosenPicturesList.map((name, index) => <li key={index}>{name}</li>)}
                     </ul>
                     <div id="picturesHelp" className="form-text">Optionally, you may add other pictures of the product. PNG, JPG and JPEG files are supported, with a 0.5MB size limit for each one.</div>
                 </div>
@@ -127,11 +136,13 @@ export default function AddProduct() {
                     <div id="specsDocHelp" className="form-text">Optionally, you may add a product specification sheet. PDF files are supported, with a 4MB size limit.</div>
                 </div>
 
-
-                {/* <div className="spinner-border text-success" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </div> */}
-                <button type="button" className={`btn btn-success ${styles.submitButton}`}>Add Product</button>
+                {
+                    isProcessPending ?
+                        <div className="spinner-border text-success" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </div>
+                        : <button type="submit" className={`btn btn-success ${styles.submitButton}`}>Add Product</button>
+                }
 
             </form>
         </div>
