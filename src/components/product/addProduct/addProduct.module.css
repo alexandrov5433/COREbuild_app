@@ -3,3 +3,10 @@
 .chosenFilesList {
     color: var(--green);
 }
+
+.inputContainer, .mandatoryFielsExplanation {
+    i {
+        color: red;
+        font-style: normal;
+    }
+}
