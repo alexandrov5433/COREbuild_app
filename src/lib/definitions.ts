@@ -15,6 +15,7 @@ export type ProductData = {
     productID: number,
     name: string,
     description: string,
+    category: string,
     price: number,
     stockCount: number,
     manufacturer: string,
@@ -39,7 +40,7 @@ export type FileData = {
 
 export type ApiJsonResponce = {
     msg: string,
-    payload?: UserData | RegistrationValidationError
+    payload?: UserData | RegistrationValidationError | ProductData
 }
 
 export type RegistrationValidationErrorProperty = {
@@ -65,4 +66,20 @@ export type MessageData = {
     text: string,
     type: 'success' | 'error' | 'neutral',
     duration: number
+}
+
+export type AddProductState = {
+    success: boolean,
+    msg: string,
+    data: ProductData | null,
+    responseStatus: number,
+    inputValues: {
+        name: string,
+        description: string,
+        category: string,
+        price: string,
+        stockCount: string,
+        manufacturer: string
+    },
+    isError: boolean
 }
