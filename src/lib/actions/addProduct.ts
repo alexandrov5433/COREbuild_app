@@ -1,33 +1,26 @@
-import { ApiJsonResponce, ProductData } from "../definitions";
-
+import { AddProductState, ApiJsonResponce, ProductData } from "../definitions";
 
 export default async function addProduct(
-    oldState: {
-        success: boolean,
-        msg: string,
-        data: ProductData | null,
-        responseStatus: number,
-        inputValues: any
-    },
+    oldState: AddProductState,
     formData: FormData
 ) {
-    const state = {
+    const state: AddProductState = {
         success: false,
-        msg: oldState.msg,
-        data: oldState.data,
-        responseStatus: oldState.responseStatus,
-        inputValues: oldState.inputValues
+        msg: '',
+        data: null,
+        responseStatus: 0,
+        inputValues: oldState.inputValues,
+        isError: false
     }
     try {
         const inputData = Object.fromEntries(formData.entries());
-        console.log(inputData);
-        
         state.inputValues = {
-            name: inputData?.name || '',
-            description: inputData?.description || '',
-            price: inputData?.price || '',
-            stock: inputData?.stock || '',
-            manufacturer: inputData?.manufacturer || ''
+            name: inputData?.name as string || '',
+            description: inputData?.description as string || '',
+            category: inputData?.category as string || '',
+            price: inputData?.price as string || '',
+            stockCount: inputData?.stockCount as string || '',
+            manufacturer: inputData?.manufacturer as string || ''
         }
         const res = await fetch('/api/add-product', {
             method: 'post',
@@ -35,13 +28,19 @@ export default async function addProduct(
             credentials: 'include'
         });
         const data = await res.json() as ApiJsonResponce;
-        console.log(data.msg);
-        console.log(data.payload);
-        
+        if (res.status === 200) {
+            state.success = true;
+        } else {
+            state.success = false;
+        }
+        state.responseStatus = res.status || 0;
+        state.msg = data.msg || '';
+        state.data = data.payload as ProductData || null;
     } catch (e) {
         state.success = false;
         state.msg = (e as Error).message;
         state.data = null;
+        state.isError = true;
     } finally {
         return state;
     }
