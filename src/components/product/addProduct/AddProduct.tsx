@@ -73,7 +73,7 @@ export default function AddProduct() {
         });
     }
     function categoryValidator(e: React.ChangeEvent<HTMLInputElement>) {
-        const isValid = /^[^%&\$\*_'"]{1,200}$/.test(e.target?.value || '');
+        const isValid = /^[A-Za-z]{1,200}$/.test(e.target?.value || '');
         setFormState(state => {
             const newState = { ...state };
             newState.category.isValid = isValid;
@@ -271,7 +271,7 @@ export default function AddProduct() {
                         formState.category.isValid ? 'is-valid' : 'is-invalid'
                     ) : ''
                         }`} id="category" name="category" aria-describedby="categoryHelp" onChange={categoryValidator} defaultValue={addProductState.inputValues.category || ''}/>
-                    <div id="categoryHelp" className="form-text">Please enter the category of the product. E.g.: cpu, ram, ssd. The symbols % &amp; $ * _ ' " are not allowed. Maximum length: 200 characters.</div>
+                    <div id="categoryHelp" className="form-text">Please enter the category of the product. E.g.: cpu, ram, ssd. Only letters are allowed. Maximum length: 200 characters.</div>
                 </div>
                 <div className={styles.inputContainer}>
                     <label htmlFor="description" className="form-label">Price <i>*</i></label>
