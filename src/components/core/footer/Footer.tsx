@@ -16,13 +16,13 @@ export default function Footer() {
                     <h5>Useful Links</h5>
                     <ul>
                         <li>
-                            <NavLink to='#' className='link'>Term &amp; Services</NavLink>
+                            <NavLink to='terms' className='link'>Terms &amp; Services</NavLink>
                         </li>
                         <li>
-                            <NavLink to='#' className='link'>Privacy Policy</NavLink>
+                            <NavLink to='privacy' className='link'>Privacy Policy</NavLink>
                         </li>
                         <li>
-                            <NavLink to='#' className='link'>Products</NavLink>
+                            <NavLink to='products-catalog' className='link'>Products</NavLink>
                         </li>
                     </ul>
                 </div>
