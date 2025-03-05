@@ -25,6 +25,22 @@ export default function Header() {
     const triggerLogout = function () {
         setTrigger(true);
     }
+    const searchButtonHandler = function (e: React.SyntheticEvent) {
+        e.preventDefault();
+        const form = ((e.target as HTMLButtonElement).parentElement as HTMLFormElement);
+        const formData = new FormData(form);
+        const nameSearchParam = formData.get('name') as string || null;
+        form.reset();
+        navigate(`products-catalog?name=${nameSearchParam || ''}`);
+    }
+    const searchWithEnterHandler = function (e: React.SyntheticEvent) {
+        e.preventDefault();
+        const form = (e.target as HTMLFormElement);
+        const formData = new FormData(form);
+        const nameSearchParam = formData.get('name') as string || null;
+        form.reset();
+        navigate(`products-catalog?name=${nameSearchParam || ''}`);
+    }
     return (
         <header>
             <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -41,9 +57,9 @@ export default function Header() {
                                 <NavLink className="nav-link" aria-current="page" to="/">Home</NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink className="nav-link" to="#">TODO</NavLink>
+                                <NavLink className="nav-link" to="products-catalog">Products</NavLink>
                             </li>
-                            <li className="nav-item dropdown">
+                            {/* <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Products
                                 </a>
@@ -53,12 +69,12 @@ export default function Header() {
                                     <li><hr className="dropdown-divider" /></li>
                                     <li><a className="dropdown-item" href="#">Something else here</a></li>
                                 </ul>
-                            </li>
+                            </li> */}
                         </ul>
 
-                        <form className="d-flex me-auto" role="search">
-                            <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                            <button className="btn btn-outline-success" type="submit">Search</button>
+                        <form className="d-flex me-auto" role="search" onSubmit={searchWithEnterHandler}>
+                            <input className="form-control me-2" type="search" placeholder="Name of product" aria-label="Search" name='name' />
+                            <button className="btn btn-outline-success" type="button" onClick={searchButtonHandler}>Search</button>
                         </form>
 
                         <ul className="navbar-nav me-3 mb-2 mb-lg-0">
