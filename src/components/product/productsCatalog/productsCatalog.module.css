@@ -1,1 +1,13 @@
 @import url(../../../lib/styling/generalWrapper.module.css);
+
+.filtersButton {
+    margin-bottom: 2rem;
+}
+
+.pagination {
+    margin-top: 2rem;
+    display: flex;
+    ul {
+        margin: 0 auto;
+    }
+}
