@@ -1,0 +1,73 @@
+.inStock,
+.notAvailable,
+.price {
+    svg {
+        margin-right: 0.5rem;
+    }
+}
+
+.inStock {
+    color: var(--green);
+}
+
+.notAvailable {
+    color: red;
+}
+
+.cardBody {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.overlay {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+@keyframes fade-in {
+    0% {
+        background-color: rgba(255, 255, 255, 0);
+    }
+
+    100% {
+        background-color: rgba(255, 255, 255, 0.6);
+    }
+}
+
+@media (min-width: 600px) {
+    .overlay {
+        flex-direction: column;
+        gap: 2rem;
+    }
+}
+
+@media (min-width: 1025px) {
+    .card {
+        &:hover .overlay {
+            display: flex;
+            animation: fade-in 0.5s;
+        }
+    }
+
+    .overlay {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 2rem;
+
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 4px;
+        background-color: rgba(255, 255, 255, 0.6);
+
+        button {
+            box-shadow: 4px 4px 8px black;
+        }
+    }
+}
