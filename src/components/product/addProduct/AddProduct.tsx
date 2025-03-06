@@ -178,7 +178,7 @@ export default function AddProduct() {
         }
     }
 
-    function fileWarden(e: React.ChangeEvent, allowedFileTypes: Array<string>, inputRefToClear: React.RefObject<null | HTMLInputElement>, maxFileSizeInMB: number) {
+    function fileWarden(allowedFileTypes: Array<string>, inputRefToClear: React.RefObject<null | HTMLInputElement>, maxFileSizeInMB: number) {
         const currentTypes = Object.values(inputRefToClear.current?.files as FileList).map(f => [f.type, Number(f.size)]);
         if (inputRefToClear.current?.id === 'pictures' && currentTypes.length > 5) {
             clearSelectedFiles(inputRefToClear);
@@ -304,7 +304,7 @@ export default function AddProduct() {
                     <label htmlFor="thumbnail" className="form-label">Thumbnail <i>*</i></label>
                     <div className="input-group mb-3">
                         <button onClick={clearSelectedFiles.bind(null, thumbnailInputRef)} className="btn btn-outline-danger" type="button">Remove</button>
-                        <input ref={thumbnailInputRef} onChange={e => fileWarden(e, ['image/png', 'image/jpeg'], thumbnailInputRef, 0.5)} type="file" accept='.png,.jpg,.jpeg' className={`form-control ${formState.thumbnail.isTouched ? (
+                        <input ref={thumbnailInputRef} onChange={() => fileWarden(['image/png', 'image/jpeg'], thumbnailInputRef, 0.5)} type="file" accept='.png,.jpg,.jpeg' className={`form-control ${formState.thumbnail.isTouched ? (
                             formState.thumbnail.isValid ? 'is-valid' : 'is-invalid'
                         ) : ''
                             }`} id="thumbnail" name='thumbnail' aria-describedby="thumbnailHelp" aria-label="Upload thumbnail" />
@@ -317,7 +317,7 @@ export default function AddProduct() {
                     <div className="input-group mb-3">
                         <button onClick={clearSelectedFiles.bind(null, picturesInputRef)} className="btn btn-outline-danger" type="button">Remove</button>
                         <input ref={picturesInputRef} onChange={e => {
-                            fileWarden(e, ['image/png', 'image/jpeg'], picturesInputRef, 0.5);
+                            fileWarden(['image/png', 'image/jpeg'], picturesInputRef, 0.5);
                             chosenPicturesWatcher(e);
                         }} type="file" accept='.png,.jpg,.jpeg' className="form-control" name='pictures' id="pictures" aria-describedby="picturesHelp" aria-label="Upload additional images" multiple />
                     </div>
@@ -331,7 +331,7 @@ export default function AddProduct() {
                     <label htmlFor="specsDoc" className="form-label">Specification Sheet</label>
                     <div className="input-group mb-3">
                         <button onClick={clearSelectedFiles.bind(null, specsDocInputRef)} className="btn btn-outline-danger" type="button">Remove</button>
-                        <input ref={specsDocInputRef} onChange={e => fileWarden(e, ['application/pdf'], specsDocInputRef, 4)} type="file" accept='.pdf' className="form-control" id="specsDoc" name='specsDoc' aria-describedby="specsDocHelp" aria-label="Upload specification sheet" />
+                        <input ref={specsDocInputRef} onChange={() => fileWarden(['application/pdf'], specsDocInputRef, 4)} type="file" accept='.pdf' className="form-control" id="specsDoc" name='specsDoc' aria-describedby="specsDocHelp" aria-label="Upload specification sheet" />
                     </div>
                     <div id="specsDocHelp" className="form-text">Optionally, you may add a product specification sheet. PDF files are supported, with a 4MB size limit.</div>
                 </div>
