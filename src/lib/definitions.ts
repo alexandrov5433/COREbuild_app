@@ -40,7 +40,7 @@ export type FileData = {
 
 export type ApiJsonResponce = {
     msg: string,
-    payload?: UserData | RegistrationValidationError | ProductData
+    payload?: UserData | RegistrationValidationError | ProductData | Array<ProductData>
 }
 
 export type RegistrationValidationErrorProperty = {
@@ -81,5 +81,21 @@ export type AddProductState = {
         stockCount: string,
         manufacturer: string
     },
+    isError: boolean
+}
+
+export type ProductsCatalogQueryParams = {
+    name?: string,
+    category?: string,
+    priceFrom?: string,
+    priceTo?: string,
+    availableInStock?: string,
+    manufacturer?: string,
+}
+
+export type ProductsCatalogActionResponse = {
+    msg: string,
+    responseStatus: number,
+    data: Array<ProductData> | null,
     isError: boolean
 }
