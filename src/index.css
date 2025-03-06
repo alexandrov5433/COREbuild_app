@@ -42,7 +42,7 @@ a {
 
 /* typography */
 html {
-  font-size: clamp(11px, 2vw, 16px);
+  font-size: clamp(11px, 4vw, 16px);
   line-height: 1.5;
   font-family: "Roboto", serif;
 }
