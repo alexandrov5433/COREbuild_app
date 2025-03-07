@@ -73,7 +73,7 @@ export default function AddProduct() {
         });
     }
     function categoryValidator(e: React.ChangeEvent<HTMLInputElement>) {
-        const isValid = /^[A-Za-z]{1,200}$/.test(e.target?.value || '');
+        const isValid = /^[A-Za-z ]{1,200}$/.test(e.target?.value || '');
         setFormState(state => {
             const newState = { ...state };
             newState.category.isValid = isValid;
@@ -137,7 +137,7 @@ export default function AddProduct() {
         if (addProductState.responseStatus === 200 && addProductState.success) {
             // product added successfully
             dispatch(setMessageData({
-                duration: 3000,
+                duration: 3500,
                 isShown: true,
                 type: 'success',
                 text: addProductState.msg
@@ -152,12 +152,13 @@ export default function AddProduct() {
             // status 400 -> product was not added due to validation error
             // status 500 -> other erorr server-side
             dispatch(setMessageData({
-                duration: 3000,
+                duration: 4500,
                 isShown: true,
                 type: 'error',
                 text: addProductState.msg
             }));
             setFormState(initialFormState);
+            setChosenPictures([]);
         }
     }, [addProductState]);
 
@@ -271,7 +272,7 @@ export default function AddProduct() {
                         formState.category.isValid ? 'is-valid' : 'is-invalid'
                     ) : ''
                         }`} id="category" name="category" aria-describedby="categoryHelp" onChange={categoryValidator} defaultValue={addProductState.inputValues.category || ''}/>
-                    <div id="categoryHelp" className="form-text">Please enter the category of the product. E.g.: cpu, ram, ssd. Only letters are allowed. Maximum length: 200 characters.</div>
+                    <div id="categoryHelp" className="form-text">Please enter the category of the product. E.g.: cpu, ram, ssd. Only letters and space are allowed. Maximum length: 200 characters.</div>
                 </div>
                 <div className={styles.inputContainer}>
                     <label htmlFor="description" className="form-label">Price <i>*</i></label>
