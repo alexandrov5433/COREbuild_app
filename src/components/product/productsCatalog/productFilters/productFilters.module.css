@@ -1,0 +1,46 @@
+.filters {
+    font-size: 2rem;
+    width: 100% !important;
+    h5, label, input, select, button {
+        font-size: inherit;
+    }
+    select option {
+        font-size: 1rem;
+    }
+    span {
+        font-size: 1.4rem;
+    }
+    .availableInStockWrapper {
+        margin: 1.4rem 0;
+        input {
+            margin-right: 0.8rem;
+        }
+    }
+}
+
+@media (min-width: 600px) {
+    .filters {
+        select option {
+            font-size: 0.8rem;
+        }  
+    }
+}
+
+@media (min-width: 1025px) {
+    .filters {
+        font-size: 0.8rem;
+        width: var(--bs-offcanvas-width) !important;
+        select option {
+            font-size: 1rem;
+        }
+        span {
+            font-size: 0.8rem;
+        }
+        .availableInStockWrapper {
+            margin: 0.4rem 0;
+            input {
+                margin-right: 0.2rem;
+            }
+        }   
+    }
+}
