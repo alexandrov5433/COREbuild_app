@@ -1,4 +1,4 @@
-import { ApiJsonResponce, ProductData, ProductsCatalogActionResponse, ProductsCatalogQueryParams } from "../definitions";
+import { ApiJsonResponce, ProductsCatalogActionResponse, ProductsCatalogQueryParams, ProductCatalogPagedResult } from "../definitions";
 
 export default async function productsCatalog(
     queryParams: ProductsCatalogQueryParams
@@ -7,12 +7,15 @@ export default async function productsCatalog(
         msg: '',
         responseStatus: 0,
         data: null,
-        isError: false
+        isError: false,
+        pagesCount: 1,
+        currentPage: 1,
+        urlWithNewQueryParams: ''
     };
     try {
         const urlToFetch = buildUrlFromQueryParams('/api/products-catalog', queryParams);
         console.log('urlToFetch', urlToFetch);
-
+        actionResponse.urlWithNewQueryParams = urlToFetch.slice(4);
         const res = await fetch(urlToFetch, {
             method: 'get',
             credentials: 'include'
@@ -20,11 +23,16 @@ export default async function productsCatalog(
         const apiResponse = await res.json() as ApiJsonResponce;
         actionResponse.responseStatus = res.status || 0;
         actionResponse.msg = apiResponse.msg || '';
-        actionResponse.data = apiResponse.payload as Array<ProductData> || null;
+        const payload = apiResponse.payload as ProductCatalogPagedResult || null;
+        actionResponse.pagesCount = payload.pagesCount || null;
+        actionResponse.currentPage = payload.currentPage || null;
+        actionResponse.data = payload.products || null;
     } catch (e) {
         actionResponse.msg = (e as Error).message;
         actionResponse.responseStatus = 0;
         actionResponse.isError = true;
+        actionResponse.pagesCount = 1;
+        actionResponse.currentPage = 1;
     } finally {
         return actionResponse;
     }
@@ -32,7 +40,9 @@ export default async function productsCatalog(
 
 function buildUrlFromQueryParams(baseUrl: string, queryParams: ProductsCatalogQueryParams) {
     let newUrl = `${baseUrl}?`;
-    ['name',
+    [   'currentPage',
+        'itemsPerPage',
+        'name',
         'category',
         'priceFrom',
         'priceTo',

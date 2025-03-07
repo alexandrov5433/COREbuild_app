@@ -2,12 +2,49 @@
 
 .filtersButton {
     margin-bottom: 2rem;
+    font-size: 1.5rem;
 }
 
 .pagination {
     margin-top: 2rem;
     display: flex;
+    flex-direction: column-reverse;
+    gap: 2rem;
+    font-size: 2rem;
+
+    select {
+        width: fit-content;
+        align-self: center;
+        font-size: inherit;
+    }
+
     ul {
         margin: 0 auto;
+
+        li a,
+        li span {
+            font-size: inherit;
+        }
+    }
+}
+
+@media (min-width: 600px) {
+    .cardsWrapper > * {
+        width: calc(100% / 3);
+    }
+}
+
+@media (min-width: 1025px) {
+    .cardsWrapper > * {
+        width: 25%;
+    }
+
+    .filtersButton {
+        font-size: 1rem;
+    }
+
+    .pagination {
+        gap: 1rem;
+        font-size: 1rem;
     }
 }
