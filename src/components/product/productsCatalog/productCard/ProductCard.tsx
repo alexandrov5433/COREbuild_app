@@ -30,8 +30,12 @@ export default function ProductCard(productData: ProductData) {
                         {convertCentToWhole(productData.price)}
                     </p>
                     <div className={styles.overlay}>
-                        <button className="btn btn-primary">View Details</button>
-                        <button className="btn btn-warning">Add To Cart</button>
+                        <button className={`btn btn-primary ${styles.button}`}>View Details</button>
+                        {
+                            productData.stockCount > 0 ?
+                                <button className={`btn btn-warning ${styles.button}`}>Add To Cart</button>
+                                : ''
+                        }
                     </div>
                 </div>
             </div>
