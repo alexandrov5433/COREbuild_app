@@ -54,7 +54,12 @@ export default function Home() {
                     <span className="visually-hidden">Next</span>
                 </button>
             </div>
-            
+            <iframe className='video'
+                title='Youtube player'
+                sandbox='allow-same-origin allow-forms allow-popups allow-scripts allow-presentation'
+                src={`https://youtube.com/embed/yQfhTh5hyxk?autoplay=0`}>
+            </iframe> 
+            {/* this portion yQfhTh5hyxk is the variable */}
         </div>
     );
 }
