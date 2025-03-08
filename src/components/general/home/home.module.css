@@ -1,0 +1,10 @@
+@import url(../../../lib/styling/generalWrapper.module.css);
+
+.carouselBody {
+    button {
+        background-color: rgba(255, 255, 255, 0.3);
+        width: 10%;
+        height: 40%;
+        align-self: center;
+    }
+}

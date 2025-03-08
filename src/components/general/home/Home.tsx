@@ -1,12 +1,60 @@
+import styles from './home.module.css';
 
+import banner from '../../../assets/banners/banner.png';
+import banner1 from '../../../assets/banners/banner-1.png';
+import banner2 from '../../../assets/banners/banner-2.png';
+import banner3 from '../../../assets/banners/banner-3.png';
+import banner4 from '../../../assets/banners/banner-4.png';
+import banner5 from '../../../assets/banners/banner-5.png';
+import { NavLink } from 'react-router';
 
 export default function Home() {
     return (
-        <div className="container">
-            <h1>Home</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laboriosam laudantium hic autem, culpa, doloribus quasi provident obcaecati quo blanditiis fugiat exercitationem reiciendis fugit doloremque quas corrupti porro quos dolorem possimus tempora consequuntur dolor illo omnis facilis id! Porro a totam harum error quam quasi eaque suscipit magnam nobis necessitatibus autem quo, adipisci qui reprehenderit commodi minima optio numquam dolorem corrupti! Ipsum, cum quas quaerat sint iure similique ipsam. Ratione, culpa suscipit esse ducimus quos ut pariatur modi sed ipsa saepe quia! Eos vero consequatur maxime sequi, earum qui officia sed atque est quia molestiae laborum, cumque odio exercitationem rem aperiam!</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laboriosam laudantium hic autem, culpa, doloribus quasi provident obcaecati quo blanditiis fugiat exercitationem reiciendis fugit doloremque quas corrupti porro quos dolorem possimus tempora consequuntur dolor illo omnis facilis id! Porro a totam harum error quam quasi eaque suscipit magnam nobis necessitatibus autem quo, adipisci qui reprehenderit commodi minima optio numquam dolorem corrupti! Ipsum, cum quas quaerat sint iure similique ipsam. Ratione, culpa suscipit esse ducimus quos ut pariatur modi sed ipsa saepe quia! Eos vero consequatur maxime sequi, earum qui officia sed atque est quia molestiae laborum, cumque odio exercitationem rem aperiam!</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laboriosam laudantium hic autem, culpa, doloribus quasi provident obcaecati quo blanditiis fugiat exercitationem reiciendis fugit doloremque quas corrupti porro quos dolorem possimus tempora consequuntur dolor illo omnis facilis id! Porro a totam harum error quam quasi eaque suscipit magnam nobis necessitatibus autem quo, adipisci qui reprehenderit commodi minima optio numquam dolorem corrupti! Ipsum, cum quas quaerat sint iure similique ipsam. Ratione, culpa suscipit esse ducimus quos ut pariatur modi sed ipsa saepe quia! Eos vero consequatur maxime sequi, earum qui officia sed atque est quia molestiae laborum, cumque odio exercitationem rem aperiam!</p>
+        <div className={styles.wrapper}>
+
+            <div id="carouselExampleAutoplaying" className={`carousel slide ${styles.carouselBody}`} data-bs-ride="carousel">
+                <div className="carousel-inner">
+                    <div className="carousel-item active">
+                        <NavLink to={'/products-catalog'}>
+                            <img src={banner} className="d-block w-100" alt="First banner image." />
+                        </NavLink>
+                    </div>
+                    <div className="carousel-item">
+                        <NavLink to={'/products-catalog'}>
+                            <img src={banner1} className="d-block w-100" alt="Second banner image." />
+                        </NavLink>
+                    </div>
+                    <div className="carousel-item">
+                        <NavLink to={'/products-catalog'}>
+                            <img src={banner2} className="d-block w-100" alt="Third banner image." />
+                        </NavLink>
+                    </div>
+                    <div className="carousel-item">
+                        <NavLink to={'/products-catalog'}>
+                            <img src={banner3} className="d-block w-100" alt="Fourth banner image." />
+                        </NavLink>
+                    </div>
+                    <div className="carousel-item">
+                        <NavLink to={'/products-catalog'}>
+                            <img src={banner4} className="d-block w-100" alt="Fifth banner image." />
+                        </NavLink>
+                    </div>
+                    <div className="carousel-item">
+                        <NavLink to={'/products-catalog'}>
+                            <img src={banner5} className="d-block w-100" alt="Sixth banner image." />
+                        </NavLink>
+                    </div>
+                </div>
+                <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+                    <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span className="visually-hidden">Previous</span>
+                </button>
+                <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+                    <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span className="visually-hidden">Next</span>
+                </button>
+            </div>
+            
         </div>
     );
 }
