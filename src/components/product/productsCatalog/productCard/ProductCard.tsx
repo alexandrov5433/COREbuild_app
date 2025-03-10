@@ -3,8 +3,13 @@ import { ProductData } from "../../../../lib/definitions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEuroSign, faCircleCheck, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { convertCentToWhole } from '../../../../lib/util/currency';
+import { useAppDispatch, useAppSelector } from '../../../../lib/hooks/reduxTypedHooks';
+import { addProductToCart } from '../../../../redux/cartSlice';
 
 export default function ProductCard(productData: ProductData) {
+    const dispatch = useAppDispatch();
+    const userData = useAppSelector(state => state.user);
+
     return (
         <div className="col">
             <div className={`card h-100 ${styles.card}`}>
@@ -32,8 +37,11 @@ export default function ProductCard(productData: ProductData) {
                     <div className={styles.overlay}>
                         <button className={`btn btn-primary ${styles.button}`}>View Details</button>
                         {
-                            productData.stockCount > 0 ?
-                                <button className={`btn btn-warning ${styles.button}`}>Add To Cart</button>
+                            productData.stockCount > 0 && !userData.is_employee ?
+                                <button className={`btn btn-warning ${styles.button}`} onClick={() => dispatch(addProductToCart({
+                                    productID: productData.productID,
+                                    count: 1
+                                }))}>Add To Cart</button>
                                 : ''
                         }
                     </div>
