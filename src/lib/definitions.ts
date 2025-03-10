@@ -110,3 +110,15 @@ export type ProductCatalogPagedResult = {
     currentPage: number,
     products: Array<ProductData>
 }
+
+export type ProductInCart = {
+    productID: number;
+    count: number;
+}
+
+export type ProductDetailsActionResponse = {
+    msg: string,
+    responseStatus: number,
+    data: null | ProductData,
+    isError: boolean
+}

@@ -1,27 +1,25 @@
 import './header.css';
 import logo from '../../../assets/COREbuild.svg';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
+
 import { NavLink, useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from '../../../lib/hooks/reduxTypedHooks';
 import { useEffect, useState } from 'react';
 import logout from '../../../lib/actions/logout';
+import { ProductInCart } from '../../../lib/definitions';
+
 import { setUserToGuest } from '../../../redux/userSlice';
+import { setMessageData } from '../../../redux/popupMessageSlice';
 
 export default function Header() {
     const dispatch = useAppDispatch();
     const userData = useAppSelector(state => state.user);
+    const cartData = useAppSelector(state => state.cart);
     const navigate = useNavigate();
     const [trigger, setTrigger] = useState(false);
-    useEffect(() => {
-        async function logoutUser() {
-            if (trigger) {
-                await logout();
-                dispatch(setUserToGuest());
-                navigate('/');
-                setTrigger(false);
-            }
-        }
-        logoutUser();
-    }, [trigger]);
+    const [countOfProductsInCart, setCountOfProductsInCart] = useState(0);
+
     const triggerLogout = function () {
         setTrigger(true);
     }
@@ -41,6 +39,32 @@ export default function Header() {
         form.reset();
         navigate(`products-catalog?currentPage=1&itemsPerPage=12&name=${nameSearchParam || ''}&`);
     }
+
+    useEffect(() => {
+        async function logoutUser() {
+            if (trigger) {
+                await logout();
+                dispatch(setUserToGuest());
+                navigate('/');
+                setTrigger(false);
+            }
+        }
+        logoutUser();
+    }, [trigger]);
+
+    useEffect(() => {
+        let count = 0;
+        cartData.forEach(p => count += p.count);
+        setCountOfProductsInCart(count);
+        dispatch(setMessageData({
+            duration: 3000,
+            isShown: true,
+            text: 'Product added to cart!',
+            type: 'success'
+        }));
+    }, [cartData]);
+
+
     return (
         <header>
             <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -54,28 +78,38 @@ export default function Header() {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav me-3 mb-2 mb-lg-0">
                             <li className="nav-item">
-                                <NavLink className="nav-link" aria-current="page" to="/">Home</NavLink>
-                            </li>
-                            <li className="nav-item">
                                 <NavLink className="nav-link" to="products-catalog">Products</NavLink>
                             </li>
-                            {/* <li className="nav-item dropdown">
+                            <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Products
+                                    About
                                 </a>
                                 <ul className="dropdown-menu">
-                                    <li><a className="dropdown-item" href="#">Action</a></li>
-                                    <li><a className="dropdown-item" href="#">Another action</a></li>
-                                    <li><hr className="dropdown-divider" /></li>
-                                    <li><a className="dropdown-item" href="#">Something else here</a></li>
+                                    <li>
+                                        <NavLink className="dropdown-item" to="about">About Us</NavLink>
+                                    </li>
+                                    <li>
+                                        <NavLink className="dropdown-item" to="terms">Terms & Services</NavLink>
+                                    </li>
+                                    {/* <li><hr className="dropdown-divider" /></li> */}
+                                    <li>
+                                        <NavLink className="dropdown-item" to="privacy">Privacy Policy</NavLink>
+                                    </li>
                                 </ul>
-                            </li> */}
+                            </li>
                         </ul>
 
                         <form className="d-flex me-auto" role="search" onSubmit={searchWithEnterHandler}>
                             <input className="form-control me-2" type="search" placeholder="Name of product" aria-label="Search" name='name' />
                             <button className="btn btn-outline-success" type="button" onClick={searchButtonHandler}>Search</button>
                         </form>
+                        {
+                            !userData.is_employee ?
+                                <button className="btn btn-outline-warning cartButton" type="button" onClick={() => navigate('shopping-cart')}>
+                                    <FontAwesomeIcon icon={faCartShopping} />{countOfProductsInCart}
+                                </button>
+                                : ''
+                        }
 
                         <ul className="navbar-nav me-3 mb-2 mb-lg-0">
                             {
