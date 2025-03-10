@@ -8,6 +8,8 @@ export default function ProductFilters({
     currentQueryParams
 }: {
     queryParamsSetter: (paramsToSet: {
+        currentPage: number,
+        itemsPerPage: number,
         name: string,
         category: string,
         priceFrom: string,
@@ -44,6 +46,8 @@ export default function ProductFilters({
         const form = formRef.current as unknown as HTMLFormElement;
         const formData = Object.fromEntries(new FormData(form).entries());
         const newQueryParams = {
+            currentPage: 1,
+            itemsPerPage: currentQueryParams.itemsPerPage,
             name: (formData.name as string).trim() || '',
             category: (formData.category as string).trim() || '',
             priceFrom: (formData.priceFrom as string).trim() || '',
@@ -115,7 +119,7 @@ export default function ProductFilters({
                         </label>
                     </div>
                     <div className="row-md-6">
-                        <button type="button" disabled={!formValidity.isFormValid} className="btn btn-success" onClick={applyFilters}>Apply Filter</button>
+                        <button type="button" disabled={!formValidity.isFormValid} className="btn btn-success" onClick={applyFilters} data-bs-dismiss="offcanvas">Apply Filter</button>
                     </div>
 
                 </form>

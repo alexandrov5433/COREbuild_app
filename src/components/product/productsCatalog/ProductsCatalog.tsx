@@ -1,5 +1,5 @@
 import styles from './productsCatalog.module.css';
-import { useNavigate, useSearchParams } from 'react-router';
+import { useSearchParams } from 'react-router';
 import { useEffect, useState } from 'react';
 import ProductFilters from './productFilters/ProductFilters';
 import productsCatalog from '../../../lib/actions/productsCatalog';
@@ -10,14 +10,14 @@ import ProductCard from './productCard/ProductCard';
 
 export default function ProductsCatalog() {
     const dispatch = useAppDispatch();
-    const navigate = useNavigate();
-    const [_searchParams, _setSearchParams] = useSearchParams();
-    const [queryParams, setQueryParams] = useState({} as ProductsCatalogQueryParams);
+    const [searchParams, setSearchParams] = useSearchParams();
     const [productResults, setProductResults] = useState([] as Array<ProductData>);
     const [currentPage, setCurrentPage] = useState(1);
     const [allPagesCount, setAllPagesCount] = useState(1);
 
     function queryParamsSetterForFilter(paramsToSet: {
+        currentPage: number,
+        itemsPerPage: number,
         name: string,
         category: string,
         priceFrom: string,
@@ -25,7 +25,7 @@ export default function ProductsCatalog() {
         availableInStock: string,
         manufacturer: string,
     }) {
-        setQueryParams(state => {
+        setSearchParams(state => {
             const newState = {...state};
             Object.assign(newState, paramsToSet);
             return newState;
@@ -33,30 +33,31 @@ export default function ProductsCatalog() {
     }
 
     function incrementPage() {
-        if (queryParams.currentPage + 1 > allPagesCount) {
+        if (Number(searchParams.get('currentPage')) + 1 > allPagesCount) {
             return;
         }
-        setQueryParams(state => {
-            const newState = {...state};
-            newState.currentPage = state.currentPage + 1 > allPagesCount ? state.currentPage : state.currentPage + 1;
-            return newState;
+        setSearchParams(state => {
+            const currentPage = Number(state.get('currentPage'));
+            const targetPageVal = currentPage + 1 > allPagesCount ? currentPage : currentPage + 1;
+            state.set('currentPage', targetPageVal.toString());
+            return state;
         });
     }
     function decrementPage() {
-        if (queryParams.currentPage - 1 <= 0) {
+        if (Number(searchParams.get('currentPage')) - 1 <= 0) {
             return;
         }
-        setQueryParams(state => {
-            const newState = {...state};
-            newState.currentPage = state.currentPage - 1 || 1;
-            return newState;
+        setSearchParams(state => {
+            const targetPageVal = Number(state.get('currentPage')) - 1 || 1;
+            state.set('currentPage', targetPageVal.toString());
+            return state;
         });
     }
     function goToGivenPage(page: number) {
-        setQueryParams(state => {
-            const newState = {...state};
-            newState.currentPage = page < 1 ? 1 : (page > allPagesCount ? allPagesCount : page);
-            return newState;
+        setSearchParams(state => {
+            const targetPageVal = page < 1 ? 1 : (page > allPagesCount ? allPagesCount : page);
+            state.set('currentPage', targetPageVal.toString());
+            return state;
         });
     }
 
@@ -68,55 +69,33 @@ export default function ProductsCatalog() {
             '12':12,
             '24': 24
         }[e.target.value] || 12;
-        setQueryParams(state => {
+        setSearchParams(state => {
+            state.set('itemsPerPage', itemsPerPageToSet.toString());
+            return state;
+        });
+        window.scrollTo(0, 0);
+    }
+
+    function clearFilters() {
+        setSearchParams(state => {
             const newState = {...state};
-            newState.itemsPerPage = itemsPerPageToSet;
+            Object.assign(newState, {
+                currentPage: '1',
+                itemsPerPage: state.get('itemsPerPage'),
+                name: '',
+                category: '',
+                priceFrom: '',
+                priceTo: '',
+                availableInStock: '',
+                manufacturer: '',
+            });
             return newState;
         });
     }
 
     useEffect(() => {
-        const params = Object.fromEntries(_searchParams.entries());
-        const queryParams: ProductsCatalogQueryParams = {
-            currentPage: Number(params.currentPage) || 1,
-            itemsPerPage: Number(params.itemsPerPage) || 12,
-            name: params.name || '',
-            category: params.category || '',
-            priceFrom: params.priceFrom || '',
-            priceTo: params.priceTo || '',
-            availableInStock: params.availableInStock || '',
-            manufacturer: params.manufacturer || '',
-        };
-        setQueryParams(queryParams);
-    }, [_searchParams]);
-
-    useEffect(() => {
         (async () => {
-            if (Object.values(queryParams).length <= 0) {
-                // skip fetch with empty queryParams state object
-                console.log('skip fetch with empty queryParams');
-                
-                return;
-            }
-            const paramsFromCurrentURL = [..._searchParams.entries()];
-            let paramsInStateAndInURLAreSame = false;
-            for (let i = 0; i < paramsFromCurrentURL.length; i++) {
-                const key = paramsFromCurrentURL[i][0];
-                const val = paramsFromCurrentURL[i][1];
-                const areSame = (queryParams as any)[key] == val;
-                if (!areSame) {
-                    paramsInStateAndInURLAreSame = false;
-                    break;
-                }
-                paramsInStateAndInURLAreSame = true;
-            }
-            if (paramsInStateAndInURLAreSame) {
-                console.log('same.......');
-                
-                return;
-            }
-
-
+            const queryParams = searchParamsToObject(searchParams);
             const actionResponse = await productsCatalog(queryParams);
             if (actionResponse.responseStatus === 200) {
                 setProductResults(actionResponse.data as Array<ProductData>);
@@ -133,9 +112,22 @@ export default function ProductsCatalog() {
                     type: 'error'
                 }));
             }
-            navigate(actionResponse.urlWithNewQueryParams, { replace: true });
         })();
-    }, [queryParams]);
+    }, [searchParams]);
+
+    function searchParamsToObject(searchParams: URLSearchParams) {
+        const params = Object.fromEntries(searchParams.entries());
+        return {
+            currentPage: Number(params.currentPage) || 1,
+            itemsPerPage: Number(params.itemsPerPage) || 12,
+            name: params.name || '',
+            category: params.category || '',
+            priceFrom: params.priceFrom || '',
+            priceTo: params.priceTo || '',
+            availableInStock: params.availableInStock || '',
+            manufacturer: params.manufacturer || '',
+        } as ProductsCatalogQueryParams;
+    }
 
     return (
         <div className={styles.wrapper}>
@@ -143,10 +135,13 @@ export default function ProductsCatalog() {
             <button className={`btn btn-primary ${styles.filtersButton}`} type="button" data-bs-toggle="offcanvas" data-bs-target="#filters">
                 Open Filters
             </button>
+            <button className={`btn btn-outline-warning ${styles.filtersButton}`} type="button" onClick={clearFilters}>
+                Clear Filters
+            </button>
             <ProductFilters 
                 queryParamsSetter={queryParamsSetterForFilter}
                 categories={['test', 'cpu', 'ram']}
-                currentQueryParams={queryParams}
+                currentQueryParams={searchParamsToObject(searchParams)}
             />
 
             <div className={`row row-cols-1 row-cols-md-4 g-4 ${styles.cardsWrapper}`}>
@@ -158,7 +153,7 @@ export default function ProductsCatalog() {
             </div>
 
             <nav aria-label="Page navigation example" className={styles.pagination}>
-                <select className="form-select" aria-label="Amount of items to display per page." onChange={(e) => {changeItemsPerPage(e)}} defaultValue={queryParams.itemsPerPage?.toString() || '12'}>
+                <select className="form-select" aria-label="Amount of items to display per page." onChange={(e) => {changeItemsPerPage(e)}} defaultValue={searchParams.get('itemsPerPage')?.toString() || '12'}>
                     <option value="4">4 per page</option>
                     <option value="8">8 per page</option>
                     <option value="12">12 per page</option>

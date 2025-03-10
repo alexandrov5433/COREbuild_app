@@ -31,7 +31,7 @@ export default function Header() {
         const formData = new FormData(form);
         const nameSearchParam = formData.get('name') as string || null;
         form.reset();
-        navigate(`products-catalog?name=${nameSearchParam || ''}`);
+        navigate(`products-catalog?currentPage=1&itemsPerPage=12&name=${nameSearchParam || ''}&`);
     }
     const searchWithEnterHandler = function (e: React.SyntheticEvent) {
         e.preventDefault();
@@ -39,7 +39,7 @@ export default function Header() {
         const formData = new FormData(form);
         const nameSearchParam = formData.get('name') as string || null;
         form.reset();
-        navigate(`products-catalog?name=${nameSearchParam || ''}`);
+        navigate(`products-catalog?currentPage=1&itemsPerPage=12&name=${nameSearchParam || ''}&`);
     }
     return (
         <header>
