@@ -5,7 +5,7 @@ header {
     }
 
     .userAccountActionsDropdown.show {
-        /* .show is class which Bootstrap adds on click to display the dropdown ul container */
+        /* .show is the class which Bootstrap adds on click to display the dropdown ul container */
         right: 0;
         left: auto;
     }
@@ -18,5 +18,13 @@ header {
         &.active {
             background-color: transparent;
         }
+    }
+
+    .cartButton {
+        border: none;
+        margin-right: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
     }
 }

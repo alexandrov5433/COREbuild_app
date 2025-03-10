@@ -16,6 +16,7 @@ import Page404 from './components/general/notFound/page404/Page404';
 import AddProduct from './components/product/addProduct/AddProduct';
 import PopupMessage from './components/general/popupMessage/PopupMessage';
 import ProductsCatalog from './components/product/productsCatalog/ProductsCatalog';
+import ShoppingCart from './components/product/shoppingCart/ShoppingCart';
 
 export default function App() {
   const dispatch = useAppDispatch();
@@ -55,6 +56,17 @@ export default function App() {
                   </>
                   : ''
               }
+              {/* customer only */}
+              {
+                !userData.is_employee ?
+                  <>
+                    <Route path='shopping-cart' element={<ShoppingCart />}></Route>
+
+                  </>
+                  : ''
+              }
+
+
               <Route path='*' element={<Page404 />}></Route>
 
             </Route>
