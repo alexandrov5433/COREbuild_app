@@ -1,1 +1,7 @@
 @import url(../../../lib/styling/generalWrapper.module.css);
+
+.totalCostBar {
+    /* background: linear-gradient(90deg, rgba(10,54,34,1) 27%, rgba(39,174,96,1) 71%, rgba(143,174,39,1) 93%); */
+    background: linear-gradient(90deg, rgba(143,174,39,1) 12%, rgba(39,174,96,1) 44%, rgba(38,169,93,1) 57%, rgba(24,113,64,1) 78%, rgba(10,54,34,1) 93%);
+    /* background-color: #0a3622; */
+}

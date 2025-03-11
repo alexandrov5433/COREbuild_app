@@ -5,19 +5,19 @@ import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 
 import { NavLink, useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from '../../../lib/hooks/reduxTypedHooks';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import logout from '../../../lib/actions/logout';
-import { ProductInCart } from '../../../lib/definitions';
+import { ShoppingCart } from '../../../lib/definitions';
 
 import { setUserToGuest } from '../../../redux/userSlice';
-import { setMessageData } from '../../../redux/popupMessageSlice';
+import getShoppingCart from '../../../lib/actions/getShoppingCart';
+import { updateCart } from '../../../redux/cartSlice';
 
 export default function Header() {
     const dispatch = useAppDispatch();
     const userData = useAppSelector(state => state.user);
     const cartData = useAppSelector(state => state.cart);
     const navigate = useNavigate();
-    const isHeaderMounted = useRef(false);
     const [trigger, setTrigger] = useState(false);
     const [countOfProductsInCart, setCountOfProductsInCart] = useState(0);
 
@@ -54,20 +54,23 @@ export default function Header() {
     }, [trigger]);
 
     useEffect(() => {
-        if (isHeaderMounted.current) {
-            let count = 0;
-            cartData.forEach(p => count += p.count);
-            setCountOfProductsInCart(count);
-            dispatch(setMessageData({
-                duration: 3000,
-                isShown: true,
-                text: 'Product added to cart!',
-                type: 'success'
-            }));
-        } else {
-            isHeaderMounted.current = true;
-        }
+        let count = 0;
+        Object.values(cartData).forEach(c => count += c);
+        setCountOfProductsInCart(count);
     }, [cartData]);
+
+    useEffect(() => {
+        if (userData.userID && !userData.is_employee) {
+            (async () => {
+                const res = await getShoppingCart(userData.userID);
+                if (res.responseStatus === 200) {
+                    dispatch(updateCart(res.data! as ShoppingCart));
+                } else if ([400, 500].includes(res.responseStatus)) {
+                    console.log('ERROR');
+                }
+            })();
+        }
+    }, [userData]);
 
 
     return (

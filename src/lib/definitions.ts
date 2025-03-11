@@ -40,7 +40,7 @@ export type FileData = {
 
 export type ApiJsonResponce = {
     msg: string,
-    payload?: UserData | RegistrationValidationError | ProductData | ProductCatalogPagedResult
+    payload?: UserData | RegistrationValidationError | ProductData | ProductCatalogPagedResult |ShoppingCart
 }
 
 export type RegistrationValidationErrorProperty = {
@@ -111,9 +111,8 @@ export type ProductCatalogPagedResult = {
     products: Array<ProductData>
 }
 
-export type ProductInCart = {
-    productID: number;
-    count: number;
+export type ShoppingCart = {
+    [key: number]: number
 }
 
 export type ProductDetailsActionResponse = {

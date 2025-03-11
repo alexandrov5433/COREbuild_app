@@ -1,22 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ProductInCart } from "../lib/definitions";
+import { ShoppingCart } from "../lib/definitions";
 
 export const cartSlice = createSlice({
     name: 'cart',
-    initialState: [] as Array<ProductInCart>,
+    initialState: {} as ShoppingCart,
     reducers: {
-        addProductToCart: (state, action: {payload: ProductInCart, type: string}) => {
-            state.push(action.payload);
-        },
-        removeProductFromCart: (state, action: {payload: ProductInCart, type: string}) => {
-            state.filter(p => p.productID != action.payload.productID);
+        updateCart: (state, action: {payload: ShoppingCart, type: string}) => {
+            return action.payload;
         },
         emptyCart: (state) => {
-            state = [];
+            return {};
         }
     }
 });
 
-export const { addProductToCart, removeProductFromCart } = cartSlice.actions;
+export const { updateCart, emptyCart } = cartSlice.actions;
 
 export default cartSlice.reducer;

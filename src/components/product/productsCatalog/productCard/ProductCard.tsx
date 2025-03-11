@@ -1,14 +1,44 @@
 import styles from './productCard.module.css';
-import { ProductData } from "../../../../lib/definitions";
+import { ProductData, ShoppingCart } from "../../../../lib/definitions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEuroSign, faCircleCheck, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { convertCentToWhole } from '../../../../lib/util/currency';
 import { useAppDispatch, useAppSelector } from '../../../../lib/hooks/reduxTypedHooks';
-import { addProductToCart } from '../../../../redux/cartSlice';
+import { useEffect, useState } from 'react';
+import addProductToCart from '../../../../lib/actions/addProductToCart';
+import { setMessageData } from '../../../../redux/popupMessageSlice';
+import { updateCart } from '../../../../redux/cartSlice';
 
 export default function ProductCard(productData: ProductData) {
     const dispatch = useAppDispatch();
     const userData = useAppSelector(state => state.user);
+    const [additionTrigger, setAdditionTrigger] = useState(false);
+
+    useEffect(() => {
+        if (additionTrigger) {
+            (async () => {
+                const addition = await addProductToCart(productData.productID, 1);
+                if (addition.responseStatus === 200) {
+                    console.log(addition.data);
+                    dispatch(updateCart(addition.data as ShoppingCart))
+                    dispatch(setMessageData({
+                        duration: 4000,
+                        isShown: true,
+                        text: 'Product added to cart!',
+                        type: 'success'
+                    }));
+                } else if ([400, 500].includes(addition.responseStatus)) {
+                    dispatch(setMessageData({
+                        duration: 5000,
+                        isShown: true,
+                        text: addition.msg,
+                        type: 'error'
+                    }));
+                }
+                setAdditionTrigger(false);
+            })();
+        }
+    }, [additionTrigger]);
 
     return (
         <div className="col">
@@ -38,10 +68,7 @@ export default function ProductCard(productData: ProductData) {
                         <button className={`btn btn-primary ${styles.button}`}>View Details</button>
                         {
                             productData.stockCount > 0 && !userData.is_employee ?
-                                <button className={`btn btn-warning ${styles.button}`} onClick={() => dispatch(addProductToCart({
-                                    productID: productData.productID,
-                                    count: 1
-                                }))}>Add To Cart</button>
+                                <button className={`btn btn-warning ${styles.button}`} disabled={additionTrigger} onClick={() => setAdditionTrigger(true)}>Add To Cart</button>
                                 : ''
                         }
                     </div>
