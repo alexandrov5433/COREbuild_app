@@ -5,7 +5,7 @@ import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 
 import { NavLink, useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from '../../../lib/hooks/reduxTypedHooks';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import logout from '../../../lib/actions/logout';
 import { ProductInCart } from '../../../lib/definitions';
 
@@ -17,6 +17,7 @@ export default function Header() {
     const userData = useAppSelector(state => state.user);
     const cartData = useAppSelector(state => state.cart);
     const navigate = useNavigate();
+    const isHeaderMounted = useRef(false);
     const [trigger, setTrigger] = useState(false);
     const [countOfProductsInCart, setCountOfProductsInCart] = useState(0);
 
@@ -53,15 +54,19 @@ export default function Header() {
     }, [trigger]);
 
     useEffect(() => {
-        let count = 0;
-        cartData.forEach(p => count += p.count);
-        setCountOfProductsInCart(count);
-        dispatch(setMessageData({
-            duration: 3000,
-            isShown: true,
-            text: 'Product added to cart!',
-            type: 'success'
-        }));
+        if (isHeaderMounted.current) {
+            let count = 0;
+            cartData.forEach(p => count += p.count);
+            setCountOfProductsInCart(count);
+            dispatch(setMessageData({
+                duration: 3000,
+                isShown: true,
+                text: 'Product added to cart!',
+                type: 'success'
+            }));
+        } else {
+            isHeaderMounted.current = true;
+        }
     }, [cartData]);
 
 
