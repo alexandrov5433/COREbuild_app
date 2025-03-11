@@ -27,6 +27,13 @@
     }
 }
 
+.inputContainer, .mandatoryFielsExplanation {
+    i {
+        color: red;
+        font-style: normal;
+    }
+}
+
 @media (min-width: 992px) {
     .labelWithLogo {
         font-size: 1.1rem;

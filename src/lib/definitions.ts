@@ -49,7 +49,7 @@ export type RegistrationValidationErrorProperty = {
 }
 
 export type RegistrationValidationError = {
-    is_employee: RegistrationValidationErrorProperty,
+    // is_employee: RegistrationValidationErrorProperty,
     username: RegistrationValidationErrorProperty,
     password: RegistrationValidationErrorProperty,
     repeat_password: RegistrationValidationErrorProperty,

@@ -2,19 +2,23 @@ import { ApiJsonResponce, RegistrationValidationError, UserData } from "../defin
 
 export default async function register(
     previousState: {
-        success: boolean,
         msg: string,
-        data: UserData | RegistrationValidationError,
+        userData: UserData,
+        validationErrorsData: RegistrationValidationError,
         responseStatus: number,
         inputValues: any
     },
     formData: FormData
 ) {
     const state = {
-        success: previousState.success,
-        msg: previousState.msg,
-        data: previousState.data,
-        responseStatus: previousState.responseStatus,
+        msg: '',
+        userData: {
+            userID: 0,
+            is_employee: false,
+            username: ''
+        } as UserData,
+        validationErrorsData: {} as RegistrationValidationError,
+        responseStatus: 0,
         inputValues: previousState.inputValues
     }
     try {
@@ -27,37 +31,22 @@ export default async function register(
             body: JSON.stringify(Object.fromEntries(formData.entries())),
             credentials: "include"
         });
+        state.responseStatus = res.status;
+        const jsonResponse = await res.json() as ApiJsonResponce;
+        state.msg = jsonResponse.msg;
         if (res.status === 200) {
-            state.success = true;
-            state.responseStatus = 200;
-            const data = await res.json() as ApiJsonResponce;
-            state.msg = data.msg;
-            state.data = data.payload as UserData || {
+            state.userData = jsonResponse.payload as UserData || {
                 userID: 0,
                 is_employee: false,
                 username: ''
             };
         } else if (res.status === 400) {
-            //Invalid registration data.
-            state.responseStatus = 400;
-            state.success = false;
-            const data = await res.json() as ApiJsonResponce;
-            state.msg = data.msg;
-            state.data = data.payload as RegistrationValidationError;
-        } else if (res.status === 500) {
-            state.msg = (await res.json() as ApiJsonResponce).msg;
-            state.responseStatus = 500;
-            state.data = {
-                userID: 0,
-                is_employee: false,
-                username: ''
-            };
+            state.validationErrorsData = jsonResponse.payload as RegistrationValidationError || {};
         }
         return state;
     } catch (e) {
-        state.success = false;
         state.msg = (e as Error).message;
-        state.data = {
+        state.userData = {
             userID: 0,
             is_employee: false,
             username: ''
