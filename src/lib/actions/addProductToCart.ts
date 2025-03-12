@@ -16,7 +16,7 @@ export default async function addProductToCart(productID: number, count: number)
         const formData = new FormData();
         formData.append('productID', productID.toString());
         formData.append('count', count.toString());
-        const res = await fetch(`/api/cart`, {
+        const res = await fetch(`/api/cart/add`, {
             method: 'post',
             body: formData,
             credentials: 'include'
