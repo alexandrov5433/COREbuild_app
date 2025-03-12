@@ -58,12 +58,17 @@ export default function ShoppingCart() {
             </div>
             {
                 Object.entries(cart).length <= 0 ? '' :
+                <>
                     <nav className={`navbar sticky-bottom ${styles.totalCostBar}`}>
                         <div className="container-fluid">
                             <p className="lead">Total: {convertCentToWhole(totalPrice)} <FontAwesomeIcon icon={faEuroSign} /></p>
                             <button className="btn btn-success">Place Order</button>
                         </div>
                     </nav>
+                    <div id="paypal-button-container">
+
+                    </div>
+                </>
             }
         </>
     );
