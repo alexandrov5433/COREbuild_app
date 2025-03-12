@@ -1,5 +1,8 @@
 .wrapper {
     padding: var(--wrapper-pad-mobile);
+    h1 {
+        text-align: center;
+    }
 }
 
 .inputContainer {
@@ -12,6 +15,14 @@
 
 .submitButton {
     font-size: 2.5rem;
+}
+
+@media (min-width: 600px) {
+    .wrapper {
+        h1 {
+            text-align: left;
+        }
+    }
 }
 
 @media (min-width: 992px) {
