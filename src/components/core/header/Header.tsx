@@ -1,7 +1,7 @@
 import './header.css';
 import logo from '../../../assets/COREbuild.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
+import { faCartShopping, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 import { NavLink, useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from '../../../lib/hooks/reduxTypedHooks';
@@ -109,7 +109,7 @@ export default function Header() {
 
                         <form className="d-flex me-auto" role="search" onSubmit={searchWithEnterHandler}>
                             <input className="form-control me-2" type="search" placeholder="Name of product" aria-label="Search" name='name' />
-                            <button className="btn btn-outline-success" type="button" onClick={searchButtonHandler}>Search</button>
+                            <button className="btn btn-outline-success" type="button" onClick={searchButtonHandler}><FontAwesomeIcon icon={faMagnifyingGlass} /></button>
                         </form>
                         {
                             !userData.is_employee ?
