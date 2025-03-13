@@ -121,3 +121,12 @@ export type ProductDetailsActionResponse = {
     data: null | ProductData,
     isError: boolean
 }
+
+export type OrderData = {
+    id?: number,
+    payment_status: 'pending' | 'paid',
+    shipping_status: 'pending' | 'sent',
+    content: ShoppingCart,
+    recipient: UserData['userID'],
+    placement_time: number
+}
