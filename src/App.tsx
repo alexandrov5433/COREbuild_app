@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from './lib/hooks/reduxTypedHooks';
 import { useEffect } from 'react';
 import validateCoookie from './lib/actions/validateCookie';
 import { setUserToGuest, updateUserData } from './redux/userSlice';
+import { PayPalScriptProvider, ReactPayPalScriptOptions } from '@paypal/react-paypal-js';
 
 import Header from './components/core/header/Header';
 import Main from './components/core/main/Main';
@@ -17,6 +18,12 @@ import AddProduct from './components/product/addProduct/AddProduct';
 import PopupMessage from './components/general/popupMessage/PopupMessage';
 import ProductsCatalog from './components/product/productsCatalog/ProductsCatalog';
 import ShoppingCart from './components/product/shoppingCart/ShoppingCart';
+
+const PAYPAL_INIT_OPTIONS: ReactPayPalScriptOptions  = {
+  clientId: "ATKglcYBI2PZ2DazP0H2hcnyOzjxVk0twgEzIA35pJwjqsjhC-xzwY542wpgc1g0j1agukEIeaWyO1vJ",
+  currency: "EUR",
+  intent: "capture",
+};
 
 export default function App() {
   const dispatch = useAppDispatch();
@@ -38,6 +45,8 @@ export default function App() {
   return (
     <>
       <BrowserRouter>
+        <PayPalScriptProvider options={PAYPAL_INIT_OPTIONS}>
+
           <Header />
           <Routes>
             <Route element={<Main />}>
@@ -73,8 +82,9 @@ export default function App() {
           </Routes>
           <Footer />
 
-          <PopupMessage/>
+          <PopupMessage />
 
+          </PayPalScriptProvider>
       </BrowserRouter>
     </>
   )
