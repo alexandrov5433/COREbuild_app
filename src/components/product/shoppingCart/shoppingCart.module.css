@@ -2,9 +2,7 @@
 
 .totalCostBar {
     background: linear-gradient(90deg, rgba(10,54,34,1) 47%, rgba(39,174,96,1) 71%, rgba(143,174,39,1) 93%);
-    /* background: linear-gradient(90deg, rgba(143,174,39,1) 12%, rgba(39,174,96,1) 44%, rgba(38,169,93,1) 57%, rgba(24,113,64,1) 78%, rgba(10,54,34,1) 93%); */
-    /* background-color: #0a3622; */
-    div {
+    .innerContainer {
         justify-content: flex-start;
         gap: 1rem;
         padding: 0.5rem 1rem;
@@ -85,22 +83,21 @@
 @media (min-width: 600px) {
     .totalCostBar {
         background: linear-gradient(90deg, rgba(10,54,34,1) 27%, rgba(39,174,96,1) 71%, rgba(143,174,39,1) 93%);
-        div {
+        .innerContainer {
             flex-direction: column;
             align-items: flex-start;
         }
-
     }
     .emptyCartWrapper {
         img {
-            width: 25%;
+            width: 20%;
         }
     }
 }
 
 @media (min-width: 1025px) {
     .totalCostBar {
-        div {
+        .innerContainer {
             flex-direction: row;
             align-items: center;
             padding: 0 1rem;

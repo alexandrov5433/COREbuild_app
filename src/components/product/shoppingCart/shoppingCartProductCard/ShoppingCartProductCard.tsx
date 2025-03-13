@@ -119,9 +119,9 @@ export default function ShoppingCartProductCard({
     }, [removeProductFromCartTrigger]);
 
     return (
-        <div className="card mb-3">
-            <div className={`row g-0 ${styles.cardWrapper}`}>
-                <div className="col-md-4">
+        <div className={`card mb-3 ${styles.cardWrapper}`}>
+            <div className={`row g-0 `}>
+                <div className={`col-md-4 ${styles.imageWrapper}`}>
                     <img src={`/api/file/pic/${productData.thumbnailID}`} className="img-fluid rounded-start" alt={`A picture of ${productData.name}`} />
                 </div>
                 <div className="col-md-8">
@@ -145,8 +145,8 @@ export default function ShoppingCartProductCard({
                                     </button>
                                     : ''
                             }
+                            <button className="btn btn-outline-warning" disabled={removeProductFromCartTrigger} onClick={() => setRemoveProductFromCartTrigger(true)}>Delete</button>
                         </div>
-                        <button className="btn btn-outline-warning" disabled={removeProductFromCartTrigger} onClick={() => setRemoveProductFromCartTrigger(true)}>Remove Product</button>
                     </div>
                 </div>
             </div>

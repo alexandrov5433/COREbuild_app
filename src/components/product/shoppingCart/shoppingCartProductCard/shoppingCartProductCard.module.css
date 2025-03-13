@@ -2,11 +2,22 @@
     h5, p, button {
         font-size: 2rem;
     }
+    .imageWrapper {
+        display: flex;
+        align-items: center;
+    }
+    img {
+        width: 100%;
+        object-fit: contain;
+        border-radius: 6px;
+    }
+
     .quantityWrapper {
         margin-bottom: 2rem;
         display: flex;
         gap: 2rem;
         align-items: center;
+        flex-wrap: wrap;
         p {
             margin-bottom: 0;
         }
@@ -20,6 +31,13 @@
 
 @media (min-width: 1025px) {
     .cardWrapper {
+       
+
+        img {
+            width: 15rem;
+            /* object-fit: contain; */
+        }
+
         h5, p, button {
             font-size: 1rem;
         } 
