@@ -112,7 +112,7 @@ export default function Header() {
                             <button className="btn btn-outline-success" type="button" onClick={searchButtonHandler}><FontAwesomeIcon icon={faMagnifyingGlass} /></button>
                         </form>
                         {
-                            !userData.is_employee ?
+                            userData.userID && !userData.is_employee ?
                                 <button className="btn btn-outline-warning cartButton" type="button" onClick={() => navigate('shopping-cart')}>
                                     <FontAwesomeIcon icon={faCartShopping} />{countOfProductsInCart}
                                 </button>
