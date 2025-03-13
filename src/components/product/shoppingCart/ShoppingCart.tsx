@@ -2,20 +2,23 @@ import styles from './shoppingCart.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEuroSign } from '@fortawesome/free-solid-svg-icons';
 import emptyCartImage from '../../../assets/emptyCart.svg';
-import { useAppSelector } from '../../../lib/hooks/reduxTypedHooks';
+import { useAppDispatch, useAppSelector } from '../../../lib/hooks/reduxTypedHooks';
 import ShoppingCartProductCard from './shoppingCartProductCard/ShoppingCartProductCard';
 import { useEffect, useState } from 'react';
 import { convertCentToWhole } from '../../../lib/util/currency';
 import { NavLink } from 'react-router';
+import placeNewOrder from '../../../lib/actions/placeNewOrder';
+import { setMessageData } from '../../../redux/popupMessageSlice';
 
 export default function ShoppingCart() {
-    const [listOfPrices, setListOfPices] = useState({} as {[key: number]: number});
+    const [listOfPrices, setListOfPices] = useState({} as { [key: number]: number });
     const [totalPrice, setTotalPrice] = useState(0);
     const cart = useAppSelector(state => state.cart);
+    const dispatch = useAppDispatch();
 
     function addPriceToListForCard(productID: number, priceInCent: number) {
         setListOfPices(state => {
-            const newState = {...state};
+            const newState = { ...state };
             const priceEntry = {};
             (priceEntry as any)[productID] = priceInCent;
             Object.assign(newState, priceEntry);
@@ -35,6 +38,41 @@ export default function ShoppingCart() {
         }
     }, [listOfPrices]);
 
+    // test
+    const [testTrigger, setTestTrigger] = useState(false);
+
+
+    useEffect(() => {
+        if (testTrigger) {
+            (async () => {
+                setTestTrigger(false);
+                const newOrderResponse = await placeNewOrder(cart);
+                if (newOrderResponse.status === 200) {
+                    console.log('newOrder', newOrderResponse.data);
+                    
+                    dispatch(setMessageData({
+                        duration: 3000,
+                        isShown: true,
+                        text: 'Order placed.',
+                        type: 'success'
+                    }));
+                } else if ([400, 500].includes(newOrderResponse.status)) {
+                    dispatch(setMessageData({
+                        duration: 6000,
+                        isShown: true,
+                        text: newOrderResponse.msg,
+                        type: 'error'
+                    }));
+                }
+            })();
+        }
+    }, [testTrigger]);
+
+
+
+    // test
+
+
     return (
         <>
             <div className={styles.wrapper}>
@@ -53,22 +91,19 @@ export default function ShoppingCart() {
                             productID={Number(productID)}
                             count={count}
                             addToPriceList={addPriceToListForCard}
-                        />)
+                        />)   
                 }
             </div>
             {
                 Object.entries(cart).length <= 0 ? '' :
-                <>
-                    <nav className={`navbar sticky-bottom ${styles.totalCostBar}`}>
-                        <div className="container-fluid">
-                            <p className="lead">Total: {convertCentToWhole(totalPrice)} <FontAwesomeIcon icon={faEuroSign} /></p>
-                            <button className="btn btn-success">Place Order</button>
-                        </div>
-                    </nav>
-                    <div id="paypal-button-container">
-
-                    </div>
-                </>
+                  
+                        <nav className={`navbar sticky-bottom ${styles.totalCostBar}`}>
+                            <div className={`container-fluid ${styles.innerContainer}`}>
+                                <p className="lead">Total: {convertCentToWhole(totalPrice)} <FontAwesomeIcon icon={faEuroSign} /></p>
+                                <button className="btn btn-success" disabled={testTrigger} onClick={() => setTestTrigger(true)}>Place Order</button>
+                            </div>
+                        </nav>
+              
             }
         </>
     );
