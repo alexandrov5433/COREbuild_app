@@ -14,7 +14,6 @@ export default async function productsCatalog(
     };
     try {
         const urlToFetch = buildUrlFromQueryParams('/api/products-catalog', queryParams);
-        console.log('urlToFetch', urlToFetch);
         actionResponse.urlWithNewQueryParams = urlToFetch.slice(4);
         const res = await fetch(urlToFetch, {
             method: 'get',
