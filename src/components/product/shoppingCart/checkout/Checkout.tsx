@@ -34,7 +34,7 @@ export default function Checkout({ cart }: { cart: ShoppingCart }) {
             appDispatch(setMessageData({
                 duration: 3000,
                 isShown: true,
-                text: `Order placed! ID: ${collectPaymentResponse.data}`,
+                text: `Order placed! ID: ${collectPaymentResponse.data?.paypal_order_id}`,
                 type: 'success'
             }));
 
