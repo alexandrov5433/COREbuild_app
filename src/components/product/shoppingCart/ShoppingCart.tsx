@@ -4,17 +4,16 @@ import { faEuroSign } from '@fortawesome/free-solid-svg-icons';
 import emptyCartImage from '../../../assets/emptyCart.svg';
 import { useAppDispatch, useAppSelector } from '../../../lib/hooks/reduxTypedHooks';
 import ShoppingCartProductCard from './shoppingCartProductCard/ShoppingCartProductCard';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { convertCentToWhole } from '../../../lib/util/currency';
 import { NavLink } from 'react-router';
-import placeNewOrder from '../../../lib/actions/placeNewOrder';
-import { setMessageData } from '../../../redux/popupMessageSlice';
+import Checkout from './checkout/Checkout';
 
 export default function ShoppingCart() {
     const [listOfPrices, setListOfPices] = useState({} as { [key: number]: number });
     const [totalPrice, setTotalPrice] = useState(0);
     const cart = useAppSelector(state => state.cart);
-    const dispatch = useAppDispatch();
+    const paypayCheckoutRef = useRef(null);
 
     function addPriceToListForCard(productID: number, priceInCent: number) {
         setListOfPices(state => {
@@ -38,41 +37,6 @@ export default function ShoppingCart() {
         }
     }, [listOfPrices]);
 
-    // test
-    const [testTrigger, setTestTrigger] = useState(false);
-
-
-    useEffect(() => {
-        if (testTrigger) {
-            (async () => {
-                setTestTrigger(false);
-                const newOrderResponse = await placeNewOrder(cart);
-                if (newOrderResponse.status === 200) {
-                    console.log('newOrder', newOrderResponse.data);
-                    
-                    dispatch(setMessageData({
-                        duration: 3000,
-                        isShown: true,
-                        text: 'Order placed.',
-                        type: 'success'
-                    }));
-                } else if ([400, 500].includes(newOrderResponse.status)) {
-                    dispatch(setMessageData({
-                        duration: 6000,
-                        isShown: true,
-                        text: newOrderResponse.msg,
-                        type: 'error'
-                    }));
-                }
-            })();
-        }
-    }, [testTrigger]);
-
-
-
-    // test
-
-
     return (
         <>
             <div className={styles.wrapper}>
@@ -86,24 +50,39 @@ export default function ShoppingCart() {
                             <NavLink className="btn btn-success" to="/products-catalog">Browse Products</NavLink>
                         </div>
                         :
-                        Object.entries(cart).map(([productID, count]) => <ShoppingCartProductCard
-                            key={productID}
-                            productID={Number(productID)}
-                            count={count}
-                            addToPriceList={addPriceToListForCard}
-                        />)   
+                        <>
+                            {
+                                Object.entries(cart).map(([productID, count]) => <ShoppingCartProductCard
+                                    key={productID}
+                                    productID={Number(productID)}
+                                    count={count}
+                                    addToPriceList={addPriceToListForCard}
+                                />)
+                            }
+                            <div className={styles.paymentContainer} id="paypal-payment-container" ref={paypayCheckoutRef}>
+                                <h2>Checkout</h2>
+                                <div className={styles.checkoutContainer}>
+                                    <Checkout cart={cart}/>
+                                </div>
+                            </div>
+                        </>
                 }
             </div>
             {
                 Object.entries(cart).length <= 0 ? '' :
-                  
-                        <nav className={`navbar sticky-bottom ${styles.totalCostBar}`}>
-                            <div className={`container-fluid ${styles.innerContainer}`}>
-                                <p className="lead">Total: {convertCentToWhole(totalPrice)} <FontAwesomeIcon icon={faEuroSign} /></p>
-                                <button className="btn btn-success" disabled={testTrigger} onClick={() => setTestTrigger(true)}>Place Order</button>
-                            </div>
-                        </nav>
-              
+
+                    <nav className={`navbar sticky-bottom ${styles.totalCostBar}`}>
+                        <div className={`container-fluid ${styles.innerContainer}`}>
+                            <p className="">Total: {convertCentToWhole(totalPrice)} <FontAwesomeIcon icon={faEuroSign} /></p>
+                            <p className="lead">With tax and free shipping.</p>
+                            <button className="btn btn-success" onClick={() => {
+                                (paypayCheckoutRef.current! as HTMLDivElement).scrollIntoView({
+                                    behavior: 'smooth'
+                                });
+                            }}>Checkout</button>
+                        </div>
+                    </nav>
+
             }
         </>
     );

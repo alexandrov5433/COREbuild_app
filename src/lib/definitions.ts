@@ -8,7 +8,8 @@ export type UserData = {
     prefered_payment_method?: 'paypal' | 'bank' | null,
     address?: string | null,
     favorite_products?: Array<number>,
-    past_purchases?: Array<number>
+    past_purchases?: Array<number>,
+    shopping_cart: ShoppingCart
 }
 
 export type ProductData = {
@@ -40,7 +41,7 @@ export type FileData = {
 
 export type ApiJsonResponce = {
     msg: string,
-    payload?: UserData | RegistrationValidationError | ProductData | ProductCatalogPagedResult |ShoppingCart
+    payload?: UserData | RegistrationValidationError | ProductData | ProductCatalogPagedResult | ShoppingCart | string | CollectPaymentActionData
 }
 
 export type RegistrationValidationErrorProperty = {
@@ -128,5 +129,12 @@ export type OrderData = {
     shipping_status: 'pending' | 'sent',
     content: ShoppingCart,
     recipient: UserData['userID'],
-    placement_time: number
+    placement_time: number,
+    total_price: number,
+    paypal_order_id: string
+}
+
+export type CollectPaymentActionData = {
+    paypal_order_id: string,
+    userData: UserData
 }

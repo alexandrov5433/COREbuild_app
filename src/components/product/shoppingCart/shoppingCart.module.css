@@ -1,11 +1,25 @@
 @import url(../../../lib/styling/generalWrapper.module.css);
 
+.paymentContainer {
+    margin-top: 2rem;
+    h2 {
+        text-align: center;
+    }
+
+    .checkoutContainer {
+        background-color: white;
+        padding: 1rem;
+        border-radius: 6px;
+        width: clamp(40%, 35rem, 100%);
+        margin: 0 auto;
+    }
+}
+
 .totalCostBar {
     background: linear-gradient(90deg, rgba(10,54,34,1) 47%, rgba(39,174,96,1) 71%, rgba(143,174,39,1) 93%);
     .innerContainer {
         justify-content: flex-start;
-        gap: 1rem;
-        padding: 0.5rem 1rem;
+        padding: 0 0.5rem;
     }
     p {
         margin: 0;
@@ -81,6 +95,18 @@
 }
 
 @media (min-width: 600px) {
+    /* .paymentContainer {
+        margin-top: 2rem;
+        h2 {
+            text-align: center;
+        }
+    
+        .checkoutContainer {
+            width: 70%;
+            margin: 0 auto;
+        }
+    } */
+
     .totalCostBar {
         background: linear-gradient(90deg, rgba(10,54,34,1) 27%, rgba(39,174,96,1) 71%, rgba(143,174,39,1) 93%);
         .innerContainer {
@@ -101,6 +127,7 @@
             flex-direction: row;
             align-items: center;
             padding: 0 1rem;
+            gap: 1rem;
         }
         p, button {
             font-size: 1rem;

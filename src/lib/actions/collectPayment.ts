@@ -1,6 +1,6 @@
-import { ApiJsonResponce, ShoppingCart } from "../definitions";
+import { ApiJsonResponce, CollectPaymentActionData } from "../definitions";
 
-export default async function placeNewOrder(cartData: ShoppingCart) {
+export default async function collectPayment(paypalOrderID: string) {
     const actionResponse = {
         status: 0,
         msg: '',
@@ -10,20 +10,17 @@ export default async function placeNewOrder(cartData: ShoppingCart) {
         status: number,
         msg: string,
         isError: boolean,
-        data: string | null
+        data: CollectPaymentActionData | null
     };
     try {
-        const formData = new FormData();
-        formData.append('order', JSON.stringify(cartData));
-        const res = await fetch('/api/order', {
-            method: 'post',
-            body: formData,
+        const res = await fetch(`/api/collect-payment/${paypalOrderID}`, {
+            method: 'get',
             credentials: 'include'
         });
         actionResponse.status = res.status;
         const resData = await res.json() as ApiJsonResponce;
         actionResponse.msg = resData.msg;
-        actionResponse.data = resData.payload as string || null; //paypal_order_id
+        actionResponse.data = resData.payload as CollectPaymentActionData || null;
     } catch (e) {
         actionResponse.status = 0;
         actionResponse.msg = (e as Error).message;
