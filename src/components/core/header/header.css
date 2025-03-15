@@ -1,6 +1,8 @@
 header {
+    font-size: 2rem;
+
     .logo-svg {
-        width: 10rem;
+        width: 12rem;
         height: auto;
     }
 
@@ -21,10 +23,48 @@ header {
     }
 
     .cartButton {
+        font-size: 2rem;
         border: none;
         margin-right: 0.5rem;
         display: flex;
         align-items: center;
         gap: 0.5rem;
+
+        &.inside {
+            display: none;
+        }
+    }
+
+    .searchBarForm {
+        input, button {
+            font-size: 2rem;
+        }
+        button {
+            padding: 0 5rem;
+        }
+    }
+}
+
+@media (min-width: 1025px) {
+    header {
+        font-size: 1rem;
+        .logo-svg {
+            width: 10rem;
+        }
+        .cartButton {
+            font-size: 1rem;
+    
+            &.inside {
+                display: block;
+            }
+        }
+        .searchBarForm {
+            input, button {
+                font-size: 1rem;
+            }
+            button {
+                padding: 0 0.8rem;
+            }
+        }
     }
 }

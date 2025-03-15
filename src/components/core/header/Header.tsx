@@ -80,9 +80,21 @@ export default function Header() {
                     <NavLink className="navbar-brand" to="/">
                         <img src={logo} alt="COREbuild" className="logo-svg" />
                     </NavLink>
+
+                    {
+                        userData.userID && !userData.is_employee ?
+                            <button className="navbar-toggler btn btn-outline-warning cartButton" type="button" onClick={() => navigate('shopping-cart')}>
+                                <FontAwesomeIcon icon={faCartShopping} />{' ' + countOfProductsInCart}
+                            </button>
+                            : ''
+                    }
+
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
+
+
+
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav me-3 mb-2 mb-lg-0">
                             <li className="nav-item">
@@ -107,14 +119,14 @@ export default function Header() {
                             </li>
                         </ul>
 
-                        <form className="d-flex me-auto" role="search" onSubmit={searchWithEnterHandler}>
+                        <form className="d-flex me-auto searchBarForm" role="search" onSubmit={searchWithEnterHandler}>
                             <input className="form-control me-2" type="search" placeholder="Name of product" aria-label="Search" name='name' />
                             <button className="btn btn-outline-success" type="button" onClick={searchButtonHandler}><FontAwesomeIcon icon={faMagnifyingGlass} /></button>
                         </form>
                         {
                             userData.userID && !userData.is_employee ?
-                                <button className="btn btn-outline-warning cartButton" type="button" onClick={() => navigate('shopping-cart')}>
-                                    <FontAwesomeIcon icon={faCartShopping} />{countOfProductsInCart}
+                                <button className="btn btn-outline-warning cartButton inside" type="button" onClick={() => navigate('shopping-cart')}>
+                                    <FontAwesomeIcon icon={faCartShopping} />{' ' + countOfProductsInCart}
                                 </button>
                                 : ''
                         }
