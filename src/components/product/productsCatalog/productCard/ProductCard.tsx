@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import addProductToCart from '../../../../lib/actions/addProductToCart';
 import { setMessageData } from '../../../../redux/popupMessageSlice';
 import { updateCart } from '../../../../redux/cartSlice';
+import { NavLink } from 'react-router';
 
 export default function ProductCard(productData: ProductData) {
     const dispatch = useAppDispatch();
@@ -65,7 +66,7 @@ export default function ProductCard(productData: ProductData) {
                         {convertCentToWhole(productData.price)}
                     </p>
                     <div className={styles.overlay}>
-                        <button className={`btn btn-primary ${styles.button}`}>View Details</button>
+                        <NavLink className={`btn btn-primary ${styles.button}`} to={`/product-details/${productData.productID}`}>View Details</NavLink>
                         {
                             productData.stockCount > 0 && !userData.is_employee ?
                                 <button className={`btn btn-warning ${styles.button}`} disabled={additionTrigger} onClick={() => setAdditionTrigger(true)}>Add To Cart</button>
