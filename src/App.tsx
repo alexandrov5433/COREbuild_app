@@ -18,6 +18,7 @@ import AddProduct from './components/product/addProduct/AddProduct';
 import PopupMessage from './components/general/popupMessage/PopupMessage';
 import ProductsCatalog from './components/product/productsCatalog/ProductsCatalog';
 import ShoppingCart from './components/product/shoppingCart/ShoppingCart';
+import ProductDetails from './components/product/productDetails/productDetails';
 
 const PAYPAL_INIT_OPTIONS: ReactPayPalScriptOptions  = {
   clientId: "ATKglcYBI2PZ2DazP0H2hcnyOzjxVk0twgEzIA35pJwjqsjhC-xzwY542wpgc1g0j1agukEIeaWyO1vJ",
@@ -56,6 +57,7 @@ export default function App() {
               <Route path='register' element={<Register />}></Route>
               <Route path='profile' element={<Profile />}></Route>
               <Route path='products-catalog' element={<ProductsCatalog />}></Route>
+              <Route path='product-details/:productID' element={<ProductDetails />}></Route>
               {/* employees only */}
               {
                 userData.is_employee ?

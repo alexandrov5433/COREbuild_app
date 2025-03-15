@@ -1,6 +1,6 @@
 import { ApiJsonResponce, ProductData, ProductDetailsActionResponse } from "../definitions";
 
-export default async function productDetails(productID: number) {
+export default async function productDetails(productID: number | string) {
     const actionResponse: ProductDetailsActionResponse = {
         msg: '',
         responseStatus: 0,

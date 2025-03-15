@@ -1,0 +1,142 @@
+@import url(../../../lib/styling/generalWrapper.module.css);
+
+.contentContainer {
+    font-size: 2rem;
+    h2 {
+        font-weight: 300;
+    }
+    & > * {
+        margin-bottom: 2rem;
+    }
+}
+
+.carouselContainer {
+    height: 20rem;
+    width: 100%;
+    overflow: hidden;
+}
+
+.imagesCarousel {
+    height: 100%;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+
+    .innerContainer {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    img {
+        width: 100%;
+        height: auto;
+    }
+
+    button {
+        align-self: center;
+        height: 100%;
+    }
+}
+
+.purchasing {
+    & > * {
+        margin-bottom: 1rem;
+    }
+    .price {
+        font-size: 3rem;
+    }
+    .availability {
+        font-size: inherit;
+
+        &.inStock {
+            color: var(--green);
+        }
+        &.notAvailable {
+            color: red;
+        }
+    }
+    label {
+        input {
+            background-color: white;
+            color: black;
+            width: 20%;
+            border-radius: 6px;
+            border: 1px solid black;
+            z-index: 100;
+        }
+    }
+    .addToCartButton {
+        font-size: 2rem;
+
+    }
+}
+
+.smallInfos {
+    .category{
+        p {
+            font-size: inherit;
+            text-transform: uppercase;
+        }
+    }
+    .manufacturer {
+        p {
+            font-size: inherit;
+        }
+    }
+}
+
+.specsDoc {
+    p, a {
+        font-size: inherit;
+        margin: 0;
+    }
+    a {
+        color: rgb(120, 212, 243);
+        text-decoration: underline;
+        cursor: pointer;
+        &:hover {
+            opacity: 0.5;
+        }
+    }
+}
+
+.descriptionAndComments {
+    font-size: inherit;
+    .content {
+        font-size: inherit;
+    }
+
+    .description {
+        font-size: inherit;
+        margin-top: 1rem;
+    }
+
+    .commentsContainer {
+        margin-top: 1rem;
+        .ratingButtons {
+            & > * {
+                margin-right: 2.2rem;
+                font-size: inherit;
+            }
+        }
+
+        textarea {
+            width: 100%;
+            height: 20rem;
+            padding: 0 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 6px;
+        }
+    }
+}
+
+@media (min-width: 600px) {
+    .imagesCarousel {
+        width: 40%;
+
+    }
+}
+
+@media (min-width: 1025px) {}
