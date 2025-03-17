@@ -8,7 +8,6 @@ export type UserData = {
     prefered_payment_method?: 'paypal' | 'bank' | null,
     address?: string | null,
     favorite_products?: Array<number>,
-    past_purchases?: Array<number>,
     shopping_cart: ShoppingCart
 }
 
@@ -22,8 +21,7 @@ export type ProductData = {
     manufacturer: string,
     specsDocID: number,
     thumbnailID: number,
-    pictures: Array<number>,
-    reviews: Array<number>
+    pictures: Array<number>
 }
 
 export type ReviewData = {
@@ -31,7 +29,20 @@ export type ReviewData = {
     rating: number,
     comment: string,
     reviewerID: number,
-    time: bigint
+    time: bigint,
+    isVerifiedPurchase: boolean,
+    productID: number
+}
+
+export type GetReviewsForProductActionData = {
+    pagesCount: number,
+    currentPage: number,
+    reviews: Array<ReviewData>
+}
+
+export type GetRatingAndReviewCountForProductActionData = {
+    rating: number,
+    reviewsCount: number
 }
 
 export type FileData = {
@@ -41,7 +52,7 @@ export type FileData = {
 
 export type ApiJsonResponce = {
     msg: string,
-    payload?: UserData | RegistrationValidationError | ProductData | ProductCatalogPagedResult | ShoppingCart | string | CollectPaymentActionData
+    payload?: UserData | RegistrationValidationError | ProductData | ProductCatalogPagedResult | ShoppingCart | string | CollectPaymentActionData | GetReviewsForProductActionData | boolean
 }
 
 export type RegistrationValidationErrorProperty = {

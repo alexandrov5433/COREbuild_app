@@ -1,19 +1,29 @@
 import styles from './productDetails.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleCheck, faCircleXmark, faEuroSign } from '@fortawesome/free-solid-svg-icons';
-import { ChangeEvent, FormEventHandler, SyntheticEvent, useEffect, useRef, useState } from 'react';
-import { Link, useParams } from 'react-router';
-import { ProductData } from '../../../lib/definitions';
+import { faCircleCheck, faCircleXmark, faEuroSign, faStar as faStarFull, faStarHalfStroke } from '@fortawesome/free-solid-svg-icons';
+import { faStar as faStarHollow } from '@fortawesome/free-regular-svg-icons';
+import { ChangeEvent, SyntheticEvent, useEffect, useRef, useState } from 'react';
+import { useParams } from 'react-router';
+import { GetRatingAndReviewCountForProductActionData, ProductData, ReviewData } from '../../../lib/definitions';
 import productDetails from '../../../lib/actions/productDetails';
 import { useAppDispatch } from '../../../lib/hooks/reduxTypedHooks';
 import { setMessageData } from '../../../redux/popupMessageSlice';
 import { convertCentToWhole } from '../../../lib/util/currency';
+import getCustomerReviewedProduct from '../../../lib/actions/getCustomerReviewedProduct';
+import getRatingAndReviewCountForProduct from '../../../lib/actions/getRatingAndReviewCountForProduct';
+import getReviewsForProduct from '../../../lib/actions/getReviewsForProduct';
 
 export default function ProductDetails() {
-    const productID = useParams().productID;
+    const { productID } = useParams();
     const dispatch = useAppDispatch();
     const commentFormRef = useRef(null);
     const [productData, setProductData] = useState({} as ProductData);
+    const [raitngAndReviewsCount, setRaitngAndReviewsCount] = useState({} as GetRatingAndReviewCountForProductActionData);
+    const [productReviews, setProductReviews] = useState([] as Array<ReviewData>);
+    const [productReviewCurrentPage, setProductReviewCurrentPage] = useState(1);
+    const [productReviewPagesCount, setProductReviewPagesCount] = useState(1);
+    const [hasCustomerReviewedProduct, setHasCustomerReviewedProduct] = useState(false);
+
     const [displayProductNotFound, setDisplayProductNotFound] = useState(false);
     const [displayDescriptionOrComments, setDisplayDescriptionOrComments] = useState('description'); // 'description' || 'comments'
     const [addToCartCount, setAddToCartCount] = useState(1);
@@ -30,29 +40,56 @@ export default function ProductDetails() {
             return;
         }
         (async () => {
-            const actionResponse = await productDetails(productID);
-            if (actionResponse.responseStatus === 200) {
-                setProductData(actionResponse.data!);
+            const results = await Promise.all([
+                productDetails(productID),
+                getCustomerReviewedProduct(productID),
+                getRatingAndReviewCountForProduct(productID),
+            ]);
+            const productDetailsAR = results[0];
+            const getCustomerReviewedProductAR = results[1];
+            const getRatingAndReviewCountForProductAR = results[2];
+            if (productDetailsAR.responseStatus === 200) {
+                setProductData(productDetailsAR.data!);
 
-            } else if (actionResponse.responseStatus === 204) {
+            } else if (productDetailsAR.responseStatus === 204) {
                 // product not found
                 dispatch(setMessageData({
                     duration: 4500,
                     isShown: true,
-                    text: actionResponse.msg,
+                    text: productDetailsAR.msg,
                     type: 'error'
                 }));
-            } else if ([400, 500].includes(actionResponse.responseStatus)) {
+            } else if ([400, 500].includes(productDetailsAR.responseStatus)) {
                 // error
                 dispatch(setMessageData({
                     duration: 4500,
                     isShown: true,
-                    text: actionResponse.msg,
+                    text: productDetailsAR.msg,
                     type: 'error'
                 }));
             }
+            if (getCustomerReviewedProductAR.responseStatus === 200) {
+                setHasCustomerReviewedProduct(getCustomerReviewedProductAR.data || false);
+            }
+            if (getRatingAndReviewCountForProductAR.responseStatus === 200) {
+                setRaitngAndReviewsCount(getRatingAndReviewCountForProductAR.data!);
+            }
         })();
     }, [productID]);
+
+    useEffect(() => {
+        if (!productID) {
+            return;
+        }
+        (async () => {
+            const getReviewsForProductAR = await getReviewsForProduct(productID, productReviewCurrentPage);
+            if (getReviewsForProductAR.responseStatus === 200) {
+                setProductReviews(getReviewsForProductAR.data?.reviews || []);
+                setProductReviewCurrentPage(getReviewsForProductAR.data?.currentPage || 1);
+                setProductReviewPagesCount(getReviewsForProductAR.data?.pagesCount || 1);
+            }
+        })();
+    }, [productReviewCurrentPage]);
 
     function manageAddToCartValChange(e: ChangeEvent<HTMLInputElement>) {
         let quantity = Number(e.target.value);
@@ -78,7 +115,24 @@ export default function ProductDetails() {
         e.preventDefault();
         const formData = new FormData(e.target as HTMLFormElement);
         console.log([...formData]);
-        
+    }
+
+    function generateRatingAsStars() {
+        const whole = Math.trunc(raitngAndReviewsCount.rating);
+        const isRest = !!(raitngAndReviewsCount.rating % 1);
+        const stars = [];
+        for (let i = 1; i <= whole; i++) {
+            stars.push(<FontAwesomeIcon key={i} icon={faStarFull} />)
+        }
+        if (isRest) {
+            stars.push(<FontAwesomeIcon icon={faStarHalfStroke} />);
+        }
+        if (whole === 0) {
+            for (let i = 1; i <= 5; i++) {
+                stars.push(<FontAwesomeIcon key={i} icon={faStarHollow} />)
+            }
+        }
+        return stars;
     }
 
     return (
@@ -119,6 +173,8 @@ export default function ProductDetails() {
                         </div>
                         <div className={styles.purchasing}>
                             <p className={`${styles.price}`}>{convertCentToWhole(productData.price)} <FontAwesomeIcon icon={faEuroSign} /></p>
+
+                            <p className={`${styles.raiting}`}>Rating: {generateRatingAsStars()} ({raitngAndReviewsCount.reviewsCount})</p>
 
                             <p className={`${styles.availability} ${productData.stockCount > 0 ? styles.inStock : styles.notAvailable}`}>
                                 {
@@ -163,7 +219,7 @@ export default function ProductDetails() {
                                     <button className={`nav-link ${displayDescriptionOrComments === 'description' ? 'active' : ''}`} aria-current="page" onClick={() => toggleDescriptionAndComments('description')}>Description</button>
                                 </li>
                                 <li className="nav-item">
-                                    <button className={`nav-link ${displayDescriptionOrComments === 'comments' ? 'active' : ''}`} aria-current="page" onClick={() => toggleDescriptionAndComments('comments')}>Comments</button>
+                                    <button className={`nav-link ${displayDescriptionOrComments === 'comments' ? 'active' : ''}`} aria-current="page" onClick={() => toggleDescriptionAndComments('comments')}>Reviews</button>
                                 </li>
                             </ul>
                             <div>
@@ -172,27 +228,37 @@ export default function ProductDetails() {
                                         <p className={styles.description}>{productData.description}</p>
                                         :
                                         <div className={styles.commentsContainer}>
-                                            <form ref={commentFormRef}  onSubmit={submitComment}>
+                                            <form ref={commentFormRef} onSubmit={submitComment}>
                                                 <div className="mb-3">
                                                     <label>
-                                                        Rate this product with 5 being the best 
+                                                        Rate this product
                                                     </label>
                                                     <div className={styles.ratingButtons}>
-                                                        <input type="radio" className="btn-check" name="rating" id="rating1" value="1"/>
-                                                        <label className="btn" htmlFor="rating1">1</label>
+                                                        <input type="radio" className="btn-check" name="rating" id="rating5" value="5" />
+                                                        <label htmlFor="rating5">
+                                                            <FontAwesomeIcon icon={faStarFull} />
+                                                        </label>
 
-                                                        <input type="radio" className="btn-check" name="rating" id="rating2" value="2"/>
-                                                        <label className="btn" htmlFor="rating2">2</label>
+                                                        <input type="radio" className="btn-check" name="rating" id="rating4" value="4" />
+                                                        <label htmlFor="rating4">
+                                                            <FontAwesomeIcon icon={faStarFull} />
+                                                        </label>
 
-                                                        <input type="radio" className="btn-check" name="rating" id="rating3" value="3"/>
-                                                        <label className="btn" htmlFor="rating3">3</label>
+                                                        <input type="radio" className="btn-check" name="rating" id="rating3" value="3" />
+                                                        <label htmlFor="rating3">
+                                                            <FontAwesomeIcon icon={faStarFull} />
+                                                        </label>
 
-                                                        <input type="radio" className="btn-check" name="rating" id="rating4" value="4"/>
-                                                        <label className="btn" htmlFor="rating4">4</label>
-
-                                                        <input type="radio" className="btn-check" name="rating" id="rating5" value="5"/>
-                                                        <label className="btn" htmlFor="rating5">5</label>
+                                                        <input type="radio" className="btn-check" name="rating" id="rating2" value="2" />
+                                                        <label htmlFor="rating2">
+                                                            <FontAwesomeIcon icon={faStarFull} />
+                                                        </label>
+                                                        <input type="radio" className="btn-check" name="rating" id="rating1" value="1" />
+                                                        <label htmlFor="rating1">
+                                                            <FontAwesomeIcon icon={faStarFull} />
+                                                        </label>
                                                     </div>
+
                                                 </div>
                                                 <div className="mb-3">
                                                     <label htmlFor="form-comment">

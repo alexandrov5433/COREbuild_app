@@ -2,10 +2,12 @@
 
 .contentContainer {
     font-size: 2rem;
+
     h2 {
         font-weight: 300;
     }
-    & > * {
+
+    &>* {
         margin-bottom: 2rem;
     }
 }
@@ -41,22 +43,36 @@
 }
 
 .purchasing {
-    & > * {
+    &>* {
         margin-bottom: 1rem;
     }
+
     .price {
         font-size: 3rem;
     }
+
+    .raiting {
+        font-size: 1.6rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        svg {
+            color: #ffc107;
+        }
+    }
+
     .availability {
         font-size: inherit;
 
         &.inStock {
             color: var(--green);
         }
+
         &.notAvailable {
             color: red;
         }
     }
+
     label {
         input {
             background-color: white;
@@ -67,6 +83,7 @@
             z-index: 100;
         }
     }
+
     .addToCartButton {
         font-size: 2rem;
 
@@ -74,12 +91,13 @@
 }
 
 .smallInfos {
-    .category{
+    .category {
         p {
             font-size: inherit;
             text-transform: uppercase;
         }
     }
+
     .manufacturer {
         p {
             font-size: inherit;
@@ -88,14 +106,18 @@
 }
 
 .specsDoc {
-    p, a {
+
+    p,
+    a {
         font-size: inherit;
         margin: 0;
     }
+
     a {
         color: rgb(120, 212, 243);
         text-decoration: underline;
         cursor: pointer;
+
         &:hover {
             opacity: 0.5;
         }
@@ -104,6 +126,7 @@
 
 .descriptionAndComments {
     font-size: inherit;
+
     .content {
         font-size: inherit;
     }
@@ -115,10 +138,20 @@
 
     .commentsContainer {
         margin-top: 1rem;
+
         .ratingButtons {
-            & > * {
-                margin-right: 2.2rem;
+            display: flex;
+            justify-content: space-between;
+            direction: rtl;
+
+            &>* {
                 font-size: inherit;
+            }
+
+            label:hover,
+            label:hover~label,
+            input:checked~label {
+                color: #ffc107;
             }
         }
 
