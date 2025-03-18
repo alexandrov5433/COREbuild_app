@@ -20,7 +20,7 @@ import ProductsCatalog from './components/product/productsCatalog/ProductsCatalo
 import ShoppingCart from './components/product/shoppingCart/ShoppingCart';
 import ProductDetails from './components/product/productDetails/productDetails';
 
-const PAYPAL_INIT_OPTIONS: ReactPayPalScriptOptions  = {
+const PAYPAL_INIT_OPTIONS: ReactPayPalScriptOptions = {
   clientId: "ATKglcYBI2PZ2DazP0H2hcnyOzjxVk0twgEzIA35pJwjqsjhC-xzwY542wpgc1g0j1agukEIeaWyO1vJ",
   currency: "EUR",
   intent: "capture",
@@ -53,11 +53,25 @@ export default function App() {
             <Route element={<Main />}>
 
               <Route index element={<Home />}></Route>
-              <Route path='login' element={<Login />}></Route>
-              <Route path='register' element={<Register />}></Route>
-              <Route path='profile' element={<Profile />}></Route>
               <Route path='products-catalog' element={<ProductsCatalog />}></Route>
               <Route path='product-details/:productID' element={<ProductDetails />}></Route>
+              {/* guest only */}
+              {
+                !userData.userID ?
+                  <>
+                    <Route path='login' element={<Login />}></Route>
+                    <Route path='register' element={<Register />}></Route>
+                  </>
+                  : ''
+              }
+              {/* user only */}
+              {
+                userData.userID ?
+                  <>
+                    <Route path='profile' element={<Profile />}></Route>
+                  </>
+                  : ''
+              }
               {/* employees only */}
               {
                 userData.is_employee ?
@@ -77,7 +91,6 @@ export default function App() {
                   : ''
               }
 
-
               <Route path='*' element={<Page404 />}></Route>
 
             </Route>
@@ -86,7 +99,7 @@ export default function App() {
 
           <PopupMessage />
 
-          </PayPalScriptProvider>
+        </PayPalScriptProvider>
       </BrowserRouter>
     </>
   )
