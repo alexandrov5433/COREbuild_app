@@ -19,27 +19,22 @@ export default function Login() {
         setPasswordInputType('password');
     }
     const [loginState, loginAction, isLoginPending] = useActionState(login, {
-        success: false,
         msg: '',
-        data: {
-            userID: 0,
-            is_employee: false,
-            username: 'a',
-        },
+        data: null,
         responseStatus: 0,
         inputedUsername: ''
     });
     useEffect(() => {
-        if (!isLoginPending && !loginState.success && loginState.responseStatus === 400) {
+        if (!isLoginPending && loginState.responseStatus === 400) {
             //false login credentials
             setLoginCredentialsAreFalse(true);
         }
     }, [loginState]);
     useEffect(() => {
-        if (!isLoginPending && loginState.success && loginState.responseStatus === 200) {
+        if (!isLoginPending && loginState.responseStatus === 200) {
             //successful login
             setLoginCredentialsAreFalse(false)
-            dispatch(updateUserData(loginState.data));
+            dispatch(updateUserData(loginState.data!));
             navigate('/');
         }
     }, [loginState]);

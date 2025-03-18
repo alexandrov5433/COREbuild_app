@@ -2,16 +2,14 @@ import { UserData, ApiJsonResponce } from "../definitions";
 
 export default async function login(
     previousState: {
-        success: boolean,
         msg: string,
-        data: UserData,
+        data: UserData | null,
         responseStatus: number,
         inputedUsername: string
     },
     formData: FormData
 ) {
     const state = {
-        success: false,
         msg: previousState.msg,
         data: previousState.data,
         responseStatus: previousState.responseStatus,
@@ -32,31 +30,13 @@ export default async function login(
             credentials: "include"
         });
         state.responseStatus = res.status;
-        if (res.status === 200) {
-            state.success = true;
-            const newData = await res.json() as ApiJsonResponce;
-            state.msg = newData.msg;
-            state.data = newData.payload as UserData || {
-                userID: 0,
-                is_employee: false,
-                username: ''
-            };
-        } else {
-            state.msg = (await res.json() as ApiJsonResponce).msg;
-            state.data = {
-                userID: 0,
-                is_employee: false,
-                username: 'a',
-            };
-        }
-        return state;
+        const newData = await res.json() as ApiJsonResponce;
+        state.msg = newData.msg;
+        state.data = newData.payload as UserData || null;
     } catch (e) {
         state.msg = (e as Error).message;
-        state.data = {
-            userID: 0,
-            is_employee: false,
-            username: 'a',
-        };
+        state.data = null;
+    } finally {
         return state;
     }
 }
