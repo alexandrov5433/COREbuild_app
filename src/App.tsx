@@ -32,8 +32,6 @@ export default function App() {
   useEffect(() => {
     async function checkCookieAndData() {
       const userDataAfterValidation = await validateCoookie();
-      console.log('userDataAfterValidation', userDataAfterValidation);
-
       if (userDataAfterValidation?.userID) {
         dispatch(updateUserData(userDataAfterValidation));
       } else {
