@@ -5,7 +5,6 @@ export type UserData = {
     email?: string | null,
     firstname?: string | null,
     lastname?: string | null,
-    prefered_payment_method?: 'paypal' | 'bank' | null,
     address?: string | null,
     favorite_products?: Array<number>,
     shopping_cart: ShoppingCart

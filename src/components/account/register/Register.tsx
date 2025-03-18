@@ -68,11 +68,6 @@ export default function Register() {
             touched: false,
             msg: ''
         },
-        prefered_payment_method: {
-            valid: false,
-            touched: false,
-            msg: ''
-        },
         address: {
             valid: false,
             touched: false,
@@ -155,11 +150,9 @@ export default function Register() {
     }, [validationState]);
 
 
-    function validator(e: React.FormEvent<HTMLInputElement>) {
-        const val = (e.target! as any).value;
-        const fieldName = (e.target! as any).name;
-        console.log(val, fieldName);
-        
+    function validator(e: React.SyntheticEvent<HTMLInputElement>) {
+        const val = (e.target! as HTMLInputElement).value;
+        const fieldName = (e.target! as HTMLInputElement).name;  
         const passwordRefVal = (passwordRef.current! as HTMLFormElement)?.value
         const regexpLib = {
             'username': new RegExp(/^[A-Za-z0-9@_+?!-]{1,30}$/),
@@ -168,7 +161,6 @@ export default function Register() {
             'email': new RegExp(/^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*$/),
             'firstname': new RegExp(/^[A-Za-z]{1,50}$/),
             'lastname': new RegExp(/^[A-Za-z]{1,50}$/),
-            'prefered_payment_method': new RegExp(/^paypal|bank$/),
             'address': new RegExp(/^[A-Za-z0-9\., -]+$/),
             'authentication_code': new RegExp(/^.+$/),
         }
@@ -242,7 +234,7 @@ export default function Register() {
                                 <label htmlFor="email" className="form-label">Email <i>*</i></label>
                                 <input type="text" className={`form-control ${validationState.email.touched ? (validationState.email.valid ? 'is-valid' : 'is-invalid') : ''
                                     }`} id="email" name="email" aria-describedby="emialHelp" defaultValue={registerState.inputValues.email || ''} onInput={e => validator(e)} />
-                                <div id="emialHelp" className="form-text">Please enter your email address.</div>
+                                <div id="emialHelp" className="form-text">Please enter your email address. Eg. example123!?_-@so23me.com.gov</div>
                                 <div className="invalid-feedback">
                                     {(registerState.validationErrorsData as RegistrationValidationError)?.email?.msg || ''}
                                 </div>
@@ -265,21 +257,7 @@ export default function Register() {
                                     {(registerState.validationErrorsData as RegistrationValidationError)?.lastname?.msg || ''}
                                 </div>
                             </div>
-                            <div className={styles.inputContainer}>
-                                <label className="form-label">Prefered Payment Method <i>*</i></label>
-                                <div className={`${styles.paymentMethods} ${validationState.prefered_payment_method.valid ? '' : 'is-invalid'
-                                    }`}>
-                                    <input type="radio" className="btn-check" name="prefered_payment_method" id="paypal" value="paypal" defaultChecked={registerState.inputValues.prefered_payment_method === 'paypal' ? true : false} onInput={e => validator(e)}/>
-                                    <label className="btn btn-outline-success" htmlFor="paypal">PayPal</label>
-
-                                    <input type="radio" className="btn-check" name="prefered_payment_method" id="bank" value="bank" defaultChecked={registerState.inputValues.prefered_payment_method === 'bank' ? true : false} onInput={e => validator(e)}/>
-                                    <label className="btn btn-outline-success" htmlFor="bank">Bank</label>
-                                </div>
-                                <div id="paymentHelp" className="form-text">Please select your prefered payment method.</div>
-                                <div className="invalid-feedback">
-                                    {(registerState.validationErrorsData as RegistrationValidationError)?.prefered_payment_method?.msg || ''}
-                                </div>
-                            </div>
+                         
                             <div className={styles.inputContainer}>
                                 <label htmlFor="address" className="form-label">Address <i>*</i></label>
                                 <input type="text" className={`form-control ${validationState.address.touched ? (validationState.address.valid ? 'is-valid' : 'is-invalid') : ''
@@ -309,3 +287,21 @@ export default function Register() {
         </div>
     );
 }
+
+
+
+{/* <div className={styles.inputContainer}>
+<label className="form-label">Prefered Payment Method <i>*</i></label>
+<div className={`${styles.paymentMethods} ${validationState.prefered_payment_method.valid ? '' : 'is-invalid'
+    }`}>
+    <input type="radio" className="btn-check" name="prefered_payment_method" id="paypal" value="paypal" defaultChecked={registerState.inputValues.prefered_payment_method === 'paypal' ? true : false} onInput={e => validator(e)}/>
+    <label className="btn btn-outline-success" htmlFor="paypal">PayPal</label>
+
+    <input type="radio" className="btn-check" name="prefered_payment_method" id="bank" value="bank" defaultChecked={registerState.inputValues.prefered_payment_method === 'bank' ? true : false} onInput={e => validator(e)}/>
+    <label className="btn btn-outline-success" htmlFor="bank">Bank</label>
+</div>
+<div id="paymentHelp" className="form-text">Please select your prefered payment method.</div>
+<div className="invalid-feedback">
+    {(registerState.validationErrorsData as RegistrationValidationError)?.prefered_payment_method?.msg || ''}
+</div>
+</div> */}
