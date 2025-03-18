@@ -3,7 +3,7 @@ import { ApiJsonResponce, RegistrationValidationError, UserData } from "../defin
 export default async function register(
     previousState: {
         msg: string,
-        userData: UserData,
+        userData: UserData | null,
         validationErrorsData: RegistrationValidationError,
         responseStatus: number,
         inputValues: any
@@ -12,14 +12,16 @@ export default async function register(
 ) {
     const state = {
         msg: '',
-        userData: {
-            userID: 0,
-            is_employee: false,
-            username: ''
-        } as UserData,
+        userData: null ,
         validationErrorsData: {} as RegistrationValidationError,
         responseStatus: 0,
         inputValues: previousState.inputValues
+    } as {
+        msg: string,
+        userData: UserData | null,
+        validationErrorsData: RegistrationValidationError,
+        responseStatus: number,
+        inputValues: any
     }
     try {
         state.inputValues = Object.fromEntries(formData.entries());
@@ -35,22 +37,14 @@ export default async function register(
         const jsonResponse = await res.json() as ApiJsonResponce;
         state.msg = jsonResponse.msg;
         if (res.status === 200) {
-            state.userData = jsonResponse.payload as UserData || {
-                userID: 0,
-                is_employee: false,
-                username: ''
-            };
+            state.userData = jsonResponse.payload as UserData || null;
         } else if (res.status === 400) {
             state.validationErrorsData = jsonResponse.payload as RegistrationValidationError || {};
         }
         return state;
     } catch (e) {
         state.msg = (e as Error).message;
-        state.userData = {
-            userID: 0,
-            is_employee: false,
-            username: ''
-        };
+        state.userData = null;
         return state;
     }
 }

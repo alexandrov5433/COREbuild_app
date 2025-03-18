@@ -99,11 +99,7 @@ export default function Register() {
     }
     const [registerState, registerAction, isRegistrationPending] = useActionState(register, {
         msg: '',
-        userData: {
-            userID: 0,
-            is_employee: false,
-            username: 'a',
-        } as UserData,
+        userData: null,
         validationErrorsData: {} as RegistrationValidationError,
         responseStatus: 0,
         inputValues: {}
