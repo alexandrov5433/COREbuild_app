@@ -1,6 +1,5 @@
 import { ApiJsonResponce, UserData } from "../definitions";
 
-
 export default async function validateCoookie() {
     try {
         const res = await fetch('/api/validate-cookie', {
