@@ -68,7 +68,7 @@ export default function ProductCard(productData: ProductData) {
                     <div className={styles.overlay}>
                         <NavLink className={`btn btn-primary ${styles.button}`} to={`/product-details/${productData.productID}`}>View Details</NavLink>
                         {
-                            productData.stockCount > 0 && !userData.is_employee ?
+                            userData.userID && productData.stockCount > 0 && !userData.is_employee ?
                                 <button className={`btn btn-warning ${styles.button}`} disabled={additionTrigger} onClick={() => setAdditionTrigger(true)}>Add To Cart</button>
                                 : ''
                         }
