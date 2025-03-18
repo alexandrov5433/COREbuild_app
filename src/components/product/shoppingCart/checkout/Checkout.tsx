@@ -5,6 +5,7 @@ import placeNewOrder from "../../../../lib/actions/placeNewOrder";
 import { setMessageData } from "../../../../redux/popupMessageSlice";
 import collectPayment from "../../../../lib/actions/collectPayment";
 import { updateCart } from "../../../../redux/cartSlice";
+import cancelOrder from "../../../../lib/actions/cancelOrder";
 
 export default function Checkout({ cart }: { cart: ShoppingCart }) {
     const appDispatch = useAppDispatch();
@@ -37,7 +38,6 @@ export default function Checkout({ cart }: { cart: ShoppingCart }) {
                 text: `Order placed! ID: ${collectPaymentResponse.data?.paypal_order_id}`,
                 type: 'success'
             }));
-
         } else if ([400, 500].includes(collectPaymentResponse.status)) {
             appDispatch(setMessageData({
                 duration: 6000,
@@ -48,6 +48,21 @@ export default function Checkout({ cart }: { cart: ShoppingCart }) {
             throw new Error(collectPaymentResponse.msg);
         }
     };
+
+    async function onCancel(data: any) {
+        console.log('onApprove data.orderID', data.orderID);
+        const cancelationResult = await cancelOrder(data.orderID as string);
+        if (cancelationResult.status === 200) {
+            console.log('cancelationResult.msg', cancelationResult.msg);
+            appDispatch(setMessageData({
+                duration: 3000,
+                isShown: true,
+                text: `Order canceled! ID: ${data.orderID}`,
+                type: 'success'
+            }));
+        } 
+    }
+
     return (
         <PayPalButtons
             style={{
@@ -55,6 +70,7 @@ export default function Checkout({ cart }: { cart: ShoppingCart }) {
             }}
             createOrder={onCreateOrder}
             onApprove={onApprove}
+            onCancel={onCancel}
         />
     );
 }
