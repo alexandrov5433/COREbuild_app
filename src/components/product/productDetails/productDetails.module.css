@@ -56,8 +56,14 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
+        cursor: pointer;
+
         svg {
             color: #ffc107;
+        }
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.1);
         }
     }
 
@@ -162,14 +168,241 @@
             border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 6px;
         }
+
+        .userReviewsContainer {
+            .singleReview {
+                margin-top: 2rem;
+            }
+
+            .reviewUsername,
+            .reviewComment {
+                font-size: 2rem;
+                margin: 0;
+            }
+
+            .reviewUsername {
+                color: white;
+                word-wrap: break-word;
+            }
+
+            .reviewRatingAndDateContainer {
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .reviewRating {
+                font-size: 1.6rem;
+                margin: 0;
+
+                svg {
+                    color: #ffc107;
+                }
+            }
+
+            .reviewDate {
+                font-size: 1.6rem;
+            }
+
+            .reviewPurchaseVerified {
+                font-size: 1.6rem;
+                color: var(--green);
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                margin: 0;
+            }
+
+            .reviewComment {
+                margin-top: 1rem;
+            }
+
+            hr {
+                margin: 0;
+            }
+
+            .reviewsPagination {
+                margin-top: 2rem;
+                justify-content: center;
+
+                li,
+                span {
+                    font-size: 3rem;
+                }
+
+                span {
+                    padding: 0 1rem;
+                }
+            }
+        }
+
+        .noReviewsStatement {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 3rem;
+            padding: 2rem;
+
+            p {
+                font-size: 2rem;
+                text-align: center;
+            }
+
+            svg {
+                font-size: 5rem;
+            }
+        }
     }
+}
+
+.loaderContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 0;
 }
 
 @media (min-width: 600px) {
-    .imagesCarousel {
-        width: 40%;
-
+    .carouselContainer {
+        height: 40rem;
+        width: 100%;
+        overflow: hidden;
     }
 }
 
-@media (min-width: 1025px) {}
+@media (min-width: 1025px) {
+    .middleWrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+    .carouselContainer {
+        height: 30rem;
+        width: 50%;
+        overflow: hidden;
+    }
+
+    .carouselContainer,
+    .purchasing,
+    .smallInfos {
+        display: inline-block;
+        font-size: 1rem;
+    }
+
+    .specsDoc,
+    .descriptionAndComments {
+        font-size: 1rem;
+    }
+
+    .purchasing {  
+        .price {
+            font-size: 2rem;
+            line-height: 1;
+        }
+    
+        .raiting {
+            font-size: 1rem;
+        }
+
+        label {
+            input {
+                text-align: center;
+                width: 40%;
+                appearance: none;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+            }
+        }
+    
+        .addToCartButton {
+            font-size: 1rem;
+            display: block;
+        }
+    }
+
+    .smallInfos {
+        font-size: 1rem;
+        h3 {
+            font-size: 1.4rem;
+        }
+    }
+
+    .descriptionAndComments {
+        font-size: 1rem;
+    
+        .commentsContainer {
+            .ratingButtons {
+                justify-content: flex-end;
+                gap: 1rem;
+            }
+    
+            textarea {
+                height: 10rem;
+            }
+    
+            .userReviewsContainer {
+                .reviewUsername,
+                .reviewComment {
+                    font-size: 1rem;
+                }
+    
+                .reviewUsername {
+                    font-size: 1.4rem;
+                }
+    
+                .reviewRating {
+                    font-size: 1rem;
+                }
+    
+                .reviewDate {
+                    font-size: 1rem;
+                    margin: 0;
+                }
+    
+                .reviewPurchaseVerified {
+                    font-size: 1rem;
+                    gap: 0.6rem;
+                    margin: 0;
+                }
+    
+                .reviewComment {
+                    margin-top: 0.4rem;
+                }
+    
+                .reviewsPagination {
+                    margin-top: 2rem;
+                    justify-content: center;
+    
+                    li,
+                    span {
+                        font-size: 1rem;
+                    }
+    
+                    span {
+                        padding: 0 0.4rem;
+                    }
+                }
+            }
+    
+            .noReviewsStatement {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                gap: 1rem;
+                margin-top: 3rem;
+                padding: 2rem;
+    
+                p {
+                    font-size: 2rem;
+                    text-align: center;
+                }
+    
+                svg {
+                    font-size: 5rem;
+                }
+            }
+        }
+    }
+}
