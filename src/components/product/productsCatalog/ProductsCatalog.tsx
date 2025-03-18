@@ -62,7 +62,6 @@ export default function ProductsCatalog() {
     }
 
     function changeItemsPerPage(e: React.ChangeEvent<HTMLSelectElement>) {
-        console.log(e.target.value);
         const itemsPerPageToSet = {
             '4':4,
             '8':8,
