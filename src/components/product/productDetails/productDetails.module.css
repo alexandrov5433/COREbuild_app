@@ -103,7 +103,8 @@
             text-transform: uppercase;
         }
     }
-
+    
+    .idOfProduct,
     .manufacturer {
         p {
             font-size: inherit;
@@ -263,6 +264,29 @@
     padding: 4rem 0;
 }
 
+.productNotFound {
+    margin-top: 2rem;
+    .triangleContainer {
+        color: #ffc107;
+        font-size: 4rem;
+        display: flex;
+        justify-content: center;
+    }
+    p {
+        font-size: 2rem;
+    }
+    a {
+        font-size: 2rem;
+        svg {
+            color: var(--green);
+            margin-right: 1rem;
+        }     
+        &:hover {
+            color: var(--green);
+        }
+    }
+}
+
 @media (min-width: 600px) {
     .carouselContainer {
         height: 40rem;
@@ -403,6 +427,19 @@
                     font-size: 5rem;
                 }
             }
+        }
+    }
+
+    .productNotFound {
+        .triangleContainer {
+            font-size: 3rem;
+            justify-content: flex-start;
+        }
+        p {
+            font-size: 1.4rem;
+        }
+        a {
+            font-size: 1.4rem;
         }
     }
 }

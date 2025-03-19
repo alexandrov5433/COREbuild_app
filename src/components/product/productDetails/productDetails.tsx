@@ -1,9 +1,9 @@
 import styles from './productDetails.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleCheck, faCircleXmark, faEuroSign, faStar as faStarFull, faStarHalfStroke, faCheck, faComments } from '@fortawesome/free-solid-svg-icons';
+import { faCircleCheck, faCircleXmark, faEuroSign, faStar as faStarFull, faStarHalfStroke, faCheck, faComments, faTriangleExclamation, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { faStar as faStarHollow } from '@fortawesome/free-regular-svg-icons';
 import { ChangeEvent, SyntheticEvent, useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router';
+import { NavLink, useParams } from 'react-router';
 import { GetRatingAndReviewCountForProductActionData, ProductData, ReviewData, ShoppingCart } from '../../../lib/definitions';
 import productDetails from '../../../lib/actions/productDetails';
 import { useAppDispatch } from '../../../lib/hooks/reduxTypedHooks';
@@ -32,14 +32,13 @@ export default function ProductDetails() {
 
   const [hasCustomerReviewedProduct, setHasCustomerReviewedProduct] = useState(false);
 
-  const [displayProductNotFound, setDisplayProductNotFound] = useState(false);
+  // const [displayProductNotFound, setDisplayProductNotFound] = useState(false);
   const [displayDescriptionOrComments, setDisplayDescriptionOrComments] = useState('description'); // 'description' || 'comments'
   const [addToCartCount, setAddToCartCount] = useState(1);
   const [isProductAdditionProcessing, setIsProductAdditionProcessing] = useState(false);
 
   useEffect(() => {
     if (!productID) {
-      // TODO show product not found page
       dispatch(setMessageData({
         duration: 4500,
         isShown: true,
@@ -49,6 +48,7 @@ export default function ProductDetails() {
       return;
     }
     (async () => {
+
       const results = await Promise.all([
         productDetails(productID),
         getCustomerReviewedProduct(productID),
@@ -57,17 +57,10 @@ export default function ProductDetails() {
       const productDetailsAR = results[0];
       const getCustomerReviewedProductAR = results[1];
       const getRatingAndReviewCountForProductAR = results[2];
+      console.log(productDetailsAR);
       if (productDetailsAR.responseStatus === 200) {
         setProductData(productDetailsAR.data!);
 
-      } else if (productDetailsAR.responseStatus === 204) {
-        // product not found
-        dispatch(setMessageData({
-          duration: 4500,
-          isShown: true,
-          text: productDetailsAR.msg,
-          type: 'error'
-        }));
       } else if ([400, 500].includes(productDetailsAR.responseStatus)) {
         // error
         dispatch(setMessageData({
@@ -224,8 +217,27 @@ export default function ProductDetails() {
       <h1>Product Details</h1>
       {
         Object.keys(productData).length <= 0 ?
-          <div>
-            Product not found.
+          <div className={styles.productNotFound}>
+            <div className={styles.triangleContainer}>
+              <FontAwesomeIcon icon={faTriangleExclamation} />
+            </div>
+            {
+              !productID ?
+                <p className='lead'>The product ID is required in order to find it. Please, check the URL.</p>
+                :
+                <p className='lead'>Sadly, the product with ID: {productID} you are looking for could not be found.</p>
+            }
+            <p className='lead'>Please, take a look at our products catalog or contact us.</p>
+            <div>
+              <NavLink to='/products-catalog'>
+                <FontAwesomeIcon icon={faArrowRight} />Products
+              </NavLink>
+            </div>
+            <div>
+              <NavLink to='/'>
+                <FontAwesomeIcon icon={faArrowRight} />Home
+              </NavLink>
+            </div>
           </div>
           :
           <div className={styles.contentContainer}>
@@ -286,6 +298,10 @@ export default function ProductDetails() {
 
               </div>
               <div className={styles.smallInfos}>
+                <div className={styles.idOfProduct}>
+                  <h3>ID</h3>
+                  <p>{productData.productID}</p>
+                </div>
                 <div className={styles.category}>
                   <h3>Category</h3>
                   <p>{productData.category}</p>
