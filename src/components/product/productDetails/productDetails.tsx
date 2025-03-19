@@ -4,7 +4,7 @@ import { faCircleCheck, faCircleXmark, faEuroSign, faStar as faStarFull, faStarH
 import { faStar as faStarHollow } from '@fortawesome/free-regular-svg-icons';
 import { ChangeEvent, SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router';
-import { GetRatingAndReviewCountForProductActionData, ProductData, ReviewData } from '../../../lib/definitions';
+import { GetRatingAndReviewCountForProductActionData, ProductData, ReviewData, ShoppingCart } from '../../../lib/definitions';
 import productDetails from '../../../lib/actions/productDetails';
 import { useAppDispatch } from '../../../lib/hooks/reduxTypedHooks';
 import { setMessageData } from '../../../redux/popupMessageSlice';
@@ -14,6 +14,8 @@ import getRatingAndReviewCountForProduct from '../../../lib/actions/getRatingAnd
 import getReviewsForProduct from '../../../lib/actions/getReviewsForProduct';
 import addNewReview from '../../../lib/actions/addNewReview';
 import { convertTimeToDate } from '../../../lib/util/time';
+import { updateCart } from '../../../redux/cartSlice';
+import addProductToCart from '../../../lib/actions/addProductToCart';
 
 export default function ProductDetails() {
   const { productID } = useParams();
@@ -33,6 +35,7 @@ export default function ProductDetails() {
   const [displayProductNotFound, setDisplayProductNotFound] = useState(false);
   const [displayDescriptionOrComments, setDisplayDescriptionOrComments] = useState('description'); // 'description' || 'comments'
   const [addToCartCount, setAddToCartCount] = useState(1);
+  const [isProductAdditionProcessing, setIsProductAdditionProcessing] = useState(false);
 
   useEffect(() => {
     if (!productID) {
@@ -187,7 +190,33 @@ export default function ProductDetails() {
     toggleDescriptionAndComments('comments');
     (reviewsRef.current! as HTMLDivElement).scrollIntoView({
       behavior: 'smooth'
-  });
+    });
+  }
+
+  async function addToCart() {
+    if (!Number(productID) || isProductAdditionProcessing) {
+      return;
+    }
+    setIsProductAdditionProcessing(true);
+    const addition = await addProductToCart(Number(productID), addToCartCount);
+    if (addition.responseStatus === 200) {
+      console.log(addition.data);
+      dispatch(updateCart(addition.data as ShoppingCart))
+      dispatch(setMessageData({
+        duration: 4000,
+        isShown: true,
+        text: 'Product added to cart!',
+        type: 'success'
+      }));
+    } else if ([400, 500].includes(addition.responseStatus)) {
+      dispatch(setMessageData({
+        duration: 5000,
+        isShown: true,
+        text: addition.msg,
+        type: 'error'
+      }));
+    }
+    setIsProductAdditionProcessing(false);
   }
 
   return (
@@ -251,7 +280,7 @@ export default function ProductDetails() {
                     <>
                       <label htmlFor="addToCartCount">Quantity: <input id="addToCartCount" type="number" step={1} defaultValue={addToCartCount} min={1} max={productData.stockCount} onChange={manageAddToCartValChange} /></label>
 
-                      <button className={`btn btn-success ${styles.addToCartButton}`}>Add {addToCartCount} to cart</button>
+                      <button className={`btn btn-success ${styles.addToCartButton}`} disabled={isProductAdditionProcessing} onClick={addToCart}>Add {addToCartCount} to cart</button>
                     </>
                 }
 
@@ -340,11 +369,11 @@ export default function ProductDetails() {
 
                             {
                               isProductReviewsloading ?
-                              <div className={`${styles.loaderContainer}`}>
-                                <div className={`spinner-border text-success`} role="status">
-                                  <span className="visually-hidden">Loading...</span>
+                                <div className={`${styles.loaderContainer}`}>
+                                  <div className={`spinner-border text-success`} role="status">
+                                    <span className="visually-hidden">Loading...</span>
+                                  </div>
                                 </div>
-                              </div>
                                 :
                                 productReviews.map(rev => <div key={rev.reviewID} className={styles.singleReview}>
                                   <p className={styles.reviewUsername}>{rev.username || ''}</p>
