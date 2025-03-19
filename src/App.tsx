@@ -52,7 +52,7 @@ export default function App() {
 
               <Route index element={<Home />}></Route>
               <Route path='products-catalog' element={<ProductsCatalog />}></Route>
-              <Route path='product-details/:productID' element={<ProductDetails />}></Route>
+              <Route path='product-details/:productID?' element={<ProductDetails />}></Route>
               {/* guest only */}
               {
                 !userData.userID ?
