@@ -19,6 +19,7 @@ import PopupMessage from './components/general/popupMessage/PopupMessage';
 import ProductsCatalog from './components/product/productsCatalog/ProductsCatalog';
 import ShoppingCart from './components/product/shoppingCart/ShoppingCart';
 import ProductDetails from './components/product/productDetails/productDetails';
+import EditProduct from './components/product/editProduct/EditProduct';
 
 const PAYPAL_INIT_OPTIONS: ReactPayPalScriptOptions = {
   clientId: "ATKglcYBI2PZ2DazP0H2hcnyOzjxVk0twgEzIA35pJwjqsjhC-xzwY542wpgc1g0j1agukEIeaWyO1vJ",
@@ -75,7 +76,7 @@ export default function App() {
                 userData.is_employee ?
                   <>
                     <Route path='add-product' element={<AddProduct />}></Route>
-
+                    <Route path='edit-product/:productID?' element={<EditProduct />}></Route>
                   </>
                   : ''
               }

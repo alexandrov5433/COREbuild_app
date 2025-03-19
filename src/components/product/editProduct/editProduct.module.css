@@ -1,0 +1,177 @@
+@import url(../../../lib/styling/generalWrapper.module.css);
+
+.loaderContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 6rem 0;
+}
+
+.editingContainer {
+    h4 {
+        font-size: 2.4rem;
+    }
+    button, input, textarea, p, label, a {
+        font-size: 2rem;
+    }
+    p {
+        margin: 0;
+    }
+}
+
+.fileEditor {
+    margin-bottom: 1rem;
+
+    input[type="file"] {
+        color: var(--green);
+    }
+
+    section {
+        &:not(:last-child) {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        padding: 1rem 0;
+
+    }
+
+    .uploadControls {
+        margin-top: 1rem;
+        button {
+            margin-top: 1rem;
+        }
+    }
+
+    .thumbnailSection {   
+        img {
+            height: auto;
+            width: 100%;
+        }
+    }
+
+    .picturesSection {
+
+        .allPicturesContainer {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .pictureContainer {
+            position: relative;
+            img {
+                height: auto;
+                width: 100%;
+            }
+
+            button {
+                max-width: fit-content;
+                position: absolute;
+                top: 2%;
+                left: 2%;
+            }
+        }
+
+        
+    }
+
+    .specsDocSection {
+        .specsDocDownloadAndDelete {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            a {
+                color: var(--green);
+                text-decoration: underline;
+                &:hover {
+                    opacity: 0.5;
+                }
+            }
+        }
+        .specsDocDownloadAndDelete {
+            margin-top: 1rem;
+        }
+    }
+}
+
+.dataEditor {
+
+    textarea {
+        height: 25rem;
+    }
+
+    .buttonsDataEditor {
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+    }
+}
+
+@media (min-width: 600px) {
+    .fileEditor {
+        .thumbnailSection {   
+            img {
+                width: 50%;
+            }
+        }
+    
+        .picturesSection {
+            .pictureContainer {
+                width: 40%;
+                button {
+                    top: 4%;
+                    left: 4%;
+                }
+            }   
+        }
+    }
+
+    .dataEditor {
+        textarea {
+            height: 18rem;
+        }
+    }
+}
+
+@media (min-width: 1025px) {
+    .editingContainer {
+        h4 {
+            font-size: 2.4rem;
+        }
+    
+        button, input, textarea, p, label, a {
+            font-size: 1rem;
+        }
+    }
+    
+    .fileEditor, .dataEditor {
+        border: 1px solid rgba(39, 174, 96, 0.6);
+        border-radius: 6px;
+        padding: 1rem;
+    }
+
+    .fileEditor {
+        .thumbnailSection {   
+            img {
+                width: 30%;
+            }
+        }
+    
+        .picturesSection {
+            .pictureContainer {
+                width: 20%;
+                button {
+                    top: 4%;
+                    left: 4%;
+                }
+            }   
+        }
+    }
+
+    .dataEditor {
+        textarea {
+            height: 10rem;
+        }
+    }
+}
