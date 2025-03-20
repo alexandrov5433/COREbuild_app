@@ -5,10 +5,10 @@ export const cartSlice = createSlice({
     name: 'cart',
     initialState: {} as ShoppingCart,
     reducers: {
-        updateCart: (state, action: {payload: ShoppingCart, type: string}) => {
+        updateCart: (_state, action: {payload: ShoppingCart, type: string}) => {
             return action.payload;
         },
-        emptyCart: (state) => {
+        emptyCart: (_state) => {
             return {};
         }
     }

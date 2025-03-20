@@ -26,7 +26,7 @@ export default function Checkout({ cart }: { cart: ShoppingCart }) {
         }
     };
 
-    async function onApprove(data: any, actions: any) {
+    async function onApprove(data: any, _actions: any) {
         console.log('onApprove data', data);
         const collectPaymentResponse = await collectPayment(data.orderID);
         if (collectPaymentResponse.status === 200) {
