@@ -2,7 +2,7 @@ import styles from './shoppingCart.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEuroSign } from '@fortawesome/free-solid-svg-icons';
 import emptyCartImage from '../../../assets/emptyCart.svg';
-import { useAppDispatch, useAppSelector } from '../../../lib/hooks/reduxTypedHooks';
+import { useAppSelector } from '../../../lib/hooks/reduxTypedHooks';
 import ShoppingCartProductCard from './shoppingCartProductCard/ShoppingCartProductCard';
 import { useEffect, useRef, useState } from 'react';
 import { convertCentToWhole } from '../../../lib/util/currency';
