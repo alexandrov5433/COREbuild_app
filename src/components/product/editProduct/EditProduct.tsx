@@ -49,7 +49,7 @@ export default function EditProduct() {
   };
   const [infoFormState, setInfoFormState] = useState(initialInfoFormState)
 
-  const [isBlockFileUploadButtons, setBlockFileUploadButtons] = useState(false);
+  const [isBlockFileUploadButtons, _setBlockFileUploadButtons] = useState(false);
   const thumbnailInputRef = useRef(null);
   const pictureInputRef = useRef(null);
   const specsDocInputRef = useRef(null);
