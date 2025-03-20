@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck, faCircleXmark, faEuroSign, faStar as faStarFull, faStarHalfStroke, faCheck, faComments, faTriangleExclamation, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { faStar as faStarHollow } from '@fortawesome/free-regular-svg-icons';
 import { ChangeEvent, SyntheticEvent, useEffect, useRef, useState } from 'react';
-import { NavLink, useParams } from 'react-router';
+import { NavLink, useNavigate, useParams } from 'react-router';
 import { GetRatingAndReviewCountForProductActionData, ProductData, ReviewData, ShoppingCart } from '../../../lib/definitions';
 import productDetails from '../../../lib/actions/productDetails';
 import { useAppDispatch, useAppSelector } from '../../../lib/hooks/reduxTypedHooks';
@@ -20,6 +20,7 @@ import addProductToCart from '../../../lib/actions/addProductToCart';
 export default function ProductDetails() {
   const { productID } = useParams();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const userData = useAppSelector(state => state.user);
   const commentFormRef = useRef(null);
   const reviewsRef = useRef(null);
@@ -290,11 +291,14 @@ export default function ProductDetails() {
 
                 {
                   productData.stockCount <= 0 ? '' :
-                    <>
-                      <label htmlFor="addToCartCount">Quantity: <input id="addToCartCount" type="number" step={1} defaultValue={addToCartCount} min={1} max={productData.stockCount} onChange={manageAddToCartValChange} /></label>
+                    !userData?.userID ?
+                      <button className={`btn btn-success ${styles.addToCartButton}`} onClick={() => navigate('/login')}>Login To Purchase</button> :
+                      userData?.is_employee ? '' :
+                        <>
+                          <label htmlFor="addToCartCount">Quantity: <input id="addToCartCount" type="number" step={1} defaultValue={addToCartCount} min={1} max={productData.stockCount} onChange={manageAddToCartValChange} /></label>
 
-                      <button className={`btn btn-success ${styles.addToCartButton}`} disabled={isProductAdditionProcessing} onClick={addToCart}>Add {addToCartCount} to cart</button>
-                    </>
+                          <button className={`btn btn-success ${styles.addToCartButton}`} disabled={isProductAdditionProcessing} onClick={addToCart}>Add {addToCartCount} to cart</button>
+                        </>
                 }
 
               </div>
