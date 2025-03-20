@@ -146,6 +146,17 @@
     .commentsContainer {
         margin-top: 1rem;
 
+        .loginRegToReview {
+            font-size: 2rem;
+            a {
+                text-decoration: underline;
+                color: var(--green);
+                &:hover {
+                    opacity: 0.5;
+                }
+            }
+        }
+
         .ratingButtons {
             display: flex;
             justify-content: space-between;
@@ -354,8 +365,11 @@
 
     .descriptionAndComments {
         font-size: 1rem;
-    
+
         .commentsContainer {
+            .loginRegToReview {
+                font-size: 1rem;
+            }
             .ratingButtons {
                 justify-content: flex-end;
                 gap: 1rem;

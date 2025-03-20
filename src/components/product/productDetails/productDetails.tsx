@@ -6,7 +6,7 @@ import { ChangeEvent, SyntheticEvent, useEffect, useRef, useState } from 'react'
 import { NavLink, useParams } from 'react-router';
 import { GetRatingAndReviewCountForProductActionData, ProductData, ReviewData, ShoppingCart } from '../../../lib/definitions';
 import productDetails from '../../../lib/actions/productDetails';
-import { useAppDispatch } from '../../../lib/hooks/reduxTypedHooks';
+import { useAppDispatch, useAppSelector } from '../../../lib/hooks/reduxTypedHooks';
 import { setMessageData } from '../../../redux/popupMessageSlice';
 import { convertCentToWhole } from '../../../lib/util/currency';
 import getCustomerReviewedProduct from '../../../lib/actions/getCustomerReviewedProduct';
@@ -20,6 +20,7 @@ import addProductToCart from '../../../lib/actions/addProductToCart';
 export default function ProductDetails() {
   const { productID } = useParams();
   const dispatch = useAppDispatch();
+  const userData = useAppSelector(state => state.user);
   const commentFormRef = useRef(null);
   const reviewsRef = useRef(null);
   const [productData, setProductData] = useState({} as ProductData);
@@ -335,47 +336,50 @@ export default function ProductDetails() {
 
 
                       {
-                        hasCustomerReviewedProduct ? '' :
-                          <form ref={commentFormRef} onSubmit={submitReview}>
-                            <div className="mb-3">
-                              <label>
-                                Rate this product
-                              </label>
-                              <div className={styles.ratingButtons}>
-                                <input type="radio" className="btn-check" name="rating" id="rating5" value="5" />
-                                <label htmlFor="rating5">
-                                  <FontAwesomeIcon icon={faStarFull} />
-                                </label>
+                        !userData?.userID ?
+                          <p className={`lead ${styles.loginRegToReview}`}>Please, <NavLink to={'/login'}>login</NavLink> or <NavLink to={'/register'}>register</NavLink> to leave a review.</p>
+                          : userData?.is_employee ? '' :
+                            hasCustomerReviewedProduct ? '' :
+                              <form ref={commentFormRef} onSubmit={submitReview}>
+                                <div className="mb-3">
+                                  <label>
+                                    Rate this product
+                                  </label>
+                                  <div className={styles.ratingButtons}>
+                                    <input type="radio" className="btn-check" name="rating" id="rating5" value="5" />
+                                    <label htmlFor="rating5">
+                                      <FontAwesomeIcon icon={faStarFull} />
+                                    </label>
 
-                                <input type="radio" className="btn-check" name="rating" id="rating4" value="4" />
-                                <label htmlFor="rating4">
-                                  <FontAwesomeIcon icon={faStarFull} />
-                                </label>
+                                    <input type="radio" className="btn-check" name="rating" id="rating4" value="4" />
+                                    <label htmlFor="rating4">
+                                      <FontAwesomeIcon icon={faStarFull} />
+                                    </label>
 
-                                <input type="radio" className="btn-check" name="rating" id="rating3" value="3" />
-                                <label htmlFor="rating3">
-                                  <FontAwesomeIcon icon={faStarFull} />
-                                </label>
+                                    <input type="radio" className="btn-check" name="rating" id="rating3" value="3" />
+                                    <label htmlFor="rating3">
+                                      <FontAwesomeIcon icon={faStarFull} />
+                                    </label>
 
-                                <input type="radio" className="btn-check" name="rating" id="rating2" value="2" />
-                                <label htmlFor="rating2">
-                                  <FontAwesomeIcon icon={faStarFull} />
-                                </label>
-                                <input type="radio" className="btn-check" name="rating" id="rating1" value="1" />
-                                <label htmlFor="rating1">
-                                  <FontAwesomeIcon icon={faStarFull} />
-                                </label>
-                              </div>
+                                    <input type="radio" className="btn-check" name="rating" id="rating2" value="2" />
+                                    <label htmlFor="rating2">
+                                      <FontAwesomeIcon icon={faStarFull} />
+                                    </label>
+                                    <input type="radio" className="btn-check" name="rating" id="rating1" value="1" />
+                                    <label htmlFor="rating1">
+                                      <FontAwesomeIcon icon={faStarFull} />
+                                    </label>
+                                  </div>
 
-                            </div>
-                            <div className="mb-3">
-                              <label htmlFor="form-comment">
-                                Optional comment
-                              </label>
-                              <textarea name="comment" id="form-comment" placeholder="Your comment here..."></textarea>
-                            </div>
-                            <button className={`btn btn-primary ${styles.submitButton}`}>Submit</button>
-                          </form>
+                                </div>
+                                <div className="mb-3">
+                                  <label htmlFor="form-comment">
+                                    Optional comment
+                                  </label>
+                                  <textarea name="comment" id="form-comment" placeholder="Your comment here..."></textarea>
+                                </div>
+                                <button className={`btn btn-primary ${styles.submitButton}`}>Submit</button>
+                              </form>
                       }
 
 
