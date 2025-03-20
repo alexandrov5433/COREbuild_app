@@ -75,7 +75,7 @@ export default function ShoppingCart() {
                         <div className={`container-fluid ${styles.innerContainer}`}>
                             <p className="">Total: {convertCentToWhole(totalPrice)} <FontAwesomeIcon icon={faEuroSign} /></p>
                             <p className="lead">With tax and free shipping.</p>
-                            <button className="btn btn-success" onClick={() => {
+                            <button className={`btn btn-success ${styles.buttonGreenGlow}`} onClick={() => {
                                 (paypayCheckoutRef.current! as HTMLDivElement).scrollIntoView({
                                     behavior: 'smooth'
                                 });

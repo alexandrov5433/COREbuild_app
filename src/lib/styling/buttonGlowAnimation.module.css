@@ -1,0 +1,74 @@
+.buttonGreenGlow {
+    -webkit-animation: glowing 2500ms infinite;
+    -moz-animation: glowing 2500ms infinite;
+    -o-animation: glowing 2500ms infinite;
+    animation: glowing 2500ms infinite;
+}
+
+@-webkit-keyframes glowing {
+    0% {
+        background-color: var(--green);
+        -webkit-box-shadow: 0 0 3px var(--green);
+    }
+
+    50% {
+        background-color: #46ae27;
+        -webkit-box-shadow: 0 0 20px #46ae27;
+    }
+
+    100% {
+        background-color: var(--green);
+        -webkit-box-shadow: 0 0 3px var(--green);
+    }
+}
+
+@-moz-keyframes glowing {
+    0% {
+        background-color: var(--green);
+        -moz-box-shadow: 0 0 3px var(--green);
+    }
+
+    50% {
+        background-color: #46ae27;
+        -moz-box-shadow: 0 0 20px #46ae27;
+    }
+
+    100% {
+        background-color: var(--green);
+        -moz-box-shadow: 0 0 3px var(--green);
+    }
+}
+
+@-o-keyframes glowing {
+    0% {
+        background-color: var(--green);
+        box-shadow: 0 0 3px var(--green);
+    }
+
+    50% {
+        background-color: #46ae27;
+        box-shadow: 0 0 20px #46ae27;
+    }
+
+    100% {
+        background-color: var(--green);
+        box-shadow: 0 0 3px var(--green);
+    }
+}
+
+@keyframes glowing {
+    0% {
+        background-color: var(--green);
+        box-shadow: 0 0 3px var(--green);
+    }
+
+    50% {
+        background-color: #46ae27;
+        box-shadow: 0 0 20px #46ae27;
+    }
+
+    100% {
+        background-color: var(--green);
+        box-shadow: 0 0 3px var(--green);
+    }
+}

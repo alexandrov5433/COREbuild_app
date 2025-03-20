@@ -1,4 +1,5 @@
 @import url(../../../lib/styling/generalWrapper.module.css);
+@import url(../../../lib/styling/buttonGlowAnimation.module.css);
 
 .paymentContainer {
     margin-top: 2rem;
@@ -24,51 +25,8 @@
     p {
         margin: 0;
     }
-    button {
-        animation: 2s linear 0s infinite alternate glow;
-    }
     p, button {
         font-size: 2rem;
-    }
-}
-
-@keyframes glow {
-    0% {
-        box-shadow: 0 0 9px 0 rgb(143,174,39);
-   
-    }
-    10% {
-        box-shadow: 0 0 8px 0 rgb(143,174,39);
-    }
-    20% {
-        box-shadow: 0 0 7px 0 rgb(143,174,39);
-    }
-    30% {
-        box-shadow: 0 0 6px 0 rgb(143,174,39);
-    }
-    40% {
-        box-shadow: 0 0 5px 0 rgb(143,174,39);
-    }
-    50% {
-        box-shadow: 0 0 4px 0 rgb(143,174,39);
-        transition: box-shadow 1s;
-    }
-    60% {
-        box-shadow: 0 0 6px 0 rgb(143,174,39);
-        transition: box-shadow 1s;
-    }
-    70% {
-        box-shadow: 0 0 7px 0 rgb(143,174,39);
-    }
-    80% {
-        box-shadow: 0 0 8px 0 rgb(143,174,39);
-    }
-    90% {
-        box-shadow: 0 0 9px 0 rgb(143,174,39);
-    }
-    100% {
-        box-shadow: 0 0 10px 0 rgb(175, 221, 23);
-        
     }
 }
 
