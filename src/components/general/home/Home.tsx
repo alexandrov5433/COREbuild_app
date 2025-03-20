@@ -141,7 +141,7 @@ export default function Home() {
                 <div className={styles.contentContainer}>
                     <h4>Need assistance?</h4>
                     <p>No problem! Our customer service is here to help.</p>
-                    <NavLink className="btn btn-outline-warning" to={'/contact-us'}>Contact Us</NavLink>
+                    <NavLink className="btn btn-outline-warning" to={'/contact-us'}><FontAwesomeIcon icon={faPhone} />Contact Us</NavLink>
                 </div>
             </div>
         </div>
