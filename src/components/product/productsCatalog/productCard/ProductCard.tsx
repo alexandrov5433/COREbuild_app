@@ -72,6 +72,11 @@ export default function ProductCard(productData: ProductData) {
                                 <button className={`btn btn-warning ${styles.button}`} disabled={additionTrigger} onClick={() => setAdditionTrigger(true)}>Add To Cart</button>
                                 : ''
                         }
+                        {
+                            userData.userID && userData.is_employee ?
+                                <NavLink className={`btn btn-danger ${styles.button}`} to={`/edit-product/${productData.productID}`}>Edit Product</NavLink>
+                                : ''
+                        }
                     </div>
                 </div>
             </div>
