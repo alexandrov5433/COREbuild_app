@@ -341,7 +341,7 @@ export default function EditProduct() {
                         {productData.pictures.map(id =>
                           <div className={styles.pictureContainer} key={id}>
                             <img src={`/api/file/pic/${id}`} className="img-thumbnail" alt={`Image of the product ${productData.name}.`}></img>
-                            <button className="btn btn-danger" type="button" onClick={() => deletePictureOfProduct(id)}>Delete</button>
+                            <button className="btn btn-danger" type="button" onClick={() => deletePictureOfProduct(id)} disabled={isBlockDeleteButtons}>Delete</button>
                           </div>
                         )}
                       </>
@@ -371,7 +371,7 @@ export default function EditProduct() {
                       :
                       <p>No document available.</p>
                   }
-                  <button className="btn btn-danger" type="button">Delete Document</button>
+                  <button className="btn btn-danger" type="button" disabled={isBlockDeleteButtons}>Delete Document</button>
                 </div>
                 <div className={styles.uploadControls}>
                   <div className="input-group">
