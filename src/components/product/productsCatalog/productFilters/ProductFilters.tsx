@@ -1,4 +1,5 @@
 import { ProductsCatalogQueryParams } from '../../../../lib/definitions';
+import { capitalize } from '../../../../lib/util/string';
 import styles from './productFilters.module.css';
 import { useEffect, useRef, useState } from 'react';
 
@@ -97,7 +98,7 @@ export default function ProductFilters({
                         <select id="category" name="category" className="form-select" aria-label="Select a product catagory." defaultValue={currentQueryParams.category || ''}>
                             <option value=""></option>
                             {
-                                categories.map(cat => <option key={cat} value={cat}>{cat}</option>)
+                                categories.map(cat => <option key={cat} value={cat}>{capitalize(cat)}</option>)
                             }
                         </select>
                     </div>
