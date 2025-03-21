@@ -126,7 +126,6 @@ export default function ProductsCatalog() {
         })();
     }, [searchParams]);
 
-
     useEffect(() => {
         (async () => {
             const categoriesResult = await getAllProductCategories()
