@@ -8,6 +8,7 @@ import { useAppDispatch } from '../../../lib/hooks/reduxTypedHooks';
 import { setMessageData } from '../../../redux/popupMessageSlice';
 import ProductCard from './productCard/ProductCard';
 import getAllProductCategories from '../../../lib/actions/getAllProductCategories';
+import Loader from '../../general/loader/Loader';
 
 export default function ProductsCatalog() {
     const dispatch = useAppDispatch();
@@ -16,6 +17,7 @@ export default function ProductsCatalog() {
     const [currentPage, setCurrentPage] = useState(1);
     const [allPagesCount, setAllPagesCount] = useState(1);
     const [categories, setCategories] = useState([] as Array<string>);
+    const [isProductsLoading, setProductsLoading] = useState(true);
 
     function queryParamsSetterForFilter(paramsToSet: {
         currentPage: number,
@@ -28,7 +30,7 @@ export default function ProductsCatalog() {
         manufacturer: string,
     }) {
         setSearchParams(state => {
-            const newState = {...state};
+            const newState = { ...state };
             Object.assign(newState, paramsToSet);
             return newState;
         });
@@ -63,9 +65,9 @@ export default function ProductsCatalog() {
     }
     function changeItemsPerPage(e: React.ChangeEvent<HTMLSelectElement>) {
         const itemsPerPageToSet = {
-            '4':4,
-            '8':8,
-            '12':12,
+            '4': 4,
+            '8': 8,
+            '12': 12,
             '24': 24
         }[e.target.value] || 12;
         setSearchParams(state => {
@@ -76,7 +78,7 @@ export default function ProductsCatalog() {
     }
     function clearFilters() {
         setSearchParams(state => {
-            const newState = {...state};
+            const newState = { ...state };
             Object.assign(newState, {
                 currentPage: '1',
                 itemsPerPage: state.get('itemsPerPage'),
@@ -103,9 +105,10 @@ export default function ProductsCatalog() {
             manufacturer: params.manufacturer || '',
         } as ProductsCatalogQueryParams;
     }
-    
+
     useEffect(() => {
         (async () => {
+            setProductsLoading(true);
             const queryParams = searchParamsToObject(searchParams);
             const actionResponse = await productsCatalog(queryParams);
             if (actionResponse.responseStatus === 200) {
@@ -123,6 +126,7 @@ export default function ProductsCatalog() {
                     type: 'error'
                 }));
             }
+            setProductsLoading(false);
         })();
     }, [searchParams]);
 
@@ -144,55 +148,58 @@ export default function ProductsCatalog() {
             <button className={`btn btn-outline-warning ${styles.filtersButton}`} type="button" onClick={clearFilters}>
                 Clear Filters
             </button>
-            <ProductFilters 
+            <ProductFilters
                 queryParamsSetter={queryParamsSetterForFilter}
                 categories={categories}
                 currentQueryParams={searchParamsToObject(searchParams)}
             />
-
-            <div className={`row row-cols-1 row-cols-md-4 g-4 ${styles.cardsWrapper}`}>
-
-                {
-                    productResults.map(p => <ProductCard {...p} key={p.productID} />)
-                }
-
-            </div>
-
-            <nav aria-label="Page navigation example" className={styles.pagination}>
-                <select className="form-select" aria-label="Amount of items to display per page." onChange={(e) => {changeItemsPerPage(e)}} defaultValue={searchParams.get('itemsPerPage')?.toString() || '12'}>
-                    <option value="4">4 per page</option>
-                    <option value="8">8 per page</option>
-                    <option value="12">12 per page</option>
-                    <option value="24">24 per page</option>
-                </select>
-                <ul className="pagination">
-                    <li className="page-item">
-                        <a className="page-link" onClick={decrementPage} aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
+            {
+                isProductsLoading ?
+                    <Loader/>
+                    :
                     <>
-                        {
-                            currentPage - 1 > 0 ?
-                                <li className="page-item"><a className="page-link" onClick={() => goToGivenPage(currentPage - 1)}>{currentPage - 1}</a></li>
-                                : ''
-                        }
-                        <li className="page-item"><a className="page-link active">{currentPage}</a></li>
+                        <div className={`row row-cols-1 row-cols-md-4 g-4 ${styles.cardsWrapper}`}>
+                            {
+                                productResults.map(p => <ProductCard {...p} key={p.productID} />)
+                            }
+                        </div>
 
-                        {
-                            currentPage + 1 <= allPagesCount ?
-                                <li className="page-item"><a className="page-link" onClick={() => goToGivenPage(currentPage + 1)}>{currentPage + 1}</a></li>
-                                : ''
-                        }
+                        <nav aria-label="Page navigation example" className={styles.pagination}>
+                            <select className="form-select" aria-label="Amount of items to display per page." onChange={(e) => { changeItemsPerPage(e) }} defaultValue={searchParams.get('itemsPerPage')?.toString() || '12'}>
+                                <option value="4">4 per page</option>
+                                <option value="8">8 per page</option>
+                                <option value="12">12 per page</option>
+                                <option value="24">24 per page</option>
+                            </select>
+                            <ul className="pagination">
+                                <li className="page-item">
+                                    <a className="page-link" onClick={decrementPage} aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <>
+                                    {
+                                        currentPage - 1 > 0 ?
+                                            <li className="page-item"><a className="page-link" onClick={() => goToGivenPage(currentPage - 1)}>{currentPage - 1}</a></li>
+                                            : ''
+                                    }
+                                    <li className="page-item"><a className="page-link active">{currentPage}</a></li>
+
+                                    {
+                                        currentPage + 1 <= allPagesCount ?
+                                            <li className="page-item"><a className="page-link" onClick={() => goToGivenPage(currentPage + 1)}>{currentPage + 1}</a></li>
+                                            : ''
+                                    }
+                                </>
+                                <li className="page-item">
+                                    <a className="page-link" onClick={incrementPage} aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
                     </>
-                    <li className="page-item">
-                        <a className="page-link" onClick={incrementPage} aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-
+            }
         </div>
     );
 }
