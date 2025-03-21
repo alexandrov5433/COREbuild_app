@@ -8,6 +8,8 @@ import { setMessageData } from '../../../redux/popupMessageSlice';
 import { convertCentToWhole } from '../../../lib/util/currency';
 import editProductInfos from '../../../lib/actions/editProductInfos';
 import updateProductThumbnail from '../../../lib/actions/updateProductThumbnail';
+import addProductPictures from '../../../lib/actions/addProductPictures';
+import deleteProductPicture from '../../../lib/actions/deleteProductPicture';
 
 export default function EditProduct() {
   const { productID } = useParams();
@@ -51,8 +53,9 @@ export default function EditProduct() {
   const [infoFormState, setInfoFormState] = useState(initialInfoFormState)
 
   const [isBlockFileUploadButtons, setBlockFileUploadButtons] = useState(false);
+  const [isBlockDeleteButtons, setBlockDeleteButtons] = useState(false);
   const thumbnailInputRef = useRef(null);
-  const pictureInputRef = useRef(null);
+  const picturesFormRef = useRef(null);
   const specsDocInputRef = useRef(null);
 
   async function __loadProductData() {
@@ -175,26 +178,29 @@ export default function EditProduct() {
   function validateFile(e: React.ChangeEvent<HTMLInputElement>, allowedFileType: string[], maxFileSizeInMB: number) {
     //['image/png', 'image/jpeg']
     //['application/pdf']
-    const { type, size } = e.target?.files![0];
-    if (size > maxFileSizeInMB * 1024 * 1024) {
-      e.target.value = '';
-      dispatch(setMessageData({
-        duration: 4000,
-        isShown: true,
-        text: 'Too large file size.',
-        type: 'error'
-      }));
-      return;
-    }
-    if (!allowedFileType.includes(type)) {
-      e.target.value = '';
-      dispatch(setMessageData({
-        duration: 4000,
-        isShown: true,
-        text: 'File type is not allowed.',
-        type: 'error'
-      }));
-      return;
+    for (let i = 0; i < e.target?.files!.length; i++) {
+      const { name, type, size } = e.target?.files![0];
+      if (size > maxFileSizeInMB * 1024 * 1024) {
+        e.target.value = '';
+        dispatch(setMessageData({
+          duration: 4000,
+          isShown: true,
+          text: `File size is too large: ${name}`,
+          type: 'error'
+        }));
+        return;
+      }
+      if (!allowedFileType.includes(type)) {
+        e.target.value = '';
+        dispatch(setMessageData({
+          duration: 4000,
+          isShown: true,
+          text: `File file type is not allowed: ${name}`,
+          type: 'error'
+        }));
+        return;
+      }
+
     }
   }
 
@@ -230,12 +236,29 @@ export default function EditProduct() {
     if (!productID) {
       return;
     }
-    const file = (pictureInputRef.current! as HTMLInputElement).files![0] || null;
-    if (!file) {
+    const formData = new FormData(picturesFormRef.current!);
+    if (!formData) {
       return;
     }
-    console.log(file);
-    
+    setBlockFileUploadButtons(true);
+    const pictureUploadResult = await addProductPictures(productID, formData)
+    if (pictureUploadResult.responseStatus === 200) {
+      dispatch(setMessageData({
+        duration: 4000,
+        isShown: true,
+        text: 'Pictures saved!',
+        type: 'success'
+      }));
+      await __loadProductData();
+    } else if ([400, 500].includes(pictureUploadResult.responseStatus)) {
+      dispatch(setMessageData({
+        duration: 4000,
+        isShown: true,
+        text: pictureUploadResult.msg,
+        type: 'error'
+      }));
+    }
+    setBlockFileUploadButtons(false);
   }
   async function uploadNewSpecsDoc() {
     if (!productID) {
@@ -246,7 +269,34 @@ export default function EditProduct() {
       return;
     }
     console.log(file);
-    
+
+  }
+  async function deletePictureOfProduct(pictureToDeleteID: string | number) {
+    if (!pictureToDeleteID) {
+      return;
+    }
+    if (!productID) {
+      return;
+    }
+    setBlockDeleteButtons(true);
+    const deleteResult = await deleteProductPicture(productID, pictureToDeleteID);
+    if (deleteResult.responseStatus === 200) {
+      dispatch(setMessageData({
+        duration: 4000,
+        isShown: true,
+        text: 'Picture deleted!',
+        type: 'success'
+      }));
+      await __loadProductData();
+    } else if ([400, 500].includes(deleteResult.responseStatus)) {
+      dispatch(setMessageData({
+        duration: 4000,
+        isShown: true,
+        text: deleteResult.msg,
+        type: 'error'
+      }));
+    }
+    setBlockDeleteButtons(false);
   }
 
   return (
@@ -275,7 +325,7 @@ export default function EditProduct() {
                 </div>
                 <div className={styles.uploadControls}>
                   <div className="input-group">
-                    <input type="file" className="form-control" onChange={e => validateFile(e, ['image/png', 'image/jpeg'], 0.5)} ref={thumbnailInputRef}/>
+                    <input type="file" className="form-control" onChange={e => validateFile(e, ['image/png', 'image/jpeg'], 0.5)} ref={thumbnailInputRef} />
                   </div>
                   <button className="btn btn-success" type="button" disabled={isBlockFileUploadButtons} onClick={uploadNewThumbnail}>Upload</button>
                 </div>
@@ -291,7 +341,7 @@ export default function EditProduct() {
                         {productData.pictures.map(id =>
                           <div className={styles.pictureContainer} key={id}>
                             <img src={`/api/file/pic/${id}`} className="img-thumbnail" alt={`Image of the product ${productData.name}.`}></img>
-                            <button className="btn btn-danger" type="button">Delete</button>
+                            <button className="btn btn-danger" type="button" onClick={() => deletePictureOfProduct(id)}>Delete</button>
                           </div>
                         )}
                       </>
@@ -303,9 +353,9 @@ export default function EditProduct() {
                     <p className="mt-3">The maximum amount of pictures is reacted. To upload more, please delete some first.</p>
                     :
                     <div className={styles.uploadControls}>
-                      <div className="input-group">
-                        <input type="file" className="form-control" onChange={e => validateFile(e, ['image/png', 'image/jpeg'], 0.5)} ref={pictureInputRef}/>
-                      </div>
+                      <form className="input-group" ref={picturesFormRef}>
+                        <input type="file" className="form-control" multiple onChange={e => validateFile(e, ['image/png', 'image/jpeg'], 0.5)} name='pictures' />
+                      </form>
                       <button className="btn btn-success" type="button" disabled={isBlockFileUploadButtons} onClick={uploadNewPicture}>Upload</button>
                     </div>
                 }
@@ -325,7 +375,7 @@ export default function EditProduct() {
                 </div>
                 <div className={styles.uploadControls}>
                   <div className="input-group">
-                    <input type="file" className="form-control" onChange={e => validateFile(e, ['application/pdf'], 4)} ref={specsDocInputRef}/>
+                    <input type="file" className="form-control" onChange={e => validateFile(e, ['application/pdf'], 4)} ref={specsDocInputRef} />
                   </div>
                   <button className="btn btn-success" type="button" disabled={isBlockFileUploadButtons} onClick={uploadNewSpecsDoc}>Upload</button>
                 </div>
