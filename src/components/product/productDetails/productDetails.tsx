@@ -51,7 +51,6 @@ export default function ProductDetails() {
       return;
     }
     (async () => {
-
       const results = await Promise.all([
         productDetails(productID),
         getCustomerReviewedProduct(productID),
@@ -60,7 +59,6 @@ export default function ProductDetails() {
       const productDetailsAR = results[0];
       const getCustomerReviewedProductAR = results[1];
       const getRatingAndReviewCountForProductAR = results[2];
-      console.log(productDetailsAR);
       if (productDetailsAR.responseStatus === 200) {
         setProductData(productDetailsAR.data!);
 
