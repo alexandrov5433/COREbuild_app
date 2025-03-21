@@ -16,6 +16,7 @@ import addNewReview from '../../../lib/actions/addNewReview';
 import { convertTimeToDate } from '../../../lib/util/time';
 import { updateCart } from '../../../redux/cartSlice';
 import addProductToCart from '../../../lib/actions/addProductToCart';
+import Loader from '../../general/loader/Loader';
 
 export default function ProductDetails() {
   const { productID } = useParams();
@@ -393,11 +394,7 @@ export default function ProductDetails() {
 
                             {
                               isProductReviewsloading ?
-                                <div className={`${styles.loaderContainer}`}>
-                                  <div className={`spinner-border text-success`} role="status">
-                                    <span className="visually-hidden">Loading...</span>
-                                  </div>
-                                </div>
+                                <Loader/>
                                 :
                                 productReviews.map(rev => <div key={rev.reviewID} className={styles.singleReview}>
                                   <p className={styles.reviewUsername}>{rev.username || ''}</p>

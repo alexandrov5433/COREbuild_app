@@ -268,13 +268,6 @@
     }
 }
 
-.loaderContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 4rem 0;
-}
-
 .productNotFound {
     margin-top: 2rem;
     .triangleContainer {
