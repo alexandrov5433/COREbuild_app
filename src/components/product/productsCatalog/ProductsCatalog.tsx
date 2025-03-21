@@ -7,6 +7,7 @@ import { ProductData, ProductsCatalogQueryParams } from '../../../lib/definition
 import { useAppDispatch } from '../../../lib/hooks/reduxTypedHooks';
 import { setMessageData } from '../../../redux/popupMessageSlice';
 import ProductCard from './productCard/ProductCard';
+import getAllProductCategories from '../../../lib/actions/getAllProductCategories';
 
 export default function ProductsCatalog() {
     const dispatch = useAppDispatch();
@@ -14,6 +15,7 @@ export default function ProductsCatalog() {
     const [productResults, setProductResults] = useState([] as Array<ProductData>);
     const [currentPage, setCurrentPage] = useState(1);
     const [allPagesCount, setAllPagesCount] = useState(1);
+    const [categories, setCategories] = useState([] as Array<string>);
 
     function queryParamsSetterForFilter(paramsToSet: {
         currentPage: number,
@@ -31,7 +33,6 @@ export default function ProductsCatalog() {
             return newState;
         });
     }
-
     function incrementPage() {
         if (Number(searchParams.get('currentPage')) + 1 > allPagesCount) {
             return;
@@ -60,7 +61,6 @@ export default function ProductsCatalog() {
             return state;
         });
     }
-
     function changeItemsPerPage(e: React.ChangeEvent<HTMLSelectElement>) {
         const itemsPerPageToSet = {
             '4':4,
@@ -74,7 +74,6 @@ export default function ProductsCatalog() {
         });
         window.scrollTo(0, 0);
     }
-
     function clearFilters() {
         setSearchParams(state => {
             const newState = {...state};
@@ -91,7 +90,20 @@ export default function ProductsCatalog() {
             return newState;
         });
     }
-
+    function searchParamsToObject(searchParams: URLSearchParams) {
+        const params = Object.fromEntries(searchParams.entries());
+        return {
+            currentPage: Number(params.currentPage) || 1,
+            itemsPerPage: Number(params.itemsPerPage) || 12,
+            name: params.name || '',
+            category: params.category || '',
+            priceFrom: params.priceFrom || '',
+            priceTo: params.priceTo || '',
+            availableInStock: params.availableInStock || '',
+            manufacturer: params.manufacturer || '',
+        } as ProductsCatalogQueryParams;
+    }
+    
     useEffect(() => {
         (async () => {
             const queryParams = searchParamsToObject(searchParams);
@@ -114,19 +126,15 @@ export default function ProductsCatalog() {
         })();
     }, [searchParams]);
 
-    function searchParamsToObject(searchParams: URLSearchParams) {
-        const params = Object.fromEntries(searchParams.entries());
-        return {
-            currentPage: Number(params.currentPage) || 1,
-            itemsPerPage: Number(params.itemsPerPage) || 12,
-            name: params.name || '',
-            category: params.category || '',
-            priceFrom: params.priceFrom || '',
-            priceTo: params.priceTo || '',
-            availableInStock: params.availableInStock || '',
-            manufacturer: params.manufacturer || '',
-        } as ProductsCatalogQueryParams;
-    }
+
+    useEffect(() => {
+        (async () => {
+            const categoriesResult = await getAllProductCategories()
+            if (categoriesResult.responseStatus === 200) {
+                setCategories(categoriesResult.data!);
+            }
+        })();
+    }, []);
 
     return (
         <div className={styles.wrapper}>
@@ -139,7 +147,7 @@ export default function ProductsCatalog() {
             </button>
             <ProductFilters 
                 queryParamsSetter={queryParamsSetterForFilter}
-                categories={['test', 'cpu', 'ram']}
+                categories={categories}
                 currentQueryParams={searchParamsToObject(searchParams)}
             />
 

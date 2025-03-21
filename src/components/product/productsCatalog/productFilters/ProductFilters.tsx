@@ -97,7 +97,7 @@ export default function ProductFilters({
                         <select id="category" name="category" className="form-select" aria-label="Select a product catagory." defaultValue={currentQueryParams.category || ''}>
                             <option value=""></option>
                             {
-                                categories.map((cat, index) => <option key={index} value={cat}>{cat}</option>)
+                                categories.map(cat => <option key={cat} value={cat}>{cat}</option>)
                             }
                         </select>
                     </div>
