@@ -294,7 +294,9 @@ export default function ProductDetails() {
                   productData.stockCount <= 0 ? '' :
                     !userData?.userID ?
                       <button className={`btn btn-success ${styles.addToCartButton}`} onClick={() => navigate('/login')}>Login To Purchase</button> :
-                      userData?.is_employee ? '' :
+                      userData?.is_employee ?
+                        <NavLink className={`btn btn-danger`} to={`/edit-product/${productData.productID}`}>Edit Product</NavLink>
+                        :
                         <>
                           <label htmlFor="addToCartCount">Quantity: <input id="addToCartCount" type="number" step={1} defaultValue={addToCartCount} min={1} max={productData.stockCount} onChange={manageAddToCartValChange} /></label>
 
@@ -394,7 +396,7 @@ export default function ProductDetails() {
 
                             {
                               isProductReviewsloading ?
-                                <Loader/>
+                                <Loader />
                                 :
                                 productReviews.map(rev => <div key={rev.reviewID} className={styles.singleReview}>
                                   <p className={styles.reviewUsername}>{rev.username || ''}</p>
