@@ -6,6 +6,7 @@
     }
     select option {
         font-size: 1rem;
+        text-transform: capitalize;
     }
     span {
         font-size: 1.4rem;
