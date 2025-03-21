@@ -7,6 +7,7 @@ import productDetails from '../../../lib/actions/productDetails';
 import { setMessageData } from '../../../redux/popupMessageSlice';
 import { convertCentToWhole } from '../../../lib/util/currency';
 import editProductInfos from '../../../lib/actions/editProductInfos';
+import updateProductThumbnail from '../../../lib/actions/updateProductThumbnail';
 
 export default function EditProduct() {
   const { productID } = useParams();
@@ -49,7 +50,7 @@ export default function EditProduct() {
   };
   const [infoFormState, setInfoFormState] = useState(initialInfoFormState)
 
-  const [isBlockFileUploadButtons, _setBlockFileUploadButtons] = useState(false);
+  const [isBlockFileUploadButtons, setBlockFileUploadButtons] = useState(false);
   const thumbnailInputRef = useRef(null);
   const pictureInputRef = useRef(null);
   const specsDocInputRef = useRef(null);
@@ -198,14 +199,37 @@ export default function EditProduct() {
   }
 
   async function uploadNewThumbnail() {
+    if (!productID) {
+      return;
+    }
     const file = (thumbnailInputRef.current! as HTMLInputElement).files![0] || null;
     if (!file) {
       return;
     }
-    console.log(file);
-    
+    setBlockFileUploadButtons(true);
+    const updateResult = await updateProductThumbnail(productID, file);
+    if (updateResult.responseStatus === 200) {
+      dispatch(setMessageData({
+        duration: 4000,
+        isShown: true,
+        text: 'Thumbnail saved!',
+        type: 'success'
+      }));
+      await __loadProductData();
+    } else if ([400, 500].includes(updateResult.responseStatus)) {
+      dispatch(setMessageData({
+        duration: 4000,
+        isShown: true,
+        text: updateResult.msg,
+        type: 'error'
+      }));
+    }
+    setBlockFileUploadButtons(false);
   }
   async function uploadNewPicture() {
+    if (!productID) {
+      return;
+    }
     const file = (pictureInputRef.current! as HTMLInputElement).files![0] || null;
     if (!file) {
       return;
@@ -214,6 +238,9 @@ export default function EditProduct() {
     
   }
   async function uploadNewSpecsDoc() {
+    if (!productID) {
+      return;
+    }
     const file = (specsDocInputRef.current! as HTMLInputElement).files![0] || null;
     if (!file) {
       return;
