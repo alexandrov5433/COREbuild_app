@@ -295,11 +295,11 @@ export default function ProductDetails() {
                       userData?.is_employee ?
                         <NavLink className={`btn btn-danger`} to={`/edit-product/${productData.productID}`}>Edit Product</NavLink>
                         :
-                        <>
+                        <div className={styles.addToCartContainer}>
                           <label htmlFor="addToCartCount">Quantity: <input id="addToCartCount" type="number" step={1} defaultValue={addToCartCount} min={1} max={productData.stockCount} onChange={manageAddToCartValChange} /></label>
 
                           <button className={`btn btn-success ${styles.addToCartButton}`} disabled={isProductAdditionProcessing} onClick={addToCart}>Add {addToCartCount} to cart</button>
-                        </>
+                        </div>
                 }
 
               </div>
