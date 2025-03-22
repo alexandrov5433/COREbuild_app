@@ -149,6 +149,9 @@ export default function Header() {
                                                     : ''
                                             }
                                             <li>
+                                                <NavLink className="dropdown-item" to="/orders">Orders</NavLink>
+                                            </li>
+                                            <li>
                                                 <NavLink className="dropdown-item" to="/profile">Profile</NavLink>
                                             </li>
                                             <li>
