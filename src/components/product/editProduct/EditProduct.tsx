@@ -10,6 +10,8 @@ import editProductInfos from '../../../lib/actions/editProductInfos';
 import updateProductThumbnail from '../../../lib/actions/updateProductThumbnail';
 import addProductPictures from '../../../lib/actions/addProductPictures';
 import deleteProductPicture from '../../../lib/actions/deleteProductPicture';
+import deleteProductSpecsDoc from '../../../lib/actions/deleteProductSpecsDoc';
+import updateProductSpecsDoc from '../../../lib/actions/updateProductSpecsDoc';
 
 export default function EditProduct() {
   const { productID } = useParams();
@@ -205,11 +207,8 @@ export default function EditProduct() {
   }
 
   async function uploadNewThumbnail() {
-    if (!productID) {
-      return;
-    }
     const file = (thumbnailInputRef.current! as HTMLInputElement).files![0] || null;
-    if (!file) {
+    if (!productID || !file) {
       return;
     }
     setBlockFileUploadButtons(true);
@@ -233,11 +232,8 @@ export default function EditProduct() {
     setBlockFileUploadButtons(false);
   }
   async function uploadNewPicture() {
-    if (!productID) {
-      return;
-    }
     const formData = new FormData(picturesFormRef.current!);
-    if (!formData) {
+    if (!productID || !formData) {
       return;
     }
     setBlockFileUploadButtons(true);
@@ -261,21 +257,56 @@ export default function EditProduct() {
     setBlockFileUploadButtons(false);
   }
   async function uploadNewSpecsDoc() {
-    if (!productID) {
-      return;
-    }
     const file = (specsDocInputRef.current! as HTMLInputElement).files![0] || null;
-    if (!file) {
+    if (!productID || !file) {
       return;
     }
-    console.log(file);
-
+    setBlockDeleteButtons(true);
+    const deleteResult = await updateProductSpecsDoc(productID, file);
+    if (deleteResult.responseStatus === 200) {
+      dispatch(setMessageData({
+        duration: 4000,
+        isShown: true,
+        text: 'Document updated!',
+        type: 'success'
+      }));
+      await __loadProductData();
+    } else if ([400, 500].includes(deleteResult.responseStatus)) {
+      dispatch(setMessageData({
+        duration: 4000,
+        isShown: true,
+        text: deleteResult.msg,
+        type: 'error'
+      }));
+    }
+    setBlockDeleteButtons(false);
+  }
+  async function deleteSpecsDoc(specsDocToDeleteID: string | number | null) {
+    if (!productID || !specsDocToDeleteID) {
+      return;
+    }
+    setBlockDeleteButtons(true);
+    const deleteResult = await deleteProductSpecsDoc(productID, specsDocToDeleteID);
+    if (deleteResult.responseStatus === 200) {
+      dispatch(setMessageData({
+        duration: 4000,
+        isShown: true,
+        text: 'Document deleted!',
+        type: 'success'
+      }));
+      await __loadProductData();
+    } else if ([400, 500].includes(deleteResult.responseStatus)) {
+      dispatch(setMessageData({
+        duration: 4000,
+        isShown: true,
+        text: deleteResult.msg,
+        type: 'error'
+      }));
+    }
+    setBlockDeleteButtons(false);
   }
   async function deletePictureOfProduct(pictureToDeleteID: string | number) {
-    if (!pictureToDeleteID) {
-      return;
-    }
-    if (!productID) {
+    if (!pictureToDeleteID || !productID) {
       return;
     }
     setBlockDeleteButtons(true);
@@ -367,11 +398,13 @@ export default function EditProduct() {
                 <div className={styles.specsDocDownloadAndDelete}>
                   {
                     productData.specsDocID ?
+                    <>
                       <a href={`/api/file/doc/${productData.specsDocID}`} download={productData.name || 'Product Specifications'}>{productData.name}</a>
+                      <button className="btn btn-danger" type="button" disabled={isBlockDeleteButtons} onClick={() => deleteSpecsDoc(productData.specsDocID)}>Delete Document</button>
+                    </>
                       :
                       <p>No document available.</p>
                   }
-                  <button className="btn btn-danger" type="button" disabled={isBlockDeleteButtons}>Delete Document</button>
                 </div>
                 <div className={styles.uploadControls}>
                   <div className="input-group">
