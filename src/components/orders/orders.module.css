@@ -1,0 +1,20 @@
+@import url(../../lib/styling/generalWrapper.module.css);
+
+.mainContainer {
+    & > :not(:last-child) {
+        margin-bottom: 2rem;
+    }
+}
+
+.filterContainer {
+
+}
+
+.ordersContainer {
+
+}
+
+.paginationContainer {
+    display: flex;
+    justify-content: center;
+}
