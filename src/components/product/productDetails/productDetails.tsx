@@ -321,7 +321,12 @@ export default function ProductDetails() {
             </div>
             <div className={styles.specsDoc}>
               <p>Specifications Document</p>
-              <a href={`/api/file/doc/${productData.specsDocID}`} download={productData.name || 'Product Specifications'}>Download Document</a>
+              {
+                productData.specsDocID ?
+                <a href={`/api/file/doc/${productData.specsDocID}`} download={productData.name || 'Product Specifications'}>{productData.name}</a>
+                :
+                <p>No document available.</p>
+              }
             </div>
             <div className={styles.descriptionAndComments} ref={reviewsRef}>
               <ul className="nav nav-tabs">
