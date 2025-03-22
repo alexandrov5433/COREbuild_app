@@ -18,7 +18,7 @@ export type ProductData = {
     price: number,
     stockCount: number,
     manufacturer: string,
-    specsDocID: number,
+    specsDocID: number | null,
     thumbnailID: number,
     pictures: Array<number>
 }
