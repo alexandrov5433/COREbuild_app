@@ -1,4 +1,4 @@
-import { ApiJsonResponce, ProductsCatalogActionResponse, ProductsCatalogQueryParams, ProductCatalogPagedResult } from "../definitions";
+import { ApiJsonResponce, ProductsCatalogActionResponse, ProductsCatalogQueryParams, ProductCatalogPagedResult } from "../../definitions";
 
 export default async function productsCatalog(
     queryParams: ProductsCatalogQueryParams

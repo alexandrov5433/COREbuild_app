@@ -1,6 +1,4 @@
-
-
-import { ApiJsonResponce } from "../definitions";
+import { ApiJsonResponce } from "../../definitions";
 
 export default async function getCustomerReviewedProduct(productID: string) {
     const actionResponse = {

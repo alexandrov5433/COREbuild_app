@@ -1,4 +1,4 @@
-import { ApiJsonResponce, ProductData, ProductDetailsActionResponse } from "../definitions";
+import { ApiJsonResponce, ProductData, ProductDetailsActionResponse } from "../../definitions";
 
 export default async function productDetails(productID: number | string) {
     const actionResponse: ProductDetailsActionResponse = {

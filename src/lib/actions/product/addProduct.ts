@@ -1,4 +1,4 @@
-import { AddProductState, ApiJsonResponce, ProductData } from "../definitions";
+import { AddProductState, ApiJsonResponce, ProductData } from "../../definitions";
 
 export default async function addProduct(
     oldState: AddProductState,

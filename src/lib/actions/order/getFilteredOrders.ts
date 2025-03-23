@@ -1,4 +1,4 @@
-import { ApiJsonResponce, OrderData, OrderFiltrationOptions } from "../definitions";
+import { ApiJsonResponce, OrderData, OrderFiltrationOptions } from "../../definitions";
 
 type FilteredOrdersData = {
     pagesCount: number,

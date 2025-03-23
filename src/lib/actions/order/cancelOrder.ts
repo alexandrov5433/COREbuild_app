@@ -1,4 +1,4 @@
-import { ApiJsonResponce } from "../definitions";
+import { ApiJsonResponce } from "../../definitions";
 
 export default async function cancelOrder(paypalOrderID: string) {
     const actionResponse = {

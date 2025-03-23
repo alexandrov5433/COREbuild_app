@@ -1,4 +1,4 @@
-import { ApiJsonResponce, ReviewData } from "../definitions";
+import { ApiJsonResponce, ReviewData } from "../../definitions";
 
 export default async function addNewReview(productGenerationData: {
     rating: string,

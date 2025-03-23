@@ -1,4 +1,4 @@
-import { ApiJsonResponce } from "../definitions";
+import { ApiJsonResponce } from "../../definitions";
 
 export default async function deleteProductPicture(productID: string, pictureToDeleteID: string | number) {
     const actionResponse = {

@@ -1,4 +1,4 @@
-import { ApiJsonResponce, ShoppingCart } from "../definitions";
+import { ApiJsonResponce, ShoppingCart } from "../../definitions";
 
 export default async function removeProductFromCart(productID: number, count: number) {
     const actionResponse = {

@@ -1,4 +1,4 @@
-import { ApiJsonResponce, GetReviewsForProductActionData } from "../definitions";
+import { ApiJsonResponce, GetReviewsForProductActionData } from "../../definitions";
 
 export default async function getReviewsForProduct(productID: string, currentPage: number) {
     const actionResponse = {

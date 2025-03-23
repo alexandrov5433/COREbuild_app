@@ -1,4 +1,4 @@
-import { ApiJsonResponce, CollectPaymentActionData } from "../definitions";
+import { ApiJsonResponce, CollectPaymentActionData } from "../../definitions";
 
 export default async function collectPayment(paypalOrderID: string) {
     const actionResponse = {

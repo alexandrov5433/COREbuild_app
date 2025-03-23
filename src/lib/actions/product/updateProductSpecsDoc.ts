@@ -1,4 +1,4 @@
-import { ApiJsonResponce } from "../definitions";
+import { ApiJsonResponce } from "../../definitions";
 
 export default async function updateProductSpecsDoc(productID: string, newSpecsDoc: File) {
     const actionResponse = {

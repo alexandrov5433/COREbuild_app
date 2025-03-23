@@ -1,4 +1,4 @@
-import { UserData, ApiJsonResponce } from "../definitions";
+import { UserData, ApiJsonResponce } from "../../definitions";
 
 export default async function login(
     previousState: {
