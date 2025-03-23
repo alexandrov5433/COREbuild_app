@@ -1,4 +1,3 @@
-import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router';
 import { useAppDispatch, useAppSelector } from './lib/hooks/reduxTypedHooks';
 import { useEffect } from 'react';

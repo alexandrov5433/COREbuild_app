@@ -35,6 +35,11 @@ header {
 
 @media (min-width: 1025px) {
     header {
+        nav {
+            max-width: var(--base-max-width);
+            margin: 0 auto;
+        }
+
         .logo-svg {
             width: 10rem;
         }

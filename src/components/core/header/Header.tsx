@@ -74,7 +74,7 @@ export default function Header() {
 
 
     return (
-        <header>
+        <header className="bg-body-tertiary">
             <nav className="navbar navbar-expand-lg bg-body-tertiary">
                 <div className="container-fluid">
                     <NavLink className="navbar-brand" to="/">
