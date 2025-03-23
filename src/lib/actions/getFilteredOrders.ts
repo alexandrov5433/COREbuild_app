@@ -41,8 +41,7 @@ function buildURL(baseUrl: string, filtrationOptions: OrderFiltrationOptions) {
         'orderID',
         'recipientID',
         'shipping_status',
-        'timeAscending',
-        'timeDescending',
+        'time',
         'currentPage',
         'itemsPerPage'
     ].forEach(key => {

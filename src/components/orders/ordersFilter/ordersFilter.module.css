@@ -1,6 +1,11 @@
 .mainContainer {
-    /* outline: 1px solid red; */
+    margin-top: 1rem;
+}
 
+.buttonsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
 }
 
 
@@ -10,6 +15,7 @@
 
 @media (min-width: 1025px) {
     .mainContainer {
+        margin-top: 0;
         border: 1px solid rgba(39, 174, 96, 0.6);
         border-radius: 6px;
         padding: 0.5rem 1rem;

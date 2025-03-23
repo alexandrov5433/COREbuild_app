@@ -1,12 +1,14 @@
 import styles from './orders.module.css';
 
 import Order from './order/Order';
-import OrdersFilter from './ordersFilter/ordersFilter';
+import OrdersFilter from './ordersFilter/OrdersFilter';
 
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../lib/hooks/reduxTypedHooks';
 import { OrderData, OrderFiltrationOptions } from '../../lib/definitions';
 import getFilteredOrders from '../../lib/actions/getFilteredOrders';
+import { setMessageData } from '../../redux/popupMessageSlice';
+import Loader from '../general/loader/Loader';
 
 export default function Orders() {
     const userData = useAppSelector(state => state.user);
@@ -21,8 +23,7 @@ export default function Orders() {
         orderID: null,
         recipientID: null,
         shipping_status: null,
-        timeAscending: false,  //older first
-        timeDescending: true,  //newer first
+        time: 'descending',  //newer first
         currentPage: 1,
         itemsPerPage: 5
     };
@@ -30,24 +31,45 @@ export default function Orders() {
 
     useEffect(() => {
         (async () => {
+            setPageLoading(true);
             const actionResult = await getFilteredOrders(filtrationOptions);
             if (actionResult.responseStatus === 200) {
                 setOrders(actionResult.data!.orders);
                 setCurrentPage(actionResult.data!.currentPage);
                 setPagesCount(actionResult.data!.pagesCount);
             } else if (actionResult.responseStatus === 400) {
-
+                dispatch(setMessageData({
+                    duration: 4000,
+                    isShown: true,
+                    text: actionResult.msg,
+                    type: 'error'
+                }));
             }
+            setPageLoading(false);
         })();
     }, [filtrationOptions]);
+
+    function updateFilter(options : {
+        orderID: number | null,
+        recipientID: number | null,
+        shipping_status: 'pending' | 'shipped' | null,
+        time: 'ascending' | 'descending' | null,
+    }){
+        setFiltrationOptions(state => {
+            const newState = {...state};
+            Object.assign(newState, options);
+            return newState;
+        });
+    }
 
     return (
         <div className={`${styles.wrapper} ${styles.mainContainer}`}>
             <h1>Orders</h1>
             <div className={styles.filterContainer}>
-                <OrdersFilter />
+                <OrdersFilter updateFilter={updateFilter}/>
             </div>
             {
+                isPageLoading ? <Loader/> :
                 orders ?
                     <div className={styles.ordersContainer}>
                         {
