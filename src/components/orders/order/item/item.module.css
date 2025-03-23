@@ -1,0 +1,22 @@
+.mainContainer {
+    outline: 1px solid red;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 1rem;
+    img {
+        width: 5rem;
+        height: auto;
+    }
+}
+
+.info {
+    i {
+        font-style: normal;
+        font-weight: 300;
+    }
+    p {
+        margin: 0;
+        margin-bottom: 0.5rem;
+    }
+}

@@ -6,7 +6,7 @@ import OrdersFilter from './ordersFilter/OrdersFilter';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../lib/hooks/reduxTypedHooks';
 import { OrderData, OrderFiltrationOptions } from '../../lib/definitions';
-import getFilteredOrders from '../../lib/actions/getFilteredOrders';
+import getFilteredOrders from '../../lib/actions/order/getFilteredOrders';
 import { setMessageData } from '../../redux/popupMessageSlice';
 import Loader from '../general/loader/Loader';
 
@@ -36,7 +36,7 @@ export default function Orders() {
             if (actionResult.responseStatus === 200) {
                 setOrders(actionResult.data!.orders);
                 setCurrentPage(actionResult.data!.currentPage);
-                setPagesCount(actionResult.data!.pagesCount);
+                setPagesCount(actionResult.data!.pagesCount);   
             } else if (actionResult.responseStatus === 400) {
                 dispatch(setMessageData({
                     duration: 4000,
@@ -73,7 +73,7 @@ export default function Orders() {
                 orders ?
                     <div className={styles.ordersContainer}>
                         {
-                            orders.map(order => <Order order={order} />)
+                            orders.map(order => <Order key={order.id} order={order} />)
                         }
                     </div>
                     :

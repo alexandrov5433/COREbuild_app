@@ -1,6 +1,40 @@
 .mainContainer {
     outline: 1px solid rgb(0, 255, 234);
+    padding: 0.5rem;
+    & > *:not(:last-child) {
+        margin-bottom: 0.5rem;
+    }
+}
 
+.itemsSection {
+    & > *:not(:last-child) {
+        margin-bottom: 0.5rem;
+        border-bottom: 1px solid white;
+    }
+}
+
+.infoSection {
+    i {
+        font-style: normal;
+        font-weight: 300;
+    }
+    p {
+        margin: 0;
+        margin-bottom: 0.5rem;
+
+    }
+    .yellow {
+      color: rgb(211, 201, 12);  
+    }
+    .green {
+      color: var(--green);  
+    }
+}
+
+.buttonsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
 }
 
 @media (min-width: 600px) {
