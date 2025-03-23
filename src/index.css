@@ -45,7 +45,6 @@ a {
 /* typography */
 html {
   font-size: clamp(11px, 4vw, 16px);
-  /* line-height: 1.5; */
   font-family: "Roboto", serif;
 }
 
@@ -58,12 +57,3 @@ fieldset, input, textarea {
   outline: none;
   border: none;
 }
-
-/* h1 { font-size: 3rem; }
-h2 { font-size: 2.4rem; }
-h3 { font-size: 1.8rem; }
-h4 { font-size: 1.4rem; }
-h5 { font-size: 1.2rem; }
-h6 { font-size: 1rem; }
-
-p { font-size: 1rem } */
