@@ -29,7 +29,7 @@ export default function OrdersFilter({
             recipientID: Number(formData.get('recipientID')) || null,
             shipping_status: {
                 pending: 'pending',
-                shipped: 'shipped'
+                sent: 'sent'
             }[formData.get('shipping_status')?.toString() || ''] || null,
             time: {
                 ascending: 'ascending',
@@ -57,11 +57,11 @@ export default function OrdersFilter({
                 <div className="mb-3">
                     <label className="form-label">Shipping Status</label>
                     <div className={styles.buttonsContainer}>
-                        <input type="radio" className="btn-check" name="shipping_status" id="shipping_status_pending" value="pending" />
-                        <label className="btn btn-outline-warning" htmlFor="shipping_status_pending">Pending</label>
+                        <input type="radio" className="btn-check" name="shipping_status" id="shipping_status_pending_filter" value="pending" />
+                        <label className="btn btn-outline-warning" htmlFor="shipping_status_pending_filter">Pending</label>
 
-                        <input type="radio" className="btn-check" name="shipping_status" id="shipping_status_shipped" value="shipped" />
-                        <label className="btn btn-outline-warning" htmlFor="shipping_status_shipped">Shipped</label>
+                        <input type="radio" className="btn-check" name="shipping_status" id="shipping_status_shipped_filter" value="sent" />
+                        <label className="btn btn-outline-warning" htmlFor="shipping_status_shipped_filter">Sent</label>
                     </div>
                 </div>
                 <div className="mb-4">

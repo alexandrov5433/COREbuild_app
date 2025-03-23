@@ -1,5 +1,4 @@
 .mainContainer {
-    outline: 1px solid rgb(0, 255, 234);
     padding: 0.5rem;
     & > *:not(:last-child) {
         margin-bottom: 0.5rem;
@@ -9,7 +8,8 @@
 .itemsSection {
     & > *:not(:last-child) {
         margin-bottom: 0.5rem;
-        border-bottom: 1px solid white;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.5);
     }
 }
 
@@ -35,6 +35,13 @@
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
+}
+
+.shipmentManagementSection {
+    i {
+        font-style: normal;
+        color: red;
+    }
 }
 
 @media (min-width: 600px) {

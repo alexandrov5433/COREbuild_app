@@ -1,5 +1,5 @@
 .mainContainer {
-    outline: 1px solid red;
+    /* outline: 1px solid red; */
     display: flex;
     flex-direction: row;
     align-items: flex-start;
@@ -7,6 +7,13 @@
     img {
         width: 5rem;
         height: auto;
+    }
+
+    a {
+        &:hover {
+            color: var(--green);
+            text-decoration: underline;
+        }
     }
 }
 

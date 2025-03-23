@@ -6,10 +6,12 @@ import Loader from "../../../general/loader/Loader";
 import { convertCentToWhole } from '../../../../lib/util/currency';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEuroSign } from '@fortawesome/free-solid-svg-icons';
+import { NavLink } from 'react-router';
 
 export default function Item({ productID, count }: { productID: number, count: number }) {
   const [isProductDataLoading, setProductDataLoading] = useState(false);
   const [productData, setProductData] = useState({} as ProductData);
+
   useEffect(() => {
     (async () => {
       if (!productID) {
@@ -34,7 +36,7 @@ export default function Item({ productID, count }: { productID: number, count: n
             <div className={styles.mainContainer}>
               <img src={`/api/file/pic/${productData.thumbnailID}`} className="img-thumbnail" alt={`Image of ${productData.name}`} />
               <div className={styles.info}>
-                <p className="lead">{productData.name}</p>
+                <NavLink className="lead" to={`/product-details/${productData.productID}`}>{productData.name}</NavLink>
                 <p><i>Quantity ordered:</i> {count}</p>
                 <p><i>Price of one:</i> {convertCentToWhole(productData.price)} <FontAwesomeIcon icon={faEuroSign}/></p>
               </div>

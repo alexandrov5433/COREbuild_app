@@ -6,10 +6,6 @@
     }
 }
 
-.filterContainer {
-
-}
-
 .ordersContainer {
     & > *:not(:last-of-type) {
         margin-bottom: 1rem;
@@ -19,4 +15,10 @@
 .paginationContainer {
     display: flex;
     justify-content: center;
+    .pagination {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+    }
 }
