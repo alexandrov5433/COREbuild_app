@@ -1,4 +1,4 @@
-import { ApiJsonResponce, RegistrationValidationError, UserData } from "../definitions";
+import { ApiJsonResponce, RegistrationValidationError, UserData } from "../../definitions";
 
 export default async function register(
     previousState: {

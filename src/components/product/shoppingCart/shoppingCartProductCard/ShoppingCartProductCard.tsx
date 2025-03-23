@@ -2,14 +2,14 @@ import styles from './shoppingCartProductCard.module.css';
 import { useEffect, useState } from "react";
 import { ProductData, ShoppingCart } from "../../../../lib/definitions";
 import { convertCentToWhole } from "../../../../lib/util/currency";
-import productDetails from "../../../../lib/actions/productDetails";
+import productDetails from "../../../../lib/actions/product/productDetails";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faEuroSign } from '@fortawesome/free-solid-svg-icons';
-import addProductToCart from '../../../../lib/actions/addProductToCart';
+import addProductToCart from '../../../../lib/actions/cart/addProductToCart';
 import { useAppDispatch } from '../../../../lib/hooks/reduxTypedHooks';
 import { updateCart } from '../../../../redux/cartSlice';
 import { setMessageData } from '../../../../redux/popupMessageSlice';
-import removeProductFromCart from '../../../../lib/actions/removeProductFromCart';
+import removeProductFromCart from '../../../../lib/actions/cart/removeProductFromCart';
 
 export default function ShoppingCartProductCard({
     productID,

@@ -3,15 +3,15 @@ import styles from './editProduct.module.css';
 import { useAppDispatch } from '../../../lib/hooks/reduxTypedHooks';
 import { useEffect, useRef, useState } from 'react';
 import { ProductData } from '../../../lib/definitions';
-import productDetails from '../../../lib/actions/productDetails';
+import productDetails from '../../../lib/actions/product/productDetails';
 import { setMessageData } from '../../../redux/popupMessageSlice';
 import { convertCentToWhole } from '../../../lib/util/currency';
-import editProductInfos from '../../../lib/actions/editProductInfos';
-import updateProductThumbnail from '../../../lib/actions/updateProductThumbnail';
-import addProductPictures from '../../../lib/actions/addProductPictures';
-import deleteProductPicture from '../../../lib/actions/deleteProductPicture';
-import deleteProductSpecsDoc from '../../../lib/actions/deleteProductSpecsDoc';
-import updateProductSpecsDoc from '../../../lib/actions/updateProductSpecsDoc';
+import editProductInfos from '../../../lib/actions/product/editProductInfos';
+import updateProductThumbnail from '../../../lib/actions/product/updateProductThumbnail';
+import addProductPictures from '../../../lib/actions/product/addProductPictures';
+import deleteProductPicture from '../../../lib/actions/product/deleteProductPicture';
+import deleteProductSpecsDoc from '../../../lib/actions/product/deleteProductSpecsDoc';
+import updateProductSpecsDoc from '../../../lib/actions/product/updateProductSpecsDoc';
 
 export default function EditProduct() {
   const { productID } = useParams();

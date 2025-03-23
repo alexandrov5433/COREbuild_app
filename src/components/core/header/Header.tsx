@@ -6,11 +6,11 @@ import { faCartShopping, faMagnifyingGlass } from '@fortawesome/free-solid-svg-i
 import { NavLink, useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from '../../../lib/hooks/reduxTypedHooks';
 import { useEffect, useState } from 'react';
-import logout from '../../../lib/actions/logout';
+import logout from '../../../lib/actions/user/logout';
 import { ShoppingCart } from '../../../lib/definitions';
 
 import { setUserToGuest } from '../../../redux/userSlice';
-import getShoppingCart from '../../../lib/actions/getShoppingCart';
+import getShoppingCart from '../../../lib/actions/cart/getShoppingCart';
 import { updateCart } from '../../../redux/cartSlice';
 
 export default function Header() {

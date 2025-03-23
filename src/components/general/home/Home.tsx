@@ -13,7 +13,7 @@ import { faSquareCheck, faPhone } from '@fortawesome/free-solid-svg-icons';
 import { NavLink } from 'react-router';
 import { useEffect, useState } from 'react';
 import { ProductData, ProductsCatalogQueryParams } from '../../../lib/definitions';
-import productsCatalog from '../../../lib/actions/productsCatalog';
+import productsCatalog from '../../../lib/actions/product/productsCatalog';
 import ProductCard from '../../product/productsCatalog/productCard/ProductCard';
 
 export default function Home() {

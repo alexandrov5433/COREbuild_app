@@ -1,11 +1,11 @@
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { useAppDispatch } from "../../../../lib/hooks/reduxTypedHooks";
 import { ShoppingCart } from "../../../../lib/definitions";
-import placeNewOrder from "../../../../lib/actions/placeNewOrder";
+import placeNewOrder from "../../../../lib/actions/order/placeNewOrder";
 import { setMessageData } from "../../../../redux/popupMessageSlice";
-import collectPayment from "../../../../lib/actions/collectPayment";
+import collectPayment from "../../../../lib/actions/order/collectPayment";
 import { updateCart } from "../../../../redux/cartSlice";
-import cancelOrder from "../../../../lib/actions/cancelOrder";
+import cancelOrder from "../../../../lib/actions/order/cancelOrder";
 
 export default function Checkout({ cart }: { cart: ShoppingCart }) {
     const appDispatch = useAppDispatch();

@@ -5,17 +5,17 @@ import { faStar as faStarHollow } from '@fortawesome/free-regular-svg-icons';
 import { ChangeEvent, SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { NavLink, useNavigate, useParams } from 'react-router';
 import { GetRatingAndReviewCountForProductActionData, ProductData, ReviewData, ShoppingCart } from '../../../lib/definitions';
-import productDetails from '../../../lib/actions/productDetails';
+import productDetails from '../../../lib/actions/product/productDetails';
 import { useAppDispatch, useAppSelector } from '../../../lib/hooks/reduxTypedHooks';
 import { setMessageData } from '../../../redux/popupMessageSlice';
 import { convertCentToWhole } from '../../../lib/util/currency';
-import getCustomerReviewedProduct from '../../../lib/actions/getCustomerReviewedProduct';
-import getRatingAndReviewCountForProduct from '../../../lib/actions/getRatingAndReviewCountForProduct';
-import getReviewsForProduct from '../../../lib/actions/getReviewsForProduct';
-import addNewReview from '../../../lib/actions/addNewReview';
+import getCustomerReviewedProduct from '../../../lib/actions/review/getCustomerReviewedProduct';
+import getRatingAndReviewCountForProduct from '../../../lib/actions/review/getRatingAndReviewCountForProduct';
+import getReviewsForProduct from '../../../lib/actions/review/getReviewsForProduct';
+import addNewReview from '../../../lib/actions/review/addNewReview';
 import { convertTimeToDate } from '../../../lib/util/time';
 import { updateCart } from '../../../redux/cartSlice';
-import addProductToCart from '../../../lib/actions/addProductToCart';
+import addProductToCart from '../../../lib/actions/cart/addProductToCart';
 import Loader from '../../general/loader/Loader';
 
 export default function ProductDetails() {

@@ -5,7 +5,7 @@ import { faEuroSign, faCircleCheck, faCircleXmark } from "@fortawesome/free-soli
 import { convertCentToWhole } from '../../../../lib/util/currency';
 import { useAppDispatch, useAppSelector } from '../../../../lib/hooks/reduxTypedHooks';
 import { useEffect, useState } from 'react';
-import addProductToCart from '../../../../lib/actions/addProductToCart';
+import addProductToCart from '../../../../lib/actions/cart/addProductToCart';
 import { setMessageData } from '../../../../redux/popupMessageSlice';
 import { updateCart } from '../../../../redux/cartSlice';
 import { NavLink } from 'react-router';

@@ -1,7 +1,7 @@
 import { useActionState, useEffect, useRef, useState } from 'react';
 import styles from './register.module.css';
 import logo from '../../../assets/COREbuild.svg';
-import register from '../../../lib/actions/register';
+import register from '../../../lib/actions/user/register';
 import { RegistrationValidationError, UserData } from '../../../lib/definitions';
 import { useAppDispatch } from '../../../lib/hooks/reduxTypedHooks';
 import { updateUserData } from '../../../redux/userSlice';

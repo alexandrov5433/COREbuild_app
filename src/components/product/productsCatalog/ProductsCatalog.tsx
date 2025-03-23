@@ -2,12 +2,12 @@ import styles from './productsCatalog.module.css';
 import { useSearchParams } from 'react-router';
 import { useEffect, useState } from 'react';
 import ProductFilters from './productFilters/ProductFilters';
-import productsCatalog from '../../../lib/actions/productsCatalog';
+import productsCatalog from '../../../lib/actions/product/productsCatalog';
 import { ProductData, ProductsCatalogQueryParams } from '../../../lib/definitions';
 import { useAppDispatch } from '../../../lib/hooks/reduxTypedHooks';
 import { setMessageData } from '../../../redux/popupMessageSlice';
 import ProductCard from './productCard/ProductCard';
-import getAllProductCategories from '../../../lib/actions/getAllProductCategories';
+import getAllProductCategories from '../../../lib/actions/product/getAllProductCategories';
 import Loader from '../../general/loader/Loader';
 
 export default function ProductsCatalog() {

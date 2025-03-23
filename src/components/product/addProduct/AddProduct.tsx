@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router';
-import addProduct from '../../../lib/actions/addProduct';
+import addProduct from '../../../lib/actions/product/addProduct';
 import { useAppDispatch } from '../../../lib/hooks/reduxTypedHooks';
 import { setMessageData } from '../../../redux/popupMessageSlice';
 import styles from './addProduct.module.css';
