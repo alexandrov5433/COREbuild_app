@@ -1,4 +1,4 @@
-import { useActionState, useEffect, useState } from 'react';
+import { ChangeEvent, useActionState, useEffect, useState } from 'react';
 import styles from './login.module.css';
 import login from '../../../lib/actions/user/login';
 import { useDispatch } from 'react-redux';
@@ -10,8 +10,8 @@ export default function Login() {
     const navigate = useNavigate();
     const [passwordInputType, setPasswordInputType] = useState('password');
     const [areLoginCredentialsFalse, setLoginCredentialsAreFalse] = useState(false);
-    const showHidePassword = function (e: React.SyntheticEvent) {
-        const isChecked = (e.target as HTMLInputElement).checked;
+    const showHidePassword = function (e: ChangeEvent<HTMLInputElement>) {
+        const isChecked = e.currentTarget.checked;
         if (isChecked) {
             setPasswordInputType('text');
             return;
@@ -28,16 +28,14 @@ export default function Login() {
         if (!isLoginPending && loginState.responseStatus === 400) {
             //false login credentials
             setLoginCredentialsAreFalse(true);
-        }
-    }, [loginState]);
-    useEffect(() => {
-        if (!isLoginPending && loginState.responseStatus === 200) {
+        } else if (!isLoginPending && loginState.responseStatus === 200) {
             //successful login
             setLoginCredentialsAreFalse(false)
             dispatch(updateUserData(loginState.data!));
             navigate('/');
         }
     }, [loginState]);
+
     return (
         <div className={styles.wrapper}>
             <h1>Log In</h1>
