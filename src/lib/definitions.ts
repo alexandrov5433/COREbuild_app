@@ -57,6 +57,7 @@ export type ApiJsonResponce = {
 
 export type RegistrationValidationErrorProperty = {
     valid: boolean,
+    touched: boolean,
     msg: string
 }
 

@@ -115,11 +115,6 @@ export default function Register() {
             Object.keys(validationState).forEach(p => {
                 if (Object.hasOwn(registerState.validationErrorsData, p)) {
                     (newState as any)[p] = (registerState.validationErrorsData as any)[p]; //data is of type RegistrationValidationError
-                } else {
-                    (newState as any)[p] = {
-                        valid: true,
-                        msg: ''
-                    }
                 }
             });
             setValidationState(newState as any);
@@ -283,21 +278,3 @@ export default function Register() {
         </div>
     );
 }
-
-
-
-{/* <div className={styles.inputContainer}>
-<label className="form-label">Prefered Payment Method <i>*</i></label>
-<div className={`${styles.paymentMethods} ${validationState.prefered_payment_method.valid ? '' : 'is-invalid'
-    }`}>
-    <input type="radio" className="btn-check" name="prefered_payment_method" id="paypal" value="paypal" defaultChecked={registerState.inputValues.prefered_payment_method === 'paypal' ? true : false} onInput={e => validator(e)}/>
-    <label className="btn btn-outline-success" htmlFor="paypal">PayPal</label>
-
-    <input type="radio" className="btn-check" name="prefered_payment_method" id="bank" value="bank" defaultChecked={registerState.inputValues.prefered_payment_method === 'bank' ? true : false} onInput={e => validator(e)}/>
-    <label className="btn btn-outline-success" htmlFor="bank">Bank</label>
-</div>
-<div id="paymentHelp" className="form-text">Please select your prefered payment method.</div>
-<div className="invalid-feedback">
-    {(registerState.validationErrorsData as RegistrationValidationError)?.prefered_payment_method?.msg || ''}
-</div>
-</div> */}
