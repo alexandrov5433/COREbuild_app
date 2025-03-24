@@ -4,14 +4,13 @@ import Order from './order/Order';
 import OrdersFilter from './ordersFilter/OrdersFilter';
 
 import { useEffect, useRef, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../lib/hooks/reduxTypedHooks';
-import { OrderData, OrderFiltrationOptions, UserData } from '../../lib/definitions';
+import { useAppDispatch } from '../../lib/hooks/reduxTypedHooks';
+import { OrderData, OrderFiltrationOptions } from '../../lib/definitions';
 import getFilteredOrders from '../../lib/actions/order/getFilteredOrders';
 import { setMessageData } from '../../redux/popupMessageSlice';
 import Loader from '../general/loader/Loader';
 
 export default function Orders() {
-    const userData = useAppSelector(state => state.user);
     const dispatch = useAppDispatch();
 
     const mostUpperElementRef = useRef(null);
@@ -20,7 +19,6 @@ export default function Orders() {
     const [orders, setOrders] = useState([] as Array<OrderData>);
     const [currentPage, setCurrentPage] = useState(1);
     const [pagesCount, setPagesCount] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(4);
     const [ordersRefreshTrigger, setOrdersRefreshTrigger] = useState(false);
 
     const initFiltrationOptions: OrderFiltrationOptions = {
@@ -139,7 +137,7 @@ export default function Orders() {
 
             <div className={styles.paginationContainer}>
                 <nav className={styles.pagination}>
-                    <select className="form-select" onChange={e => changeItemsPerPage(e)} defaultValue={itemsPerPage.toString() || '4'}>
+                    <select className="form-select" onChange={e => changeItemsPerPage(e)} defaultValue={filtrationOptions.itemsPerPage.toString() || '4'}>
                         <option value="4">4 per page</option>
                         <option value="8">8 per page</option>
                         <option value="12">12 per page</option>
