@@ -1,16 +1,5 @@
 .wrapper {
     padding: var(--wrapper-pad-mobile);
-    h1 {
-        text-align: center;
-    }
-}
-
-@media (min-width: 600px) {
-    .wrapper {
-        h1 {
-            text-align: left;
-        }
-    }
 }
 
 @media (min-width: 992px) {
