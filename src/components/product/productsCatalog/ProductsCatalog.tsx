@@ -9,6 +9,8 @@ import { setMessageData } from '../../../redux/popupMessageSlice';
 import ProductCard from './productCard/ProductCard';
 import getAllProductCategories from '../../../lib/actions/product/getAllProductCategories';
 import Loader from '../../general/loader/Loader';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 export default function ProductsCatalog() {
     const dispatch = useAppDispatch();
@@ -18,6 +20,7 @@ export default function ProductsCatalog() {
     const [allPagesCount, setAllPagesCount] = useState(1);
     const [categories, setCategories] = useState([] as Array<string>);
     const [isProductsLoading, setProductsLoading] = useState(true);
+    const [filterFormClearTrigger, setFilterFormClearTrigger] = useState(false);
 
     function queryParamsSetterForFilter(paramsToSet: {
         currentPage: number,
@@ -91,6 +94,7 @@ export default function ProductsCatalog() {
             });
             return newState;
         });
+        activateFilterFormClearTrigger();
     }
     function searchParamsToObject(searchParams: URLSearchParams) {
         const params = Object.fromEntries(searchParams.entries());
@@ -104,6 +108,9 @@ export default function ProductsCatalog() {
             availableInStock: params.availableInStock || '',
             manufacturer: params.manufacturer || '',
         } as ProductsCatalogQueryParams;
+    }
+    function activateFilterFormClearTrigger() {
+        setFilterFormClearTrigger(state => !state);
     }
 
     useEffect(() => {
@@ -152,53 +159,62 @@ export default function ProductsCatalog() {
                 queryParamsSetter={queryParamsSetterForFilter}
                 categories={categories}
                 currentQueryParams={searchParamsToObject(searchParams)}
+                filterFormClearTrigger={filterFormClearTrigger}
             />
             {
                 isProductsLoading ?
-                    <Loader/>
-                    :
-                    <>
-                        <div className={`row row-cols-1 row-cols-md-4 g-4 ${styles.cardsWrapper}`}>
-                            {
-                                productResults.map(p => <ProductCard {...p} key={p.productID} />)
-                            }
+                    <Loader />
+                    : productResults.length ?
+                        <>
+                            <div className={`row row-cols-1 row-cols-md-4 g-4 ${styles.cardsWrapper}`}>
+                                {
+                                    productResults.map(p => <ProductCard {...p} key={p.productID} />)
+                                }
+                            </div>
+
+                            <nav aria-label="Page navigation example" className={styles.pagination}>
+                                <select className="form-select" aria-label="Amount of items to display per page." onChange={(e) => { changeItemsPerPage(e) }} defaultValue={searchParams.get('itemsPerPage')?.toString() || '12'}>
+                                    <option value="4">4 per page</option>
+                                    <option value="8">8 per page</option>
+                                    <option value="12">12 per page</option>
+                                    <option value="24">24 per page</option>
+                                </select>
+                                <ul className="pagination">
+                                    <li className="page-item">
+                                        <a className="page-link" onClick={decrementPage} aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <>
+                                        {
+                                            currentPage - 1 > 0 ?
+                                                <li className="page-item"><a className="page-link" onClick={() => goToGivenPage(currentPage - 1)}>{currentPage - 1}</a></li>
+                                                : ''
+                                        }
+                                        <li className="page-item"><a className="page-link active">{currentPage}</a></li>
+
+                                        {
+                                            currentPage + 1 <= allPagesCount ?
+                                                <li className="page-item"><a className="page-link" onClick={() => goToGivenPage(currentPage + 1)}>{currentPage + 1}</a></li>
+                                                : ''
+                                        }
+                                    </>
+                                    <li className="page-item">
+                                        <a className="page-link" onClick={incrementPage} aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </>
+                        :
+                        <div className={styles.noResultsContainer}>
+                            <FontAwesomeIcon icon={faMagnifyingGlass} />
+                            <p className='lead'>No products were found with these search parameters.</p>
+                            <button className={`btn btn-outline-warning`} type="button" onClick={clearFilters}>
+                                Clear Filters
+                            </button>
                         </div>
-
-                        <nav aria-label="Page navigation example" className={styles.pagination}>
-                            <select className="form-select" aria-label="Amount of items to display per page." onChange={(e) => { changeItemsPerPage(e) }} defaultValue={searchParams.get('itemsPerPage')?.toString() || '12'}>
-                                <option value="4">4 per page</option>
-                                <option value="8">8 per page</option>
-                                <option value="12">12 per page</option>
-                                <option value="24">24 per page</option>
-                            </select>
-                            <ul className="pagination">
-                                <li className="page-item">
-                                    <a className="page-link" onClick={decrementPage} aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </a>
-                                </li>
-                                <>
-                                    {
-                                        currentPage - 1 > 0 ?
-                                            <li className="page-item"><a className="page-link" onClick={() => goToGivenPage(currentPage - 1)}>{currentPage - 1}</a></li>
-                                            : ''
-                                    }
-                                    <li className="page-item"><a className="page-link active">{currentPage}</a></li>
-
-                                    {
-                                        currentPage + 1 <= allPagesCount ?
-                                            <li className="page-item"><a className="page-link" onClick={() => goToGivenPage(currentPage + 1)}>{currentPage + 1}</a></li>
-                                            : ''
-                                    }
-                                </>
-                                <li className="page-item">
-                                    <a className="page-link" onClick={incrementPage} aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </>
             }
         </div>
     );

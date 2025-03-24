@@ -29,6 +29,18 @@
     }
 }
 
+.noResultsContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    padding: 8rem 0;
+    svg {
+        font-size: 2rem;
+    }
+}
+
 @media (min-width: 600px) {
     .cardsWrapper > * {
         width: calc(100% / 3);

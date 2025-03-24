@@ -6,7 +6,8 @@ import { useEffect, useRef, useState } from 'react';
 export default function ProductFilters({
     queryParamsSetter,
     categories,
-    currentQueryParams
+    currentQueryParams,
+    filterFormClearTrigger
 }: {
     queryParamsSetter: (paramsToSet: {
         currentPage: number,
@@ -19,7 +20,8 @@ export default function ProductFilters({
         manufacturer: string,
     }) => void,
     categories: Array<string>,
-    currentQueryParams: ProductsCatalogQueryParams
+    currentQueryParams: ProductsCatalogQueryParams,
+    filterFormClearTrigger: boolean
 }) {
     const formRef = useRef(null);
     const [formValidity, setFormValidity] = useState({
@@ -73,6 +75,10 @@ export default function ProductFilters({
             return newState;
         });       
     }
+
+    useEffect(() => {
+        (formRef.current! as HTMLFormElement).reset();
+    }, [filterFormClearTrigger]);
 
     return (
         <div className={`offcanvas offcanvas-start ${styles.filters}`} tabIndex={-1} id="filters">
