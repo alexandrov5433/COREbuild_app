@@ -4,6 +4,7 @@ import login from '../../../lib/actions/user/login';
 import { useDispatch } from 'react-redux';
 import { updateUserData } from '../../../redux/userSlice';
 import { useNavigate } from 'react-router';
+import { setMessageData } from '../../../redux/popupMessageSlice';
 
 export default function Login() {
     const dispatch = useDispatch();
@@ -27,6 +28,12 @@ export default function Login() {
     useEffect(() => {
         if (!isLoginPending && loginState.responseStatus === 400) {
             //false login credentials
+            dispatch(setMessageData({
+                duration: 4000,
+                isShown: true,
+                text: loginState.msg,
+                type: 'error'
+            }));
             setLoginCredentialsAreFalse(true);
         } else if (!isLoginPending && loginState.responseStatus === 200) {
             //successful login
