@@ -158,6 +158,6 @@ export type OrderFiltrationOptions = {
 };
 
 export type CollectPaymentActionData = {
-    paypal_order_id: string,
+    updatedOrderData: OrderData,
     userData: UserData
 }
