@@ -169,7 +169,7 @@ export default function Register() {
             <h1>Register</h1>
             <p className={`${styles.mandatoryFielsExplanation}`}>Please fill out all mandatory <i>*</i> fields.</p>
             <form action={registerAction} ref={formRef}>
-                <div className={`form-check ${styles.inputContainer}`}>
+                <div className={`form-check ${styles.inputContainer} ${styles.checkboxContainer} ${styles.employeeCheckboxContainer}`}>
                     <input type="checkbox" className="form-check-input" id="is_employee" name="is_employee" onClick={showHideEmployeeRegister} defaultChecked={isEmployee}/>
                     <label className={`form-check-label ${styles.labelWithLogo}`} htmlFor="is_employee">I am an employee of<img src={logo} alt="COREbuild" /></label>
                 </div>
@@ -192,7 +192,7 @@ export default function Register() {
                     <div className="invalid-feedback">
                         {(registerState.validationErrorsData as RegistrationValidationError)?.password?.msg || ''}
                     </div>
-                    <div className={`form-check ${styles.inputContainer}`}>
+                    <div className={`form-check ${styles.inputContainer} ${styles.checkboxContainer}`}>
                         <input type="checkbox" className="form-check-input" id="showPassword" onChange={showHidePassword} />
                         <label className="form-check-label" htmlFor="showPassword">Show password</label>
                     </div>
@@ -261,7 +261,7 @@ export default function Register() {
                         </>
                 }
 
-                <div className={`form-check ${styles.inputContainer}`}>
+                <div className={`form-check ${styles.inputContainer} ${styles.checkboxContainer}`}>
                     <input type="checkbox" className="form-check-input" id="stayLoggedIn" name='stayLoggedIn' />
                     <label className="form-check-label" htmlFor="stayLoggedIn">Stay logged in</label>
                 </div>

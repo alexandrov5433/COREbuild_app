@@ -1,1 +1,16 @@
 @import url(../../../lib/styling/generalWrapper.module.css);
+
+.wrapper {
+    form > *:not(:first-child) {
+        margin-top: 2rem;
+    }
+
+    .checkboxContainer {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        label {
+            align-self: flex-end;
+        }  
+    }
+}

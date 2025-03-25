@@ -1,13 +1,26 @@
 @import url(../../../lib/styling/generalWrapper.module.css);
 
+.wrapper {
+    form > *:not(:first-child) {
+        margin-top: 2rem;
+    }
+
+    .checkboxContainer {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        label {
+            align-self: flex-end;
+        }  
+    }
+}
+
 .labelWithLogo {
     display: flex;
     align-items: center;
     gap: 0.1rem;
-    font-size: 2rem;
-    line-height: 2;
     img {
-        width: 10rem;
+        width: 6rem;
         height: auto;
     }
 }
@@ -35,6 +48,10 @@
 }
 
 @media (min-width: 992px) {
+    .checkboxContainer.employeeCheckboxContainer {
+        align-items: normal; 
+    }
+    
     .labelWithLogo {
         font-size: 1.1rem;
         line-height: 1.4;

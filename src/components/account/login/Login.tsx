@@ -47,19 +47,19 @@ export default function Login() {
         <div className={styles.wrapper}>
             <h1>Log In</h1>
             <form action={loginAction}>
-                <div className={`${styles.inputContainer} ${areLoginCredentialsFalse ? 'is-invalid' : ''
+                <div className={`${areLoginCredentialsFalse ? 'is-invalid' : ''
                         }`}>
                     <label htmlFor="username" className="form-label">Username</label>
                     <input type="text" className={`form-control ${areLoginCredentialsFalse ? 'is-invalid' : ''
                         }`} id="username" name="username" aria-describedby="usernameHelp" defaultValue={loginState.inputedUsername || ''} />
                     <div id="usernameHelp" className="form-text">Please enter your username.</div>
                 </div>
-                <div className={styles.inputContainer}>
+                <div>
                     <label htmlFor="password" className="form-label">Password</label>
                     <input type={passwordInputType} className={`form-control ${areLoginCredentialsFalse ? 'is-invalid' : ''
                         }`} id="password" name="password" aria-describedby="passwordHelp" />
                     <div id="passwordHelp" className="form-text">Please enter your password.</div>
-                    <div className={`form-check ${styles.inputContainer}`}>
+                    <div className={`form-check ${styles.checkboxContainer}`}>
                         <input type="checkbox" className="form-check-input" id="showPassword" onChange={showHidePassword} />
                         <label className="form-check-label" htmlFor="showPassword">Show password</label>
                     </div>
@@ -67,7 +67,7 @@ export default function Login() {
                 <div className="invalid-feedback">
                     {loginState.msg || ''}
                 </div>
-                <div className={`form-check ${styles.inputContainer}`}>
+                <div className={`form-check ${styles.checkboxContainer}`}>
                     <input type="checkbox" className="form-check-input" id="stayLoggedIn" name='stayLoggedIn' />
                     <label className="form-check-label" htmlFor="stayLoggedIn">Stay logged in</label>
                 </div>
