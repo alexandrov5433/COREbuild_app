@@ -1,6 +1,5 @@
 footer {
-    background-color: var(--bs-tertiary-bg);
-
+    background-color: var(--bs-tertiary-bg);    
     padding-top: 2rem;
 
     ul {
