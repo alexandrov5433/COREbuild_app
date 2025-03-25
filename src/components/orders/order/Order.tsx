@@ -48,8 +48,7 @@ export default function Order({
   useEffect(() => {
     const dependencies = [
       shipmentStatusFormValidity.shipment_tracking_code,
-      shipmentStatusFormValidity.shipping_speditor,
-      shipmentStatusFormValidity.shipping_status
+      shipmentStatusFormValidity.shipping_speditor
     ];
     const isFormValid = !dependencies.includes(false);
     setShipmentStatusFormValidity(state => {
@@ -59,8 +58,7 @@ export default function Order({
     });
   }, [
     shipmentStatusFormValidity.shipment_tracking_code,
-    shipmentStatusFormValidity.shipping_speditor,
-    shipmentStatusFormValidity.shipping_status
+    shipmentStatusFormValidity.shipping_speditor
   ]);
 
   async function onUpdateShipmentStatus() {
