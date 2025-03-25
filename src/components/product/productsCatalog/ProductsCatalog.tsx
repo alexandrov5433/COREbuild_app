@@ -43,7 +43,7 @@ export default function ProductsCatalog() {
             return;
         }
         setSearchParams(state => {
-            const currentPage = Number(state.get('currentPage'));
+            const currentPage = Number(state.get('currentPage')) || 1;
             const targetPageVal = currentPage + 1 > allPagesCount ? currentPage : currentPage + 1;
             state.set('currentPage', targetPageVal.toString());
             return state;
