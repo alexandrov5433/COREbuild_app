@@ -1,11 +1,13 @@
 import { useRef, useState } from 'react';
 import styles from './ordersFilter.module.css';
+import { useAppSelector } from '../../../lib/hooks/reduxTypedHooks';
 
 export default function OrdersFilter({
     updateFilter
 }: {
-    updateFilter: (options : any) => void
+    updateFilter: (options: any) => void
 }) {
+    const userData = useAppSelector(state => state.user);
     const [isFilterOpen, setFilterOpen] = useState(false);
     const filterFormRef = useRef(null);
 
@@ -50,10 +52,14 @@ export default function OrdersFilter({
                     <label htmlFor="orderID" className="form-label">Order ID</label>
                     <input type="number" id="orderID" name="orderID" className="form-control" />
                 </div>
-                <div className="mb-3">
-                    <label htmlFor="recipientID" className="form-label">Recipient ID</label>
-                    <input type="number" id="recipientID" name="recipientID" className="form-control" />
-                </div>
+                {
+                    userData?.is_employee ?
+                        <div className="mb-3">
+                            <label htmlFor="recipientID" className="form-label">Recipient ID</label>
+                            <input type="number" id="recipientID" name="recipientID" className="form-control" />
+                        </div>
+                        : ''
+                }
                 <div className="mb-3">
                     <label className="form-label">Shipping Status</label>
                     <div className={styles.buttonsContainer}>
@@ -67,7 +73,7 @@ export default function OrdersFilter({
                 <div className="mb-4">
                     <label className="form-label">Time</label>
                     <div className={styles.buttonsContainer}>
-                        <input type="radio" className="btn-check" name="time" id="time_newer" value="descending" defaultChecked/>
+                        <input type="radio" className="btn-check" name="time" id="time_newer" value="descending" defaultChecked />
                         <label className="btn btn-outline-warning" htmlFor="time_newer">Newer First</label>
 
                         <input type="radio" className="btn-check" name="time" id="time_older" value="ascending" />
