@@ -34,7 +34,7 @@ export default function PopupMessage() {
                     {iconPicker()}
                 </div>
                 <div className={styles.textContent}>
-                    <p className={styles.message}>{messageData.text}</p>
+                    <p className={`${styles.message}`}>{messageData.text}</p>
                 </div>
             </div>
             <div className={styles.buttonContainer}>
