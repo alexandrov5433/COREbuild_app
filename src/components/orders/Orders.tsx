@@ -4,7 +4,7 @@ import Order from './order/Order';
 import OrdersFilter from './ordersFilter/OrdersFilter';
 
 import { useEffect, useRef, useState } from 'react';
-import { useAppDispatch } from '../../lib/hooks/reduxTypedHooks';
+import { useAppDispatch, useAppSelector } from '../../lib/hooks/reduxTypedHooks';
 import { OrderData, OrderFiltrationOptions } from '../../lib/definitions';
 import getFilteredOrders from '../../lib/actions/order/getFilteredOrders';
 import { setMessageData } from '../../redux/popupMessageSlice';
@@ -12,6 +12,7 @@ import Loader from '../general/loader/Loader';
 
 export default function Orders() {
     const dispatch = useAppDispatch();
+    const userData = useAppSelector(state => state.user);
 
     const mostUpperElementRef = useRef(null);
 
@@ -119,13 +120,13 @@ export default function Orders() {
 
     return (
         <div ref={mostUpperElementRef} className={`${styles.wrapper} ${styles.mainContainer}`}>
-            <h1>Orders</h1>
+            <h1>{userData.is_employee ? '' : 'My '}Orders</h1>
             <div className={styles.filterContainer}>
                 <OrdersFilter updateFilter={updateFilter} />
             </div>
             {
                 isPageLoading ? <Loader /> :
-                    orders ?
+                    orders.length ?
                         <div className={styles.ordersContainer}>
                             {
                                 orders.map(order => <Order key={order.id} order={order} ordersRefreshTrigger={activateOrdersRefreshTrigger} />)

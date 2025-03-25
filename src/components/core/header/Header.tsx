@@ -149,7 +149,7 @@ export default function Header() {
                                                     : ''
                                             }
                                             <li>
-                                                <NavLink className="dropdown-item" to="/orders">Orders</NavLink>
+                                                <NavLink className="dropdown-item" to="/orders">{userData.is_employee ? '' : 'My '}Orders</NavLink>
                                             </li>
                                             <li>
                                                 <NavLink className="dropdown-item" to="/profile">Profile</NavLink>
