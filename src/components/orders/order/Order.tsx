@@ -30,7 +30,6 @@ export default function Order({
     isFormValid: false,
     shipping_speditor: false,
     shipment_tracking_code: false,
-    shipping_status: false
   };
   const [shipmentStatusFormValidity, setShipmentStatusFormValidity] = useState(initshipmentStatusFormValidity)
 
@@ -77,14 +76,14 @@ export default function Order({
         isShown: true,
         text: 'Shipment details updated!',
         type: 'success'
-     }));
-     ordersRefreshTrigger();
+      }));
+      ordersRefreshTrigger();
     } else {
       dispatch(setMessageData({
-         duration: 4000,
-         isShown: true,
-         text: actionResult.msg,
-         type: 'error'
+        duration: 4000,
+        isShown: true,
+        text: actionResult.msg,
+        type: 'error'
       }));
     }
     setShipmentStatusUpdateInProgress(false);
@@ -93,14 +92,9 @@ export default function Order({
   function shipmentFormValidator(e: ChangeEvent<HTMLInputElement>) {
     const val = e.target.value;
     const name = e.target.name;
-    let isValild = true;
-    if (name === 'shipping_status') {
-      isValild = ['pending', 'sent'].includes(val);
-    } else {
-      isValild = Boolean(val);
-    }
+    let isValild = Boolean(val);
     setShipmentStatusFormValidity(state => {
-      const newState = {...state};
+      const newState = { ...state };
       (newState as any)[name] = isValild;
       return newState;
     });
@@ -146,35 +140,46 @@ export default function Order({
             {
               userData?.userID && userData?.is_employee ?
                 <section className={styles.shipmentManagementSection}>
-                  <button className="btn btn-primary mb-1" type="button" data-bs-toggle="collapse" data-bs-target={`#shipment-manager-${order.id}`} onClick={() => setShipmentToolsOpen(state => !state)}>
-                    {isShipmentToolsOpen ? 'Close Shipment Manager' : 'Open Shipment Manager'}
-                  </button>
-                  <form ref={shipmentFormRef} className={`collapse`} id={`shipment-manager-${order.id}`}>
-                    <h4>Update Shipment Status</h4>
-                    <p>Mandatory Fields <i>*</i></p>
-                    <div className="mb-3">
-                      <label htmlFor="shipping_speditor" className="form-label">Speditor <i>*</i></label>
-                      <input type="text" id="shipping_speditor" name="shipping_speditor" className={`form-control ${shipmentStatusFormValidity.shipping_speditor ? 'is-valid' : ''}`} onChange={e => shipmentFormValidator(e)} />
-                    </div>
-                    <div className="mb-3">
-                      <label htmlFor="shipment_tracking_code" className="form-label">Tracking Code <i>*</i></label>
-                      <input type="text" id="shipment_tracking_code" name="shipment_tracking_code" className={`form-control ${shipmentStatusFormValidity.shipment_tracking_code ? 'is-valid' : ''}`} onChange={e => shipmentFormValidator(e)} />
-                    </div>
-                    <div className="mb-3">
-                      <label className="form-label">Shipping Status <i>*</i></label>
-                      <div className={styles.buttonsContainer}>
-                        <input type="radio" className="btn-check" name="shipping_status" id={`shipping_status_pending_${order.id}`} value="pending" onChange={e => shipmentFormValidator(e)} />
-                        <label className="btn btn-outline-warning" htmlFor={`shipping_status_pending_${order.id}`}>Pending</label>
+                  {
+                    order.shipping_status == 'sent' ?
 
-                        <input type="radio" className="btn-check" name="shipping_status" id={`shipping_status_shipped_${order.id}`} value="sent" onChange={e => shipmentFormValidator(e)} />
-                        <label className="btn btn-outline-warning" htmlFor={`shipping_status_shipped_${order.id}`}>Sent</label>
-                      </div>
-                    </div>
-                    <hr />
-                    <div className={styles.buttonsContainer}>
-                      <button className="btn btn-primary" type="button" onClick={onUpdateShipmentStatus} disabled={isShipmentStatusUpdateInProgress || !shipmentStatusFormValidity.isFormValid}>Update Status</button>
-                    </div>
-                  </form>
+                      <form ref={shipmentFormRef} id={`shipment-manager-${order.id}`}>
+                        <h4>Revert Shipment Status</h4>
+
+                        <input type="radio" className="btn-check" name="shipping_status" value="pending" checked readOnly />
+
+                        <div className={styles.buttonsContainer}>
+                          <button className="btn btn-danger" type="button" onClick={onUpdateShipmentStatus} disabled={isShipmentStatusUpdateInProgress}>Revert To Pending</button>
+                        </div>
+                      </form>
+
+                      :
+
+                      <>
+                        <button className="btn btn-primary mb-1" type="button" data-bs-toggle="collapse" data-bs-target={`#shipment-manager-${order.id}`} onClick={() => setShipmentToolsOpen(state => !state)}>
+                          {isShipmentToolsOpen ? 'Close Shipment Manager' : 'Open Shipment Manager'}
+                        </button>
+                        <form ref={shipmentFormRef} className={`collapse`} id={`shipment-manager-${order.id}`}>
+                          <h4>Update Shipment Status</h4>
+                          <p>Mandatory Fields <i>*</i></p>
+                          <div className="mb-3">
+                            <label htmlFor="shipping_speditor" className="form-label">Speditor <i>*</i></label>
+                            <input type="text" id="shipping_speditor" name="shipping_speditor" className={`form-control ${shipmentStatusFormValidity.shipping_speditor ? 'is-valid' : ''}`} onChange={e => shipmentFormValidator(e)} />
+                          </div>
+                          <div className="mb-3">
+                            <label htmlFor="shipment_tracking_code" className="form-label">Tracking Code <i>*</i></label>
+                            <input type="text" id="shipment_tracking_code" name="shipment_tracking_code" className={`form-control ${shipmentStatusFormValidity.shipment_tracking_code ? 'is-valid' : ''}`} onChange={e => shipmentFormValidator(e)} />
+                          </div>
+
+                          <input type="radio" className="btn-check" name="shipping_status" value="sent" checked readOnly />
+
+                          <hr />
+                          <div className={styles.buttonsContainer}>
+                            <button className="btn btn-primary" type="button" onClick={onUpdateShipmentStatus} disabled={isShipmentStatusUpdateInProgress || !shipmentStatusFormValidity.isFormValid}>Update Status</button>
+                          </div>
+                        </form>
+                      </>
+                  }
                 </section>
                 : ''
             }

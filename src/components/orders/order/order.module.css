@@ -42,6 +42,11 @@
         font-style: normal;
         color: red;
     }
+
+    input[name="shipping_status"] {
+        display: node;
+        pointer-events: none;
+    }
 }
 
 @media (min-width: 600px) {
