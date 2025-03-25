@@ -9,6 +9,8 @@ import { OrderData, OrderFiltrationOptions } from '../../lib/definitions';
 import getFilteredOrders from '../../lib/actions/order/getFilteredOrders';
 import { setMessageData } from '../../redux/popupMessageSlice';
 import Loader from '../general/loader/Loader';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 export default function Orders() {
     const dispatch = useAppDispatch();
@@ -109,7 +111,7 @@ export default function Orders() {
             '24': 24
         }[e.target.value] || 4;
         console.log(itemsPerPageToSet);
-        
+
         setFiltrationOptions(state => {
             const newState = { ...state };
             newState.itemsPerPage = itemsPerPageToSet;
@@ -126,52 +128,68 @@ export default function Orders() {
             </div>
             {
                 isPageLoading ? <Loader /> :
-                    orders.length ?
-                        <div className={styles.ordersContainer}>
-                            {
-                                orders.map(order => <Order key={order.id} order={order} ordersRefreshTrigger={activateOrdersRefreshTrigger} />)
-                            }
-                        </div>
+                    orders?.length ?
+                        <>
+                            <div className={styles.ordersContainer}>
+                                {
+                                    orders.map(order => <Order key={order.id} order={order} ordersRefreshTrigger={activateOrdersRefreshTrigger} />)
+                                }
+                            </div>
+                            <div className={styles.paginationContainer}>
+                                <nav className={styles.pagination}>
+                                    <select className="form-select" onChange={e => changeItemsPerPage(e)} defaultValue={filtrationOptions.itemsPerPage.toString() || '4'}>
+                                        <option value="4">4 per page</option>
+                                        <option value="8">8 per page</option>
+                                        <option value="12">12 per page</option>
+                                        <option value="24">24 per page</option>
+                                    </select>
+                                    <ul className="pagination">
+                                        <li className="page-item">
+                                            <a className="page-link" onClick={decrementPage} aria-label="Previous">
+                                                <span aria-hidden="true">&laquo;</span>
+                                            </a>
+                                        </li>
+                                        <>
+                                            {
+                                                currentPage - 1 > 0 ?
+                                                    <li className="page-item"><a className="page-link" onClick={() => goToGivenPage(currentPage - 1)}>{currentPage - 1}</a></li>
+                                                    : ''
+                                            }
+                                            <li className="page-item"><a className="page-link active">{currentPage}</a></li>
+
+                                            {
+                                                currentPage + 1 <= pagesCount ?
+                                                    <li className="page-item"><a className="page-link" onClick={() => goToGivenPage(currentPage + 1)}>{currentPage + 1}</a></li>
+                                                    : ''
+                                            }
+                                        </>
+                                        <li className="page-item">
+                                            <a className="page-link" onClick={incrementPage} aria-label="Next">
+                                                <span aria-hidden="true">&raquo;</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </>
                         :
-                        <p className="lead">No orders found.</p>
+                        <div className={styles.noResultsContainer}>
+                            <FontAwesomeIcon icon={faMagnifyingGlass} />
+                            <p className='lead'>No orders were found.</p>
+                            <button className={`btn btn-outline-warning`} type="button" onClick={() => {
+                                updateFilter({
+                                    orderID: null,
+                                    recipientID: null,
+                                    shipping_status: null,
+                                    time: 'descending',
+                                });
+                            }}>
+                                Clear Filters
+                            </button>
+                        </div>
             }
 
-            <div className={styles.paginationContainer}>
-                <nav className={styles.pagination}>
-                    <select className="form-select" onChange={e => changeItemsPerPage(e)} defaultValue={filtrationOptions.itemsPerPage.toString() || '4'}>
-                        <option value="4">4 per page</option>
-                        <option value="8">8 per page</option>
-                        <option value="12">12 per page</option>
-                        <option value="24">24 per page</option>
-                    </select>
-                    <ul className="pagination">
-                        <li className="page-item">
-                            <a className="page-link" onClick={decrementPage} aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <>
-                            {
-                                currentPage - 1 > 0 ?
-                                    <li className="page-item"><a className="page-link" onClick={() => goToGivenPage(currentPage - 1)}>{currentPage - 1}</a></li>
-                                    : ''
-                            }
-                            <li className="page-item"><a className="page-link active">{currentPage}</a></li>
 
-                            {
-                                currentPage + 1 <= pagesCount ?
-                                    <li className="page-item"><a className="page-link" onClick={() => goToGivenPage(currentPage + 1)}>{currentPage + 1}</a></li>
-                                    : ''
-                            }
-                        </>
-                        <li className="page-item">
-                            <a className="page-link" onClick={incrementPage} aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
 
         </div>
     );
