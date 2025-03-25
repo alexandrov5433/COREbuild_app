@@ -2,12 +2,14 @@ import { configureStore } from '@reduxjs/toolkit'
 import userReducer from './userSlice';
 import popupMessageReducer from './popupMessageSlice';
 import cartReducer from './cartSlice';
+import favoriteReducer  from './favoriteSlice';
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
     popupMessage: popupMessageReducer,
-    cart: cartReducer
+    cart: cartReducer,
+    favorite: favoriteReducer
   },
 })
 

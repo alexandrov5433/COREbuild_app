@@ -1,7 +1,8 @@
 import styles from './productCard.module.css';
 import { ProductData, ShoppingCart } from "../../../../lib/definitions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEuroSign, faCircleCheck, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
+import { faEuroSign, faCircleCheck, faCircleXmark, faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faHeart as faHeartHollow } from '@fortawesome/free-regular-svg-icons';
 import { convertCentToWhole } from '../../../../lib/util/currency';
 import { useAppDispatch, useAppSelector } from '../../../../lib/hooks/reduxTypedHooks';
 import { useEffect, useState } from 'react';
@@ -9,18 +10,23 @@ import addProductToCart from '../../../../lib/actions/cart/addProductToCart';
 import { setMessageData } from '../../../../redux/popupMessageSlice';
 import { updateCart } from '../../../../redux/cartSlice';
 import { NavLink } from 'react-router';
+import addProductToFavorite from '../../../../lib/actions/favorite/addProductToFavorite';
+import { updateFavorite } from '../../../../redux/favoriteSlice';
+import deleteProductFromFavorite from '../../../../lib/actions/favorite/deleteProductFromFavorite';
 
 export default function ProductCard(productData: ProductData) {
     const dispatch = useAppDispatch();
     const userData = useAppSelector(state => state.user);
+    const favoriteData = useAppSelector(state => state.favorite);
+
     const [additionTrigger, setAdditionTrigger] = useState(false);
+    const [isFavoriteButtonsBlocked, setFavoriteButtonsBlocked] = useState(false);
 
     useEffect(() => {
         if (additionTrigger) {
             (async () => {
                 const addition = await addProductToCart(productData.productID, 1);
                 if (addition.responseStatus === 200) {
-                    console.log(addition.data);
                     dispatch(updateCart(addition.data as ShoppingCart))
                     dispatch(setMessageData({
                         duration: 4000,
@@ -41,9 +47,73 @@ export default function ProductCard(productData: ProductData) {
         }
     }, [additionTrigger]);
 
+    async function saveProductToFavorites(productID: number) {
+        if (!productID || !userData?.userID) {
+            return;
+        }
+        setFavoriteButtonsBlocked(true);
+        const addToFavoritesAction = await addProductToFavorite(userData.userID, productID);
+        if (addToFavoritesAction.responseStatus === 200) {
+            dispatch(setMessageData({
+                duration: 4000,
+                isShown: true,
+                text: 'Product saved to favorites.',
+                type: 'success'
+            }));
+            dispatch(updateFavorite(addToFavoritesAction.data!));
+        } else if (addToFavoritesAction.responseStatus === 400) {
+            dispatch(setMessageData({
+                duration: 4000,
+                isShown: true,
+                text: addToFavoritesAction.msg,
+                type: 'error'
+            }));
+        }
+        setFavoriteButtonsBlocked(false);
+    }
+
+    async function removeProductToFavorites(productID: number) {
+        if (!productID || !userData?.userID) {
+            return;
+        }
+        setFavoriteButtonsBlocked(true);
+        const deleteProductFromFavoritesAction = await deleteProductFromFavorite(userData.userID, productID);
+        if (deleteProductFromFavoritesAction.responseStatus === 200) {
+            dispatch(setMessageData({
+                duration: 4000,
+                isShown: true,
+                text: 'Product deleted from favorites.',
+                type: 'success'
+            }));
+            dispatch(updateFavorite(deleteProductFromFavoritesAction.data!));
+        } else if (deleteProductFromFavoritesAction.responseStatus === 400) {
+            dispatch(setMessageData({
+                duration: 4000,
+                isShown: true,
+                text: deleteProductFromFavoritesAction.msg,
+                type: 'error'
+            }));
+        }
+        setFavoriteButtonsBlocked(false);
+    }
+
     return (
         <div className="col">
             <div className={`card h-100 ${styles.card}`}>
+                {
+                    userData.userID && !userData.is_employee ?
+                        (
+                            favoriteData?.products?.includes(productData.productID) ?
+                                <button className={`btn ${styles.heart}`} onClick={() => removeProductToFavorites(productData.productID)} disabled={isFavoriteButtonsBlocked}>
+                                    <FontAwesomeIcon icon={faHeart} />
+                                </button>
+                                :
+                                <button className={`btn ${styles.heart}`} onClick={() => saveProductToFavorites(productData.productID)} disabled={isFavoriteButtonsBlocked}>
+                                    <FontAwesomeIcon icon={faHeartHollow} />
+                                </button>
+                        )
+                        : ''
+                }
                 <img src={`/api/file/pic/${productData.thumbnailID}`} className="card-img-top" alt={`A picture of the product with name ${productData.name}.`} />
                 <div className={`card-body ${styles.cardBody}`}>
                     <h5 className="card-title">{productData.name}</h5>

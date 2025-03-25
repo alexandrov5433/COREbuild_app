@@ -52,7 +52,7 @@ export type FileData = {
 
 export type ApiJsonResponce = {
     msg: string,
-    payload?: UserData | RegistrationValidationError | ProductData | ProductCatalogPagedResult | ShoppingCart | string | CollectPaymentActionData | GetReviewsForProductActionData | boolean | Array<string>
+    payload?: UserData | RegistrationValidationError | ProductData | ProductCatalogPagedResult | ShoppingCart | string | CollectPaymentActionData | GetReviewsForProductActionData | boolean | Array<string> | FavoriteData
 }
 
 export type RegistrationValidationErrorProperty = {
@@ -160,4 +160,10 @@ export type OrderFiltrationOptions = {
 export type CollectPaymentActionData = {
     updatedOrderData: OrderData,
     userData: UserData
+}
+
+export type FavoriteData = {
+    id: number,
+    userID: number,
+    products: Array<number>
 }

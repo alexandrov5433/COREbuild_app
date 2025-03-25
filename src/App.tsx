@@ -20,6 +20,8 @@ import ShoppingCart from './components/product/shoppingCart/ShoppingCart';
 import ProductDetails from './components/product/productDetails/productDetails';
 import EditProduct from './components/product/editProduct/EditProduct';
 import Orders from './components/orders/Orders';
+import getFavoriteForUser from './lib/actions/favorite/getFavoriteForUser';
+import { updateFavorite } from './redux/favoriteSlice';
 
 const PAYPAL_INIT_OPTIONS: ReactPayPalScriptOptions = {
   clientId: "ATKglcYBI2PZ2DazP0H2hcnyOzjxVk0twgEzIA35pJwjqsjhC-xzwY542wpgc1g0j1agukEIeaWyO1vJ",
@@ -30,11 +32,19 @@ const PAYPAL_INIT_OPTIONS: ReactPayPalScriptOptions = {
 export default function App() {
   const dispatch = useAppDispatch();
   const userData = useAppSelector(state => state.user);
+
   useEffect(() => {
     async function checkCookieAndData() {
       const userDataAfterValidation = await validateCoookie();
       if (userDataAfterValidation?.userID) {
         dispatch(updateUserData(userDataAfterValidation));
+        if (userDataAfterValidation.is_employee) {
+          return;
+        }
+        const favoriteProductsAction = await getFavoriteForUser(userDataAfterValidation?.userID);
+        if (favoriteProductsAction.responseStatus === 200) {
+          dispatch(updateFavorite(favoriteProductsAction.data!));
+        }
       } else {
         dispatch(setUserToGuest());
       }

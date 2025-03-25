@@ -14,6 +14,10 @@
     color: red;
 }
 
+.card {
+    position: relative;
+}
+
 .cardBody {
     display: flex;
     flex-direction: column;
@@ -24,6 +28,31 @@
     display: flex;
     align-items: center;
     justify-content: space-evenly;
+}
+
+.heart {
+    position: absolute;
+    color: red;
+    top: 0%;
+    right: 0%;
+    z-index: 10;
+    cursor: pointer;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.8rem;
+    font-size: 1.6em;
+
+    &:active {
+        border: none;
+        background: none;
+    }
+
+    &:hover {
+        font-size: 1.5em;
+        color: red;
+    }
 }
 
 @keyframes fade-in {
@@ -69,5 +98,9 @@
         button, a {
             box-shadow: 4px 4px 8px black;
         }
+    }
+
+    .heart {
+        font-size: 1em;
     }
 }

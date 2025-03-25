@@ -1,21 +1,9 @@
 @import url(../../../lib/styling/generalWrapper.module.css);
-.wrapper {
-    h1 {
-        font-size: 4rem;
-    }
-    p {
-        font-size: 2rem;
-    }
+
+.wrapper > * {
+    margin-bottom: 1rem;
 }
 
 @media (min-width: 992px) {
-    .wrapper {
 
-        h1 {
-            font-size: 3rem;
-        }
-        p {
-            font-size: 1rem;
-        }
-    }
 }

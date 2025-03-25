@@ -1,7 +1,7 @@
 import styles from './productDetails.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleCheck, faCircleXmark, faEuroSign, faStar as faStarFull, faStarHalfStroke, faCheck, faComments, faTriangleExclamation, faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { faStar as faStarHollow } from '@fortawesome/free-regular-svg-icons';
+import { faCircleCheck, faCircleXmark, faEuroSign, faStar as faStarFull, faStarHalfStroke, faCheck, faComments, faTriangleExclamation, faArrowRight, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faStar as faStarHollow, faHeart as faHeartHollow } from '@fortawesome/free-regular-svg-icons';
 import { ChangeEvent, SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { NavLink, useNavigate, useParams } from 'react-router';
 import { GetRatingAndReviewCountForProductActionData, ProductData, ReviewData, ShoppingCart } from '../../../lib/definitions';
@@ -17,14 +17,23 @@ import { convertTimeToDate } from '../../../lib/util/time';
 import { updateCart } from '../../../redux/cartSlice';
 import addProductToCart from '../../../lib/actions/cart/addProductToCart';
 import Loader from '../../general/loader/Loader';
+import addProductToFavorite from '../../../lib/actions/favorite/addProductToFavorite';
+import { updateFavorite } from '../../../redux/favoriteSlice';
+import deleteProductFromFavorite from '../../../lib/actions/favorite/deleteProductFromFavorite';
 
 export default function ProductDetails() {
   const { productID } = useParams();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
   const userData = useAppSelector(state => state.user);
+  const favoriteData = useAppSelector(state => state.favorite);
+
   const commentFormRef = useRef(null);
   const reviewsRef = useRef(null);
+
+  const [isFavoriteButtonsBlocked, setFavoriteButtonsBlocked] = useState(false);
+
   const [productData, setProductData] = useState({} as ProductData);
   const [raitngAndReviewsCount, setRaitngAndReviewsCount] = useState({} as GetRatingAndReviewCountForProductActionData);
 
@@ -35,7 +44,6 @@ export default function ProductDetails() {
 
   const [hasCustomerReviewedProduct, setHasCustomerReviewedProduct] = useState(false);
 
-  // const [displayProductNotFound, setDisplayProductNotFound] = useState(false);
   const [displayDescriptionOrComments, setDisplayDescriptionOrComments] = useState('description'); // 'description' || 'comments'
   const [addToCartCount, setAddToCartCount] = useState(1);
   const [isProductAdditionProcessing, setIsProductAdditionProcessing] = useState(false);
@@ -213,6 +221,56 @@ export default function ProductDetails() {
     setIsProductAdditionProcessing(false);
   }
 
+  async function saveProductToFavorites(productID: number) {
+    if (!productID || !userData?.userID) {
+      return;
+    }
+    setFavoriteButtonsBlocked(true);
+    const addToFavoritesAction = await addProductToFavorite(userData.userID, productID);
+    if (addToFavoritesAction.responseStatus === 200) {
+      dispatch(setMessageData({
+        duration: 4000,
+        isShown: true,
+        text: 'Product saved to favorites.',
+        type: 'success'
+      }));
+      dispatch(updateFavorite(addToFavoritesAction.data!));
+    } else if (addToFavoritesAction.responseStatus === 400) {
+      dispatch(setMessageData({
+        duration: 4000,
+        isShown: true,
+        text: addToFavoritesAction.msg,
+        type: 'error'
+      }));
+    }
+    setFavoriteButtonsBlocked(false);
+  }
+
+  async function removeProductToFavorites(productID: number) {
+    if (!productID || !userData?.userID) {
+      return;
+    }
+    setFavoriteButtonsBlocked(true);
+    const deleteProductFromFavoritesAction = await deleteProductFromFavorite(userData.userID, productID);
+    if (deleteProductFromFavoritesAction.responseStatus === 200) {
+      dispatch(setMessageData({
+        duration: 4000,
+        isShown: true,
+        text: 'Product deleted from favorites.',
+        type: 'success'
+      }));
+      dispatch(updateFavorite(deleteProductFromFavoritesAction.data!));
+    } else if (deleteProductFromFavoritesAction.responseStatus === 400) {
+      dispatch(setMessageData({
+        duration: 4000,
+        isShown: true,
+        text: deleteProductFromFavoritesAction.msg,
+        type: 'error'
+      }));
+    }
+    setFavoriteButtonsBlocked(false);
+  }
+
   return (
     <div className={styles.wrapper}>
       <h1>Product Details</h1>
@@ -301,6 +359,20 @@ export default function ProductDetails() {
                           <button className={`btn btn-success ${styles.addToCartButton}`} disabled={isProductAdditionProcessing} onClick={addToCart}>Add {addToCartCount} to cart</button>
                         </div>
                 }
+                                {
+                    userData.userID && !userData.is_employee ?
+                        (
+                            favoriteData?.products?.includes(productData.productID) ?
+                                <button className={`btn ${styles.heart}`} onClick={() => removeProductToFavorites(productData.productID)} disabled={isFavoriteButtonsBlocked}>
+                                    <FontAwesomeIcon icon={faHeart} />
+                                </button>
+                                :
+                                <button className={`btn ${styles.heart}`} onClick={() => saveProductToFavorites(productData.productID)} disabled={isFavoriteButtonsBlocked}>
+                                    <FontAwesomeIcon icon={faHeartHollow} />
+                                </button>
+                        )
+                        : ''
+                }
 
               </div>
               <div className={styles.smallInfos}>
@@ -323,9 +395,9 @@ export default function ProductDetails() {
               <p>Specifications Document</p>
               {
                 productData.specsDocID ?
-                <a href={`/api/file/doc/${productData.specsDocID}`} download={productData.name || 'Product Specifications'}>{productData.name}</a>
-                :
-                <p>No document available.</p>
+                  <a href={`/api/file/doc/${productData.specsDocID}`} download={productData.name || 'Product Specifications'}>{productData.name}</a>
+                  :
+                  <p>No document available.</p>
               }
             </div>
             <div className={styles.descriptionAndComments} ref={reviewsRef}>
