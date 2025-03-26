@@ -108,6 +108,7 @@ export default function UserDetails() {
     (passwordFormRef.current! as HTMLFormElement).scrollIntoView({
       behavior: 'smooth'
     });
+    setPasswordInputType('password');
     setPasswordFormState(initialPasswordFormState);
   }
 
@@ -199,13 +200,12 @@ export default function UserDetails() {
     setPasswordChangeInProgress(false);
   }
 
-  function showHidePassword(e: ChangeEvent<HTMLInputElement>) {
-    const isChecked = e.currentTarget.checked;
-    if (isChecked) {
+  function showHidePassword() {
+    if (passwordInputType == 'password') {
       setPasswordInputType('text');
-      return;
+    } else {
+      setPasswordInputType('password');
     }
-    setPasswordInputType('password');
   }
 
   return (
@@ -275,7 +275,7 @@ export default function UserDetails() {
                   }`} id="newPassword" name="newPassword" defaultValue={''} onInput={e => newPasswordValidator(e)} />
                 <p className="form-text">Please enter the new password. It can be beween 5 and 50 characters long and may include letters, numbers and the following symbols: @-_+?!</p>
                 <div className={`form-check ${styles.checkboxContainer}`}>
-                  <input type="checkbox" className="form-check-input" id="showPassword" onChange={showHidePassword} />
+                  <input type="checkbox" className="form-check-input" id="showPassword" checked={passwordInputType == 'password' ? false : true} onChange={showHidePassword} />
                   <label className="form-check-label" htmlFor="showPassword">Show password</label>
                 </div>
               </div>
