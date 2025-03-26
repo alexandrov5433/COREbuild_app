@@ -6,6 +6,7 @@ import banner2 from '../../../assets/banners/banner-2.png';
 import banner3 from '../../../assets/banners/banner-3.png';
 import banner4 from '../../../assets/banners/banner-4.png';
 import banner5 from '../../../assets/banners/banner-5.png';
+import prebuild from '../../../assets/prebuild.png';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquareCheck, faPhone } from '@fortawesome/free-solid-svg-icons';
@@ -100,6 +101,16 @@ export default function Home() {
                     </iframe>
                 </section>
                 {/* this portion yQfhTh5hyxk is the variable */}
+            </div>
+            <div className={styles.prebuildContainer}>
+                <section className={styles.prebuildImage}>
+                    <img src={prebuild} alt="" />
+                </section>
+                <section className={styles.infos}>
+                    <h4>Prebuilt Gaming PC</h4>
+                    <p className='lead'>Start your gaming journey with one of our professionally designed prebuilt systems.</p>
+                    <NavLink to={`/products-catalog?currentPage=1&itemsPerPage=12&name=&category=prebuild&priceFrom=&priceTo=&availableInStock=yes&manufacturer=`} className="btn btn-outline-warning">Shop Now</NavLink>
+                </section>
             </div>
             <div className={styles.servicesContainer}>
                 <div className={styles.contentContainer}>
