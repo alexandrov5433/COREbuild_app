@@ -219,42 +219,47 @@ export default function UserDetails() {
               <h4>My UserID: {userData.userID}</h4>
             </div>
 
-            <hr className="mb-4 mt-4" />
+            {
+              userData?.is_employee ? '' :
+                <>
+                  <hr className="mb-4 mt-4" />
 
-            <form ref={infoFormRef}>
-              <h4>Change Personal Details</h4>
+                  <form ref={infoFormRef}>
+                    <h4>Change Personal Details</h4>
 
-              <div className="mb-4">
-                <label htmlFor="email" className="form-label">Email</label>
-                <input type="text" className={`form-control ${infoFormState.email ? '' : 'is-invalid'}`} id="email" name="email" defaultValue={completeUserData.email! || ''} onInput={e => infoValueValidator(e)} />
-                <p className="form-text">Please enter a valid email like: example123@some.com, example123!?_-@so23me.com.gov</p>
-              </div>
+                    <div className="mb-4">
+                      <label htmlFor="email" className="form-label">Email</label>
+                      <input type="text" className={`form-control ${infoFormState.email ? '' : 'is-invalid'}`} id="email" name="email" defaultValue={completeUserData.email! || ''} onInput={e => infoValueValidator(e)} />
+                      <p className="form-text">Please enter a valid email like: example123@some.com, example123!?_-@so23me.com.gov</p>
+                    </div>
 
-              <div className="mb-4">
-                <label htmlFor="firstname" className="form-label">First Name</label>
-                <input type="text" className={`form-control ${infoFormState.firstname ? '' : 'is-invalid'}`} id="firstname" name="firstname" defaultValue={completeUserData.firstname! || ''} onInput={e => infoValueValidator(e)} />
-                <p className="form-text">First name must be between 1 and 50 characters long and may only include letters.</p>
-              </div>
+                    <div className="mb-4">
+                      <label htmlFor="firstname" className="form-label">First Name</label>
+                      <input type="text" className={`form-control ${infoFormState.firstname ? '' : 'is-invalid'}`} id="firstname" name="firstname" defaultValue={completeUserData.firstname! || ''} onInput={e => infoValueValidator(e)} />
+                      <p className="form-text">First name must be between 1 and 50 characters long and may only include letters.</p>
+                    </div>
 
-              <div className="mb-4">
-                <label htmlFor="lastname" className="form-label">Last Name</label>
-                <input type="text" className={`form-control ${infoFormState.lastname ? '' : 'is-invalid'}`} id="lastname" name="lastname" defaultValue={completeUserData.lastname! || ''} onInput={e => infoValueValidator(e)} />
-                <p className="form-text">Last name must be between 1 and 50 characters long and may only include letters.</p>
-              </div>
+                    <div className="mb-4">
+                      <label htmlFor="lastname" className="form-label">Last Name</label>
+                      <input type="text" className={`form-control ${infoFormState.lastname ? '' : 'is-invalid'}`} id="lastname" name="lastname" defaultValue={completeUserData.lastname! || ''} onInput={e => infoValueValidator(e)} />
+                      <p className="form-text">Last name must be between 1 and 50 characters long and may only include letters.</p>
+                    </div>
 
-              <div className="mb-4">
-                <label htmlFor="address" className="form-label">Address</label>
-                <input type="text" className={`form-control ${infoFormState.address ? '' : 'is-invalid'}`} id="address" name="address" defaultValue={completeUserData.address! || ''} onInput={e => infoValueValidator(e)} />
-                <p className="form-text">Please enter a postal address. Example: "Some-Str. 34a, 23456, Some City"</p>
-              </div>
+                    <div className="mb-4">
+                      <label htmlFor="address" className="form-label">Address</label>
+                      <input type="text" className={`form-control ${infoFormState.address ? '' : 'is-invalid'}`} id="address" name="address" defaultValue={completeUserData.address! || ''} onInput={e => infoValueValidator(e)} />
+                      <p className="form-text">Please enter a postal address. Example: "Some-Str. 34a, 23456, Some City"</p>
+                    </div>
 
 
-              <div className={styles.buttonsDataEditor}>
-                <button type="button" className="btn btn-success" disabled={!infoFormState.isFormValid || isSavingInfoChangesLoading} onClick={saveInfoChages}>Save Infos</button>
-                <button type="button" className="btn btn-outline-warning" onClick={removeChangesFromInfoForm}>Remove Changes</button>
-              </div>
+                    <div className={styles.buttonsDataEditor}>
+                      <button type="button" className="btn btn-success" disabled={!infoFormState.isFormValid || isSavingInfoChangesLoading} onClick={saveInfoChages}>Save Infos</button>
+                      <button type="button" className="btn btn-outline-warning" onClick={removeChangesFromInfoForm}>Remove Changes</button>
+                    </div>
 
-            </form>
+                  </form>
+                </>
+            }
 
             <hr className="mb-4 mt-4" />
 
@@ -264,14 +269,14 @@ export default function UserDetails() {
               <div className="mb-4">
                 <label htmlFor="currentPassword" className="form-label">Current Password</label>
                 <input type={passwordInputType} className={`form-control ${passwordFormState.currentPassword.isTouched ?
-                    (passwordFormState.currentPassword.isValid ? '' : 'is-invalid') : ''
+                  (passwordFormState.currentPassword.isValid ? '' : 'is-invalid') : ''
                   }`} id="currentPassword" name="currentPassword" defaultValue={''} onInput={e => newPasswordValidator(e)} />
                 <p className="form-text">Please enter the current password for this account.</p>
               </div>
               <div className="mb-4">
                 <label htmlFor="newPassword" className="form-label">New Password</label>
                 <input type={passwordInputType} className={`form-control ${passwordFormState.newPassword.isTouched ?
-                    (passwordFormState.newPassword.isValid ? '' : 'is-invalid') : ''
+                  (passwordFormState.newPassword.isValid ? '' : 'is-invalid') : ''
                   }`} id="newPassword" name="newPassword" defaultValue={''} onInput={e => newPasswordValidator(e)} />
                 <p className="form-text">Please enter the new password. It can be beween 5 and 50 characters long and may include letters, numbers and the following symbols: @-_+?!</p>
                 <div className={`form-check ${styles.checkboxContainer}`}>
