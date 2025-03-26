@@ -3,3 +3,12 @@
     flex-wrap: wrap;
     gap: 2rem;
 }
+
+.checkboxContainer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    label {
+        align-self: flex-end;
+    }  
+}

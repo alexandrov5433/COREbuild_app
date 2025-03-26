@@ -1,11 +1,12 @@
 import styles from './userDetails.module.css';
 import { useAppDispatch, useAppSelector } from '../../../../lib/hooks/reduxTypedHooks';
-import { useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import getUserData from '../../../../lib/actions/user/getUserData';
 import { UserData } from '../../../../lib/definitions';
 import { setMessageData } from '../../../../redux/popupMessageSlice';
 import Loader from '../../../general/loader/Loader';
 import editProfileDetails from '../../../../lib/actions/user/editProfileDetails';
+import changeUserPassword from '../../../../lib/actions/user/changeUserPassword';
 
 export default function UserDetails() {
   const userData = useAppSelector(state => state.user);
@@ -13,7 +14,7 @@ export default function UserDetails() {
 
   const infoFormRef = useRef(null);
   const passwordFormRef = useRef(null);
-  
+
   const [completeUserData, setCompleteUserData] = useState({} as UserData);
 
   const initialInfoFormState = {
@@ -50,6 +51,7 @@ export default function UserDetails() {
   }
   const [passwordFormState, setPasswordFormState] = useState(initialPasswordFormState)
   const [isPasswordChangeInProgress, setPasswordChangeInProgress] = useState(false);
+  const [passwordInputType, setPasswordInputType] = useState('password');
 
   useEffect(() => {
     __getUserData()
@@ -172,8 +174,38 @@ export default function UserDetails() {
   }
 
   async function changePassword() {
+    const formData = new FormData(passwordFormRef.current!);
+    if (!formData || !userData.userID) {
+      return;
+    }
     setPasswordChangeInProgress(true);
+    const action = await changeUserPassword(userData.userID, formData);
+    if (action.responseStatus === 200) {
+      dispatch(setMessageData({
+        duration: 4000,
+        isShown: true,
+        text: 'Password changed!',
+        type: 'success'
+      }));
+    } else if (action.responseStatus === 400) {
+      dispatch(setMessageData({
+        duration: 4000,
+        isShown: true,
+        text: action.msg,
+        type: 'error'
+      }));
+    }
+    clearPasswordForm();
     setPasswordChangeInProgress(false);
+  }
+
+  function showHidePassword(e: ChangeEvent<HTMLInputElement>) {
+    const isChecked = e.currentTarget.checked;
+    if (isChecked) {
+      setPasswordInputType('text');
+      return;
+    }
+    setPasswordInputType('password');
   }
 
   return (
@@ -231,19 +263,21 @@ export default function UserDetails() {
 
               <div className="mb-4">
                 <label htmlFor="currentPassword" className="form-label">Current Password</label>
-                <input type="text" className={`form-control ${
-                  passwordFormState.currentPassword.isTouched ? 
-                  (passwordFormState.currentPassword.isValid ? '' : 'is-invalid') : ''
+                <input type={passwordInputType} className={`form-control ${passwordFormState.currentPassword.isTouched ?
+                    (passwordFormState.currentPassword.isValid ? '' : 'is-invalid') : ''
                   }`} id="currentPassword" name="currentPassword" defaultValue={''} onInput={e => newPasswordValidator(e)} />
                 <p className="form-text">Please enter the current password for this account.</p>
               </div>
               <div className="mb-4">
                 <label htmlFor="newPassword" className="form-label">New Password</label>
-                <input type="text" className={`form-control ${
-                  passwordFormState.newPassword.isTouched ? 
-                  (passwordFormState.newPassword.isValid ? '' : 'is-invalid') : ''
+                <input type={passwordInputType} className={`form-control ${passwordFormState.newPassword.isTouched ?
+                    (passwordFormState.newPassword.isValid ? '' : 'is-invalid') : ''
                   }`} id="newPassword" name="newPassword" defaultValue={''} onInput={e => newPasswordValidator(e)} />
                 <p className="form-text">Please enter the new password. It can be beween 5 and 50 characters long and may include letters, numbers and the following symbols: @-_+?!</p>
+                <div className={`form-check ${styles.checkboxContainer}`}>
+                  <input type="checkbox" className="form-check-input" id="showPassword" onChange={showHidePassword} />
+                  <label className="form-check-label" htmlFor="showPassword">Show password</label>
+                </div>
               </div>
 
               <div className={styles.buttonsDataEditor}>
