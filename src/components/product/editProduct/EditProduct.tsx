@@ -236,6 +236,11 @@ export default function EditProduct() {
     if (!productID || !formData) {
       return;
     }
+    const file = formData.get('pictures');
+    if (!(file as any).name) {
+      return;
+    }
+
     setBlockFileUploadButtons(true);
     const pictureUploadResult = await addProductPictures(productID, formData)
     if (pictureUploadResult.responseStatus === 200) {
