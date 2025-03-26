@@ -1,6 +1,6 @@
 import styles from './userDetails.module.css';
 import { useAppDispatch, useAppSelector } from '../../../../lib/hooks/reduxTypedHooks';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import getUserData from '../../../../lib/actions/user/getUserData';
 import { UserData } from '../../../../lib/definitions';
 import { setMessageData } from '../../../../redux/popupMessageSlice';
