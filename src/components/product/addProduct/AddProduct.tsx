@@ -64,7 +64,7 @@ export default function AddProduct() {
         });
     }
     function descriptionValidator(e: React.ChangeEvent<HTMLTextAreaElement>) {
-        const isValid = /^[^%&\$\*_'"]{1,}$/.test(e.target?.value || '');
+        const isValid = /.+/.test(e.target?.value.trim() || '');
         setFormState(state => {
             const newState = { ...state };
             newState.description.isValid = isValid;
@@ -264,7 +264,7 @@ export default function AddProduct() {
                         formState.description.isValid ? 'is-valid' : 'is-invalid'
                     ) : ''
                         }`} id="description" name='description' aria-describedby="descriptionHelp" onChange={descriptionValidator} defaultValue={addProductState.inputValues.description || ''}></textarea>
-                    <div id="descriptionHelp" className="form-text">Please enter the product description. The symbols % &amp; $ * _ ' " are not allowed.</div>
+                    <div id="descriptionHelp" className="form-text">Please enter the product description.</div>
                 </div>
                 <div className={`${styles.inputContainer}`}>
                     <label htmlFor="category" className="form-label">Category <i>*</i></label>

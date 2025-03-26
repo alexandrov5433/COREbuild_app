@@ -122,11 +122,11 @@ export default function EditProduct() {
   }
 
   function infoValueValidator(e: React.SyntheticEvent<HTMLInputElement | HTMLTextAreaElement>) {
-    const val = (e.target as HTMLInputElement | HTMLTextAreaElement).value;
+    const val = (e.target as HTMLInputElement | HTMLTextAreaElement).value?.trim();
     const nameAttribute = (e.target as HTMLInputElement | HTMLTextAreaElement).name;
     const regex = {
       'name': new RegExp(/^[^%&\$\*_'"]{1,200}$/),
-      'description': new RegExp(/^[^%&\$\*_'"]{1,}$/),
+      'description': new RegExp(/^.+$/),
       'category': new RegExp(/^[A-Za-z ]{1,200}$/),
       'price': new RegExp(/^[0-9]+(?:\.[0-9]{2}){0,1}$/),
       'stockCount': new RegExp(/^[0-9]+$/),
@@ -430,7 +430,7 @@ export default function EditProduct() {
                 <div className="mb-4">
                   <label htmlFor="description" className="form-label">Description</label>
                   <textarea className={`form-control ${infoFormState.description.isValid ? '' : 'is-invalid'}`} id="description" name="description" defaultValue={productData.description} onInput={e => infoValueValidator(e)}></textarea>
-                  <p className="form-text">For the product description the symbols % &amp; $ * _ ' " are not allowed.</p>
+                  <p className="form-text">Please enter the product description.</p>
                 </div>
 
                 <div className="mb-4">
