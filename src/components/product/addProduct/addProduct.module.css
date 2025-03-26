@@ -4,6 +4,10 @@
     color: var(--green);
 }
 
+.inputContainer {
+    margin-bottom: 2rem;
+}
+
 .inputContainer, .mandatoryFielsExplanation {
     i {
         color: red;
