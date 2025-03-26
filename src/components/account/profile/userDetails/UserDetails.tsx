@@ -222,7 +222,7 @@ export default function UserDetails() {
             {
               userData?.is_employee ? '' :
                 <>
-                  <hr className="mb-4 mt-4" />
+                  <hr className={`mb-4 mt-4 ${styles.divider}`} />
 
                   <form ref={infoFormRef}>
                     <h4>Change Personal Details</h4>
@@ -261,7 +261,7 @@ export default function UserDetails() {
                 </>
             }
 
-            <hr className="mb-4 mt-4" />
+            <hr className={`mb-4 mt-4 ${styles.divider}`} />
 
             <form ref={passwordFormRef}>
               <h4>Change Password</h4>

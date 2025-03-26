@@ -12,3 +12,7 @@
         align-self: flex-end;
     }  
 }
+
+.divider {
+    color: var(--green);
+}

@@ -52,7 +52,7 @@ export type FileData = {
 
 export type ApiJsonResponce = {
     msg: string,
-    payload?: UserData | RegistrationValidationError | ProductData | ProductCatalogPagedResult | ShoppingCart | string | CollectPaymentActionData | GetReviewsForProductActionData | boolean | Array<string> | FavoriteData
+    payload?: UserData | RegistrationValidationError | ProductData | ProductCatalogPagedResult | ShoppingCart | string | CollectPaymentActionData | GetReviewsForProductActionData | boolean | Array<string> | FavoriteData | Array<ProductData | null>
 }
 
 export type RegistrationValidationErrorProperty = {
