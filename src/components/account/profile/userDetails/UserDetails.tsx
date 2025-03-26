@@ -183,6 +183,12 @@ export default function UserDetails() {
           <Loader />
           :
           <>
+            <div>
+              <h4>My UserID: {userData.userID}</h4>
+            </div>
+
+            <hr className="mb-4 mt-4" />
+
             <form ref={infoFormRef}>
               <h4>Change Personal Details</h4>
 
