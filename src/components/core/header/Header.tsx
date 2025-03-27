@@ -100,18 +100,20 @@ export default function Header() {
                             <li className="nav-item">
                                 <NavLink className="nav-link" to="products-catalog">Products</NavLink>
                             </li>
+                            <li className="nav-item">
+                                <NavLink className="nav-link" to="contact">Contact</NavLink>
+                            </li>
+                            <li className="nav-item">
+                                <NavLink className="nav-link" to="about">About</NavLink>
+                            </li>
                             <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    About
+                                    More
                                 </a>
                                 <ul className="dropdown-menu">
                                     <li>
-                                        <NavLink className="dropdown-item" to="about">About Us</NavLink>
-                                    </li>
-                                    <li>
                                         <NavLink className="dropdown-item" to="terms">Terms & Services</NavLink>
                                     </li>
-                                    {/* <li><hr className="dropdown-divider" /></li> */}
                                     <li>
                                         <NavLink className="dropdown-item" to="privacy">Privacy Policy</NavLink>
                                     </li>
