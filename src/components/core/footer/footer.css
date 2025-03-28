@@ -14,6 +14,7 @@ footer {
     .logo-svg {
         width: 7rem;
         height: auto;
+        padding-bottom: 0.3rem;
     }
 
     .useful-links {
