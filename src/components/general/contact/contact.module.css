@@ -1,2 +1,60 @@
 @import url(../../../lib/styling/generalWrapper.module.css);
 
+.wrapper {
+    & > * {
+        margin-bottom: 2rem;
+    }
+}
+
+.openingText {
+    img {
+        display: inline;
+        width: 7rem;
+        height: auto;
+        padding-bottom: 0.2rem;
+    }
+}
+
+.infosContainer {
+    .infosContent {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 1rem;
+
+        section h4 {
+            svg {
+                color: var(--green);
+                margin-left: 0.5rem;
+                padding-bottom: 0.1rem;
+            }
+        }
+    }
+}
+
+.socialMediaContainer {
+    ul {
+        padding-left: 0.1rem;
+        a:hover {
+            color: var(--green);
+        }
+        svg {
+            color: var(--green);
+            margin-right: 0.5rem;
+        }
+    }
+}
+
+.formWrapper {
+    textarea {
+        height: 15rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .formWrapper {
+        textarea {
+            height: 10rem;
+        }
+    }
+}
