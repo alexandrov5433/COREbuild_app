@@ -6,7 +6,6 @@ export type UserData = {
     firstname?: string | null,
     lastname?: string | null,
     address?: string | null,
-    favorite_products?: Array<number>,
     shopping_cart: ShoppingCart
 }
 
@@ -52,7 +51,7 @@ export type FileData = {
 
 export type ApiJsonResponce = {
     msg: string,
-    payload?: UserData | RegistrationValidationError | ProductData | ProductCatalogPagedResult | ShoppingCart | string | CollectPaymentActionData | GetReviewsForProductActionData | boolean | Array<string> | FavoriteData | Array<ProductData | null>
+    payload?: UserData | RegistrationValidationError | ProductData | ProductCatalogPagedResult | ShoppingCart | string | CollectPaymentActionData | GetReviewsForProductActionData | boolean | Array<string> | FavoriteData | Array<ProductData | null> | GetFilteredTicketsResponseData
 }
 
 export type RegistrationValidationErrorProperty = {
@@ -166,4 +165,43 @@ export type FavoriteData = {
     id: number,
     userID: number,
     products: Array<number>
+}
+
+export type TicketData = {
+    id: number,
+    title: string,
+    status: 'open' | 'closed',
+    content_question: string,
+    content_answer: string | null,
+    time_open: number,
+    time_close: number | null,
+    email_for_answer: string,
+    userID_submit: number | null,
+    userID_employee: number | null
+}
+
+export type TicketSubmitionData = {
+    title: string,
+    content_question: string,
+    email_for_answer: string,
+    userID_submit: number | null
+}
+
+export type TicketAnswerData = {
+    id: number,
+    content_answer: string
+}
+
+export type TicketFiltrationOptions = {
+    id: number | null,
+    status: 'open' | 'closed' | null,
+    time_open: 'ascending' | 'descending' | null,
+    currentPage: number,
+    itemsPerPage: number
+};
+
+export type GetFilteredTicketsResponseData = {
+    pagesCount: number,
+    currentPage: number,
+    tickets: Array<TicketData>
 }
