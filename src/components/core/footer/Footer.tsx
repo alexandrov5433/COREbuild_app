@@ -32,21 +32,20 @@ export default function Footer() {
                 </div>
                 <div className="sizingWrapper">
                     <div className="social-links">
-                        <h3>Social Links</h3><i className="fa-brands fa-linkedin"></i>
+                        <h3>Social Links</h3>
                         <ul>
                             <li>
-                                <NavLink to='#' className='icon'><FontAwesomeIcon icon={faLinkedin} />LinkedIn</NavLink>
+                                <NavLink to='https://www.linkedin.com/' className='icon' target='_blank'><FontAwesomeIcon icon={faLinkedin} />LinkedIn</NavLink>
                             </li>
                             <li>
-                                <NavLink to='#' className='icon'><FontAwesomeIcon icon={faFacebookSquare} />Facebook</NavLink>
+                                <NavLink to='https://www.facebook.com/' className='icon' target='_blank'><FontAwesomeIcon icon={faFacebookSquare} />Facebook</NavLink>
                             </li>
                             <li>
-                                <NavLink to='#' className='icon'><FontAwesomeIcon icon={faSquareXTwitter} />Ex</NavLink>
+                                <NavLink to='https://x.com/' className='icon' target='_blank'><FontAwesomeIcon icon={faSquareXTwitter} />Ex</NavLink>
                             </li>
                             <li>
-                                <NavLink to='#' className='icon'><FontAwesomeIcon icon={faTiktok} />TikTok</NavLink>
+                                <NavLink to='https://www.tiktok.com/' className='icon' target='_blank'><FontAwesomeIcon icon={faTiktok} />TikTok</NavLink>
                             </li>
-
                         </ul>
                     </div>
                 </div>
