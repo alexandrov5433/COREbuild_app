@@ -51,7 +51,7 @@ export default function Footer() {
                 </div>
             </div>
             <div className='dev-info'>
-                <p>Created by <NavLink to='https://www.linkedin.com/in/aleksandar-darakev-4094b8347/' className='my-social-link'>Alex</NavLink></p>
+                <p>Created by <NavLink to='https://www.linkedin.com/in/aleksandar-darakev-4094b8347/' className='my-social-link' target='_blank'>Alex</NavLink></p>
             </div>
         </footer>
     );
