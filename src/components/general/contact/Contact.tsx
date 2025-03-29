@@ -6,10 +6,11 @@ import { faFacebookSquare, faLinkedin, faSquareXTwitter, faTiktok } from '@forta
 import { faEnvelope, faPhone, faUser } from '@fortawesome/free-solid-svg-icons';
 import { useRef, useState } from 'react';
 import submitTicket from '../../../lib/actions/ticket/submitTicket';
-import { useAppDispatch } from '../../../lib/hooks/reduxTypedHooks';
+import { useAppDispatch, useAppSelector } from '../../../lib/hooks/reduxTypedHooks';
 import { setMessageData } from '../../../redux/popupMessageSlice';
 
 export default function Contact() {
+    const userData = useAppSelector(state => state.user);
     const dispatch = useAppDispatch();
     const ticketFormRef = useRef(null);
     const navigate = useNavigate();
@@ -34,7 +35,7 @@ export default function Contact() {
 
     function validator(e: React.SyntheticEvent<HTMLInputElement | HTMLTextAreaElement>) {
         const val = e.currentTarget.value;
-        const fieldName = e.currentTarget.name;  
+        const fieldName = e.currentTarget.name;
         const regexpLib = {
             'title': new RegExp(/.+/),
             'content_question': new RegExp(/.+/),
@@ -72,7 +73,7 @@ export default function Contact() {
             navigate('/');
         } else if (action.responseStatus === 400) {
             dispatch(setMessageData({
-                duration: 400,
+                duration: 4000,
                 isShown: true,
                 text: action.msg,
                 type: 'error'
@@ -131,40 +132,39 @@ export default function Contact() {
                     </li>
                 </ul>
             </div>
+            {
+                userData?.is_employee ? '' :
+                    <div className={styles.ticketFormContainer}>
+                        <h3>Need Assistance? Open a Support Ticket!</h3>
+                        <p className="lead">Have a question or need help with your order? Our support team is here to assist you! Simply open a ticket, and we'll get back to you at the given email as soon as possible. Let us know how we can help, and we'll make sure you get the support you need.</p>
+                        <div className={styles.formWrapper}>
+                            <form ref={ticketFormRef}>
+                                <div className="mb-3">
+                                    <label htmlFor="title" className="form-label">Title</label>
+                                    <input type="text" className={`form-control ${formValidity.title.touched ?
+                                            (formValidity.title.valid ? '' : 'is-invalid') : ''
+                                        }`} id="title" placeholder="Please enter a title." name="title" onChange={e => validator(e)} />
+                                </div>
+                                <div className="mb-3">
+                                    <label htmlFor="email_for_answer" className="form-label">Email</label>
+                                    <input type="email" className={`form-control ${formValidity.email_for_answer.touched ?
+                                            (formValidity.email_for_answer.valid ? '' : 'is-invalid') : ''
+                                        }`} id="email_for_answer" name="email_for_answer" placeholder="Please enter your email." onChange={e => validator(e)} />
+                                </div>
+                                <div className="mb-3">
+                                    <label htmlFor="content_question" className="form-label">Question</label>
+                                    <textarea className={`form-control ${formValidity.content_question.touched ?
+                                            (formValidity.content_question.valid ? '' : 'is-invalid') : ''
+                                        }`} id="content_question" placeholder="Please describe the situation and enter useful information, like orderID." name="content_question" onChange={e => validator(e)}></textarea>
+                                </div>
+                                <div className="mb-3">
+                                    <button className="btn btn-success" type="button" onClick={submitNewTicket} disabled={!formValidity.isFormValid || ticketSubmitionLoading}>Submit</button>
+                                </div>
+                            </form>
+                        </div>
 
-            <div className={styles.ticketFormContainer}>
-                <h3>Need Assistance? Open a Support Ticket!</h3>
-                <p className="lead">Have a question or need help with your order? Our support team is here to assist you! Simply open a ticket, and we'll get back to you at the given email as soon as possible. Let us know how we can help, and we'll make sure you get the support you need.</p>
-                <div className={styles.formWrapper}>
-                    <form ref={ticketFormRef}>
-                        <div className="mb-3">
-                            <label htmlFor="title" className="form-label">Title</label>
-                            <input type="text" className={`form-control ${
-                                formValidity.title.touched ?
-                                (formValidity.title.valid ? '' : 'is-invalid') : ''
-                            }`} id="title" placeholder="Please enter a title." name="title" onChange={e => validator(e)}/>
-                        </div>
-                        <div className="mb-3">
-                            <label htmlFor="email_for_answer" className="form-label">Email</label>
-                            <input type="email" className={`form-control ${
-                                formValidity.email_for_answer.touched ?
-                                (formValidity.email_for_answer.valid ? '' : 'is-invalid') : ''
-                            }`} id="email_for_answer" name="email_for_answer" placeholder="Please enter your email." onChange={e => validator(e)}/>
-                        </div>
-                        <div className="mb-3">
-                            <label htmlFor="content_question" className="form-label">Question</label>
-                            <textarea className={`form-control ${
-                                formValidity.content_question.touched ?
-                                (formValidity.content_question.valid ? '' : 'is-invalid') : ''
-                            }`} id="content_question" placeholder="Please describe the situation and enter useful information, like orderID." name="content_question" onChange={e => validator(e)}></textarea>
-                        </div>
-                        <div className="mb-3">
-                            <button className="btn btn-success" type="button" onClick={submitNewTicket} disabled={!formValidity.isFormValid || ticketSubmitionLoading}>Submit</button>
-                        </div>
-                    </form>
-                </div>
-
-            </div>
+                    </div>
+            }
         </div>
     );
 }
