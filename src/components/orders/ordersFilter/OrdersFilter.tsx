@@ -1,15 +1,21 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styles from './ordersFilter.module.css';
 import { useAppSelector } from '../../../lib/hooks/reduxTypedHooks';
 
 export default function OrdersFilter({
-    updateFilter
+    updateFilter,
+    filterClearTrigger
 }: {
-    updateFilter: (options: any) => void
+    updateFilter: (options: any) => void,
+    filterClearTrigger: boolean
 }) {
     const userData = useAppSelector(state => state.user);
     const [isFilterOpen, setFilterOpen] = useState(false);
     const filterFormRef = useRef(null);
+
+    useEffect(() => {
+        (filterFormRef.current! as HTMLFormElement)?.reset();
+    }, [filterClearTrigger]);
 
     function onReset() {
         (filterFormRef.current! as HTMLFormElement)?.reset();
@@ -50,13 +56,13 @@ export default function OrdersFilter({
                 <h4>Filter Options</h4>
                 <div className="mb-3">
                     <label htmlFor="orderID" className="form-label">Order ID</label>
-                    <input type="number" id="orderID" name="orderID" className="form-control" />
+                    <input type="number" id="orderID" name="orderID" className="form-control" defaultValue={''}/>
                 </div>
                 {
                     userData?.is_employee ?
                         <div className="mb-3">
                             <label htmlFor="recipientID" className="form-label">Recipient ID</label>
-                            <input type="number" id="recipientID" name="recipientID" className="form-control" />
+                            <input type="number" id="recipientID" name="recipientID" className="form-control" defaultValue={''}/>
                         </div>
                         : ''
                 }

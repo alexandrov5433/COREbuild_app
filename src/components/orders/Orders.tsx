@@ -23,6 +23,7 @@ export default function Orders() {
     const [currentPage, setCurrentPage] = useState(1);
     const [pagesCount, setPagesCount] = useState(1);
     const [ordersRefreshTrigger, setOrdersRefreshTrigger] = useState(false);
+    const [filterClearTrigger, setFilterClearTrigger] = useState(false);
 
     const initFiltrationOptions: OrderFiltrationOptions = {
         orderID: null,
@@ -35,10 +36,10 @@ export default function Orders() {
     const [filtrationOptions, setFiltrationOptions] = useState(initFiltrationOptions);
 
     useEffect(() => {
-        getOrders();
+        __getOrders();
     }, [filtrationOptions, ordersRefreshTrigger]);
 
-    async function getOrders() {
+    async function __getOrders() {
         setPageLoading(true);
         const actionResult = await getFilteredOrders(filtrationOptions);
         if (actionResult.responseStatus === 200) {
@@ -124,7 +125,7 @@ export default function Orders() {
         <div ref={mostUpperElementRef} className={`${styles.wrapper} ${styles.mainContainer}`}>
             <h1>{userData.is_employee ? '' : 'My '}Orders</h1>
             <div className={styles.filterContainer}>
-                <OrdersFilter updateFilter={updateFilter} />
+                <OrdersFilter updateFilter={updateFilter} filterClearTrigger={filterClearTrigger}/>
             </div>
             {
                 isPageLoading ? <Loader /> :
@@ -177,6 +178,7 @@ export default function Orders() {
                             <FontAwesomeIcon icon={faMagnifyingGlass} />
                             <p className='lead'>No orders were found.</p>
                             <button className={`btn btn-outline-warning`} type="button" onClick={() => {
+                                setFilterClearTrigger(state => !state);
                                 updateFilter({
                                     orderID: null,
                                     recipientID: null,
