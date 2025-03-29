@@ -25,6 +25,9 @@ import Orders from './components/orders/Orders';
 import Contact from './components/general/contact/Contact';
 import TicketsOverview from './components/ticket/TicketsOverview';
 import About from './components/general/about/About';
+import Terms from './components/general/terms/Terms';
+import Privacy from './components/general/privacy/Privacy';
+import Return from './components/general/return/Return';
 
 const PAYPAL_INIT_OPTIONS: ReactPayPalScriptOptions = {
   clientId: "ATKglcYBI2PZ2DazP0H2hcnyOzjxVk0twgEzIA35pJwjqsjhC-xzwY542wpgc1g0j1agukEIeaWyO1vJ",
@@ -69,6 +72,9 @@ export default function App() {
               <Route path='product-details/:productID?' element={<ProductDetails />}></Route>
               <Route path='contact' element={<Contact />}></Route>
               <Route path='about' element={<About />}></Route>
+              <Route path='terms' element={<Terms />}></Route>
+              <Route path='privacy' element={<Privacy />}></Route>
+              <Route path='return' element={<Return />}></Route>
               {/* guest only */}
               {
                 !userData.userID ?

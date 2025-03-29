@@ -117,6 +117,9 @@ export default function Header() {
                                     <li>
                                         <NavLink className="dropdown-item" to="privacy">Privacy Policy</NavLink>
                                     </li>
+                                    <li>
+                                        <NavLink className="dropdown-item" to="return">Return Policy</NavLink>
+                                    </li>
                                 </ul>
                             </li>
                         </ul>
