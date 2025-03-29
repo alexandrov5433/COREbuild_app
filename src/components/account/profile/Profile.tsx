@@ -1,5 +1,5 @@
 import styles from './profile.module.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import UserDetails from './userDetails/UserDetails';
 import FavoriteProducts from './favoriteProducts/FavoriteProducts';
 import { useAppSelector } from '../../../lib/hooks/reduxTypedHooks';
@@ -7,6 +7,10 @@ import { useAppSelector } from '../../../lib/hooks/reduxTypedHooks';
 export default function Profile() {
     const userData = useAppSelector(state => state.user);
     const [tab, setTab] = useState('details'); // 'details' || 'favorites'
+    
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     return (
         <div className={`${styles.wrapper}`}>

@@ -15,10 +15,9 @@ export default function Contact() {
     const navigate = useNavigate();
     
     const ticketFormRef = useRef(null);
-    const mostUpperElementRef = useRef(null);
     
     useEffect(() => {
-        (mostUpperElementRef.current! as HTMLDivElement)?.scrollIntoView({ behavior: 'instant' });
+        window.scrollTo(0, 0);
     }, []);
     
     const initFormValidityState = {
@@ -89,7 +88,7 @@ export default function Contact() {
     }
 
     return (
-        <div className={styles.wrapper} ref={mostUpperElementRef}>
+        <div className={styles.wrapper}>
             <h1>Contact Us</h1>
             <div className={styles.openingText}>
                 <h3>We're Here to Help!</h3>

@@ -1,6 +1,6 @@
 import styles from './productsCatalog.module.css';
 import { useSearchParams } from 'react-router';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ProductFilters from './productFilters/ProductFilters';
 import productsCatalog from '../../../lib/actions/product/productsCatalog';
 import { ProductData, ProductsCatalogQueryParams } from '../../../lib/definitions';
@@ -22,8 +22,6 @@ export default function ProductsCatalog() {
     const [categories, setCategories] = useState([] as Array<string>);
     const [isProductsLoading, setProductsLoading] = useState(true);
     const [filterFormClearTrigger, setFilterFormClearTrigger] = useState(false);
-
-    const mostUpperElementRef = useRef(null);
 
     function queryParamsSetterForFilter(paramsToSet: {
         currentPage: number,
@@ -51,6 +49,7 @@ export default function ProductsCatalog() {
             state.set('currentPage', targetPageVal.toString());
             return state;
         });
+        window.scrollTo(0, 0);
     }
     function decrementPage() {
         if (Number(searchParams.get('currentPage')) - 1 <= 0) {
@@ -61,6 +60,7 @@ export default function ProductsCatalog() {
             state.set('currentPage', targetPageVal.toString());
             return state;
         });
+        window.scrollTo(0, 0);
     }
     function goToGivenPage(page: number) {
         setSearchParams(state => {
@@ -68,6 +68,7 @@ export default function ProductsCatalog() {
             state.set('currentPage', targetPageVal.toString());
             return state;
         });
+        window.scrollTo(0, 0);
     }
     function changeItemsPerPage(e: React.ChangeEvent<HTMLSelectElement>) {
         const itemsPerPageToSet = {
@@ -114,6 +115,7 @@ export default function ProductsCatalog() {
     }
     function activateFilterFormClearTrigger() {
         setFilterFormClearTrigger(state => !state);
+        window.scrollTo(0, 0);
     }
 
     useEffect(() => {
@@ -150,11 +152,11 @@ export default function ProductsCatalog() {
     }, []);
 
     useEffect(() => {
-        (mostUpperElementRef.current! as HTMLDivElement)?.scrollIntoView({behavior: 'instant'});
+        window.scrollTo(0, 0);
     }, []);
 
     return (
-        <div className={styles.wrapper} ref={mostUpperElementRef}>
+        <div className={styles.wrapper}>
             <h1>Products Catalog</h1>
             <button className={`btn btn-primary ${styles.filtersButton}`} type="button" data-bs-toggle="offcanvas" data-bs-target="#filters">
                 Open Filters

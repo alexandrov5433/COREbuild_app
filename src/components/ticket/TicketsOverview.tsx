@@ -1,5 +1,5 @@
 import styles from './ticketsOverview.module.css';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import TicketsFilter from './ticketsFilter/TicketsFilter';
 import { TicketData, TicketFiltrationOptions } from '../../lib/definitions';
 import getFilteredTickets from '../../lib/actions/ticket/getFilteredTickets';
@@ -28,11 +28,13 @@ export default function TicketsOverview() {
     const [ticketsRefreshTrigger, setTicketsRefreshTrigger] = useState(false);
     const [filterClearTrigger, setFilterClearTrigger] = useState(false);
 
-    const mostUpperElementRef = useRef(null);
-
     useEffect(() => {
         __getTickets();
     }, [filtrationOptions, ticketsRefreshTrigger]);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     function updateTicketFiltraionOptions(options: {
         id: number | null,
@@ -81,7 +83,7 @@ export default function TicketsOverview() {
             newState.currentPage = currentPage + 1;
             return newState;
         });
-        (mostUpperElementRef?.current! as HTMLDivElement).scrollIntoView({ behavior: 'smooth' });
+        window.scrollTo(0, 0);
     }
     function decrementPage() {
         if (currentPage - 1 <= 0) {
@@ -92,7 +94,7 @@ export default function TicketsOverview() {
             newState.currentPage = currentPage - 1;
             return newState;
         });
-        (mostUpperElementRef?.current! as HTMLDivElement).scrollIntoView({ behavior: 'smooth' });
+        window.scrollTo(0, 0);
     }
     function goToGivenPage(page: number) {
         setFiltrationOptions(state => {
@@ -101,7 +103,7 @@ export default function TicketsOverview() {
             newState.currentPage = targetPage;
             return newState;
         });
-        (mostUpperElementRef?.current! as HTMLDivElement).scrollIntoView({ behavior: 'smooth' });
+        window.scrollTo(0, 0);
     }
     function changeItemsPerPage(e: React.ChangeEvent<HTMLSelectElement>) {
         const itemsPerPageToSet = {
@@ -115,11 +117,11 @@ export default function TicketsOverview() {
             newState.itemsPerPage = itemsPerPageToSet;
             return newState;
         });
-        (mostUpperElementRef?.current! as HTMLDivElement).scrollIntoView({ behavior: 'smooth' });
+        window.scrollTo(0, 0);
     }
 
     return (
-        <div ref={mostUpperElementRef} className={`${styles.wrapper} ${styles.mainContainer}`}>
+        <div className={`${styles.wrapper} ${styles.mainContainer}`}>
             <h1>Tickets</h1>
             <div className={styles.filterContainer}>
                 <TicketsFilter updateFiltrationOptions={updateTicketFiltraionOptions} resetTicketFiltraionOptions={resetTicketFiltraionOptions} filterClearTrigger={filterClearTrigger}/>

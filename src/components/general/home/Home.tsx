@@ -12,15 +12,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquareCheck, faPhone } from '@fortawesome/free-solid-svg-icons';
 
 import { NavLink } from 'react-router';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ProductData, ProductsCatalogQueryParams } from '../../../lib/definitions';
 import productsCatalog from '../../../lib/actions/product/productsCatalog';
 import ProductCard from '../../product/productsCatalog/productCard/ProductCard';
 
 export default function Home() {
     const [prodcuts, setProducts] = useState([] as Array<ProductData>);
-
-    const mostUpperElementRef = useRef(null);
 
     useEffect(() => {
         (async () => {
@@ -37,11 +35,11 @@ export default function Home() {
     }, []);
 
     useEffect(() => {
-        (mostUpperElementRef.current! as HTMLDivElement)?.scrollIntoView({behavior: 'instant'});
+        window.scrollTo(0, 0);
     }, []);
 
     return (
-        <div className={styles.homeWrapper} ref={mostUpperElementRef}>
+        <div className={styles.homeWrapper}>
             <h1>The <i>CORE</i> of your experience!</h1>
 
             <div id="carouselExampleAutoplaying" className={`carousel slide ${styles.carouselBody}`} data-bs-ride="carousel">

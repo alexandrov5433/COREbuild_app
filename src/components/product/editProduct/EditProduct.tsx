@@ -24,7 +24,6 @@ export default function EditProduct() {
 
   const infoFormRef = useRef(null);
   const dataEditorDiv = useRef(null);
-  const mostUpperElementRef = useRef(null);
 
   const initialInfoFormState = {
     isFormValid: true,
@@ -115,8 +114,8 @@ export default function EditProduct() {
   ]);
 
   useEffect(() => {
-    (mostUpperElementRef.current! as HTMLDivElement)?.scrollIntoView({behavior: 'instant'});
-  }, []);
+    window.scrollTo(0, 0);
+  }, []);;
 
   function removeChangesFromInfoForm() {
     (infoFormRef.current! as HTMLFormElement).reset();
@@ -341,7 +340,7 @@ export default function EditProduct() {
   }
 
   return (
-    <div className={styles.wrapper} ref={mostUpperElementRef}>
+    <div className={styles.wrapper}>
       <h1>Edit Product</h1>
       {
         isProductDataLoading ?
@@ -408,10 +407,10 @@ export default function EditProduct() {
                 <div className={styles.specsDocDownloadAndDelete}>
                   {
                     productData.specsDocID ?
-                    <>
-                      <a href={`/api/file/doc/${productData.specsDocID}`} download={productData.name || 'Product Specifications'}>{productData.name}</a>
-                      <button className="btn btn-danger" type="button" disabled={isBlockDeleteButtons} onClick={() => deleteSpecsDoc(productData.specsDocID)}>Delete Document</button>
-                    </>
+                      <>
+                        <a href={`/api/file/doc/${productData.specsDocID}`} download={productData.name || 'Product Specifications'}>{productData.name}</a>
+                        <button className="btn btn-danger" type="button" disabled={isBlockDeleteButtons} onClick={() => deleteSpecsDoc(productData.specsDocID)}>Delete Document</button>
+                      </>
                       :
                       <p>No document available.</p>
                   }

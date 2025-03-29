@@ -106,6 +106,10 @@ export default function Register() {
     });
 
     useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
+    useEffect(() => {
         if (registerState.responseStatus === 200) {
             dispatch(updateUserData(registerState.userData as UserData));
             navigate('/');

@@ -3,7 +3,7 @@ import styles from './orders.module.css';
 import Order from './order/Order';
 import OrdersFilter from './ordersFilter/OrdersFilter';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../lib/hooks/reduxTypedHooks';
 import { OrderData, OrderFiltrationOptions } from '../../lib/definitions';
 import getFilteredOrders from '../../lib/actions/order/getFilteredOrders';
@@ -15,8 +15,6 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 export default function Orders() {
     const dispatch = useAppDispatch();
     const userData = useAppSelector(state => state.user);
-
-    const mostUpperElementRef = useRef(null);
 
     const [isPageLoading, setPageLoading] = useState(true);
     const [orders, setOrders] = useState([] as Array<OrderData>);
@@ -38,6 +36,10 @@ export default function Orders() {
     useEffect(() => {
         __getOrders();
     }, [filtrationOptions, ordersRefreshTrigger]);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     async function __getOrders() {
         setPageLoading(true);
@@ -82,7 +84,7 @@ export default function Orders() {
             newState.currentPage = currentPage + 1;
             return newState;
         });
-        (mostUpperElementRef?.current! as HTMLDivElement).scrollIntoView({ behavior: 'smooth' });
+        window.scrollTo(0, 0);
     }
     function decrementPage() {
         if (currentPage - 1 <= 0) {
@@ -93,7 +95,7 @@ export default function Orders() {
             newState.currentPage = currentPage - 1;
             return newState;
         });
-        (mostUpperElementRef?.current! as HTMLDivElement).scrollIntoView({ behavior: 'smooth' });
+        window.scrollTo(0, 0);
     }
     function goToGivenPage(page: number) {
         setFiltrationOptions(state => {
@@ -102,7 +104,7 @@ export default function Orders() {
             newState.currentPage = targetPage;
             return newState;
         });
-        (mostUpperElementRef?.current! as HTMLDivElement).scrollIntoView({ behavior: 'smooth' });
+        window.scrollTo(0, 0);
     }
     function changeItemsPerPage(e: React.ChangeEvent<HTMLSelectElement>) {
         const itemsPerPageToSet = {
@@ -118,11 +120,11 @@ export default function Orders() {
             newState.itemsPerPage = itemsPerPageToSet;
             return newState;
         });
-        (mostUpperElementRef?.current! as HTMLDivElement).scrollIntoView({ behavior: 'smooth' });
+        window.scrollTo(0, 0);
     }
 
     return (
-        <div ref={mostUpperElementRef} className={`${styles.wrapper} ${styles.mainContainer}`}>
+        <div className={`${styles.wrapper} ${styles.mainContainer}`}>
             <h1>{userData.is_employee ? '' : 'My '}Orders</h1>
             <div className={styles.filterContainer}>
                 <OrdersFilter updateFilter={updateFilter} filterClearTrigger={filterClearTrigger}/>
