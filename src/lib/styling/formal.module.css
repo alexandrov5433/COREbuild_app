@@ -1,0 +1,14 @@
+@import url(./generalWrapper.module.css);
+
+.wrapper {
+    ul li {
+        list-style: disc;
+    }
+    ol li {
+        list-style: decimal;
+    }
+    a {
+        color: var(--green);
+        text-decoration: underline;
+    }
+}
