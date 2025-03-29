@@ -19,13 +19,16 @@ export default function Footer() {
                         <h3>Useful Links</h3>
                         <ul>
                             <li>
-                                <NavLink to='terms' className='link'>Terms &amp; Services</NavLink>
+                                <NavLink to="/terms" className='link'>Terms of Service</NavLink>
                             </li>
                             <li>
-                                <NavLink to='privacy' className='link'>Privacy Policy</NavLink>
+                                <NavLink to="/privacy" className='link'>Privacy Policy</NavLink>
                             </li>
                             <li>
-                                <NavLink to='products-catalog' className='link'>Products</NavLink>
+                                <NavLink to="/return" className='link'>Return Policy</NavLink>
+                            </li>
+                            <li>
+                                <NavLink to="/products-catalog" className='link'>Products Catalog</NavLink>
                             </li>
                         </ul>
                     </div>
