@@ -24,6 +24,7 @@ export default function EditProduct() {
 
   const infoFormRef = useRef(null);
   const dataEditorDiv = useRef(null);
+  const mostUpperElementRef = useRef(null);
 
   const initialInfoFormState = {
     isFormValid: true,
@@ -112,6 +113,10 @@ export default function EditProduct() {
     infoFormState.stockCount.isValid,
     infoFormState.manufacturer.isValid,
   ]);
+
+  useEffect(() => {
+    (mostUpperElementRef.current! as HTMLDivElement)?.scrollIntoView({behavior: 'instant'});
+  }, []);
 
   function removeChangesFromInfoForm() {
     (infoFormRef.current! as HTMLFormElement).reset();
@@ -336,7 +341,7 @@ export default function EditProduct() {
   }
 
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} ref={mostUpperElementRef}>
       <h1>Edit Product</h1>
       {
         isProductDataLoading ?

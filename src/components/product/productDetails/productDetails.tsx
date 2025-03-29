@@ -31,6 +31,7 @@ export default function ProductDetails() {
 
   const commentFormRef = useRef(null);
   const reviewsRef = useRef(null);
+  const mostUpperElementRef = useRef(null);
 
   const [isFavoriteButtonsBlocked, setFavoriteButtonsBlocked] = useState(false);
 
@@ -103,6 +104,10 @@ export default function ProductDetails() {
       setIsProductReviewsLoading(false);
     })();
   }, [productReviewCurrentPage]);
+  
+  useEffect(() => {
+    (mostUpperElementRef.current! as HTMLDivElement)?.scrollIntoView({behavior: 'instant'});
+  }, []);
 
   function manageAddToCartValChange(e: ChangeEvent<HTMLInputElement>) {
     let quantity = Math.abs(Number(e.target.value));
@@ -272,7 +277,7 @@ export default function ProductDetails() {
   }
 
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} ref={mostUpperElementRef}>
       <h1>Product Details</h1>
       {
         Object.keys(productData).length <= 0 ?

@@ -1,6 +1,6 @@
 import styles from './productsCatalog.module.css';
 import { useSearchParams } from 'react-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ProductFilters from './productFilters/ProductFilters';
 import productsCatalog from '../../../lib/actions/product/productsCatalog';
 import { ProductData, ProductsCatalogQueryParams } from '../../../lib/definitions';
@@ -15,12 +15,15 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 export default function ProductsCatalog() {
     const dispatch = useAppDispatch();
     const [searchParams, setSearchParams] = useSearchParams();
+
     const [productResults, setProductResults] = useState([] as Array<ProductData>);
     const [currentPage, setCurrentPage] = useState(1);
     const [allPagesCount, setAllPagesCount] = useState(1);
     const [categories, setCategories] = useState([] as Array<string>);
     const [isProductsLoading, setProductsLoading] = useState(true);
     const [filterFormClearTrigger, setFilterFormClearTrigger] = useState(false);
+
+    const mostUpperElementRef = useRef(null);
 
     function queryParamsSetterForFilter(paramsToSet: {
         currentPage: number,
@@ -146,8 +149,12 @@ export default function ProductsCatalog() {
         })();
     }, []);
 
+    useEffect(() => {
+        (mostUpperElementRef.current! as HTMLDivElement)?.scrollIntoView({behavior: 'instant'});
+    }, []);
+
     return (
-        <div className={styles.wrapper}>
+        <div className={styles.wrapper} ref={mostUpperElementRef}>
             <h1>Products Catalog</h1>
             <button className={`btn btn-primary ${styles.filtersButton}`} type="button" data-bs-toggle="offcanvas" data-bs-target="#filters">
                 Open Filters
