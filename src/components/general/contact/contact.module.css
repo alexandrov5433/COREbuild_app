@@ -51,6 +51,23 @@
     }
 }
 
+.policies {
+    ul {
+        padding-left: 0.1rem;
+        li:not(:last-of-type) {
+            margin-bottom: 1rem;
+        }
+        a:hover {
+            color: var(--green);
+        }
+        svg {
+            color: var(--green);
+            margin-right: 0.5rem;
+        }
+    }
+
+}
+
 @media (min-width: 1024px) {
     .formWrapper {
         textarea {

@@ -3,7 +3,7 @@ import corebuildLogo from '../../../assets/COREbuild.svg';
 import { NavLink, useNavigate } from 'react-router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookSquare, faLinkedin, faSquareXTwitter, faTiktok } from '@fortawesome/free-brands-svg-icons';
-import { faEnvelope, faPhone, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faEnvelope, faPhone, faUser } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useRef, useState } from 'react';
 import submitTicket from '../../../lib/actions/ticket/submitTicket';
 import { useAppDispatch, useAppSelector } from '../../../lib/hooks/reduxTypedHooks';
@@ -13,13 +13,13 @@ export default function Contact() {
     const userData = useAppSelector(state => state.user);
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    
+
     const ticketFormRef = useRef(null);
-    
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
-    
+
     const initFormValidityState = {
         isFormValid: false,
         title: {
@@ -119,6 +119,22 @@ export default function Contact() {
                 </div>
             </div>
 
+            <div className={styles.policies}>
+                <h3>Our Policies</h3>
+                <ul>
+                    <li>
+                        <NavLink to={'/terms'} ><FontAwesomeIcon icon={faArrowRight} /> Terms of Service</NavLink>
+                    </li>
+                    <li>
+                        <NavLink to={'/privacy'} ><FontAwesomeIcon icon={faArrowRight} /> Privacy Policy</NavLink>
+                    </li>
+                    <li>
+                        <NavLink to={'/return'} ><FontAwesomeIcon icon={faArrowRight} /> Return Policy</NavLink>
+                    </li>
+    
+                </ul>
+            </div>
+
             <div className={styles.socialMediaContainer}>
                 <h3>Follow Us on Social Media</h3>
                 <p className="lead">Stay updated on the latest deals, tech news, and exclusive promotions!</p>
@@ -147,19 +163,19 @@ export default function Contact() {
                                 <div className="mb-3">
                                     <label htmlFor="title" className="form-label">Title</label>
                                     <input type="text" className={`form-control ${formValidity.title.touched ?
-                                            (formValidity.title.valid ? '' : 'is-invalid') : ''
+                                        (formValidity.title.valid ? '' : 'is-invalid') : ''
                                         }`} id="title" placeholder="Please enter a title." name="title" onChange={e => validator(e)} />
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="email_for_answer" className="form-label">Email</label>
                                     <input type="email" className={`form-control ${formValidity.email_for_answer.touched ?
-                                            (formValidity.email_for_answer.valid ? '' : 'is-invalid') : ''
+                                        (formValidity.email_for_answer.valid ? '' : 'is-invalid') : ''
                                         }`} id="email_for_answer" name="email_for_answer" placeholder="Please enter your email." onChange={e => validator(e)} />
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="content_question" className="form-label">Question</label>
                                     <textarea className={`form-control ${formValidity.content_question.touched ?
-                                            (formValidity.content_question.valid ? '' : 'is-invalid') : ''
+                                        (formValidity.content_question.valid ? '' : 'is-invalid') : ''
                                         }`} id="content_question" placeholder="Please describe the situation and enter useful information, like orderID." name="content_question" onChange={e => validator(e)}></textarea>
                                 </div>
                                 <div className="mb-3">
