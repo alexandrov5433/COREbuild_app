@@ -20,9 +20,11 @@ import ShoppingCart from './components/product/shoppingCart/ShoppingCart';
 import ProductDetails from './components/product/productDetails/productDetails';
 import EditProduct from './components/product/editProduct/EditProduct';
 import Orders from './components/orders/Orders';
+import Contact from './components/general/contact/Contact';
+import TicketsOverview from './components/ticket/TicketsOverview';
+
 import getFavoriteForUser from './lib/actions/favorite/getFavoriteForUser';
 import { updateFavorite } from './redux/favoriteSlice';
-import Contact from './components/general/contact/Contact';
 
 const PAYPAL_INIT_OPTIONS: ReactPayPalScriptOptions = {
   clientId: "ATKglcYBI2PZ2DazP0H2hcnyOzjxVk0twgEzIA35pJwjqsjhC-xzwY542wpgc1g0j1agukEIeaWyO1vJ",
@@ -90,6 +92,7 @@ export default function App() {
                   <>
                     <Route path='add-product' element={<AddProduct />}></Route>
                     <Route path='edit-product/:productID?' element={<EditProduct />}></Route>
+                    <Route path='tickets' element={<TicketsOverview />}></Route>
                   </>
                   : ''
               }
