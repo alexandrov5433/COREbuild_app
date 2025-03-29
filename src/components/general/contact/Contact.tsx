@@ -4,7 +4,7 @@ import { NavLink, useNavigate } from 'react-router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookSquare, faLinkedin, faSquareXTwitter, faTiktok } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope, faPhone, faUser } from '@fortawesome/free-solid-svg-icons';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import submitTicket from '../../../lib/actions/ticket/submitTicket';
 import { useAppDispatch, useAppSelector } from '../../../lib/hooks/reduxTypedHooks';
 import { setMessageData } from '../../../redux/popupMessageSlice';
@@ -12,9 +12,15 @@ import { setMessageData } from '../../../redux/popupMessageSlice';
 export default function Contact() {
     const userData = useAppSelector(state => state.user);
     const dispatch = useAppDispatch();
-    const ticketFormRef = useRef(null);
     const navigate = useNavigate();
-
+    
+    const ticketFormRef = useRef(null);
+    const mostUpperElementRef = useRef(null);
+    
+    useEffect(() => {
+        (mostUpperElementRef.current! as HTMLDivElement)?.scrollIntoView({ behavior: 'instant' });
+    }, []);
+    
     const initFormValidityState = {
         isFormValid: false,
         title: {
@@ -83,7 +89,7 @@ export default function Contact() {
     }
 
     return (
-        <div className={styles.wrapper}>
+        <div className={styles.wrapper} ref={mostUpperElementRef}>
             <h1>Contact Us</h1>
             <div className={styles.openingText}>
                 <h3>We're Here to Help!</h3>
