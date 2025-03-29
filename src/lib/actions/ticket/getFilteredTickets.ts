@@ -1,6 +1,6 @@
-import { ApiJsonResponce, GetFilteredTicketsResponseData } from "../../definitions";
+import { ApiJsonResponce, GetFilteredTicketsResponseData, TicketFiltrationOptions } from "../../definitions";
 
-export default async function getFilteredTickets() {
+export default async function getFilteredTickets(filtraionOptions: TicketFiltrationOptions) {
     const actionResponse = {
         msg: '',
         responseStatus: 0,
@@ -13,7 +13,7 @@ export default async function getFilteredTickets() {
         isError: boolean   
     };
     try {
-        const res = await fetch('/api/ticket-filter', {
+        const res = await fetch(buildURL('/api/ticket-filter', filtraionOptions), {
             method: 'get',
             credentials: 'include'
         });
@@ -28,4 +28,22 @@ export default async function getFilteredTickets() {
     } finally {
         return actionResponse;
     }
+}
+
+function buildURL(baseUrl: string, filtrationOptions: TicketFiltrationOptions) {
+    let newUrl = `${baseUrl}?`;
+    [   
+        'id',
+        'status',
+        'time_open',
+        'currentPage',
+        'itemsPerPage'
+    ].forEach(key => {
+            if (Object.hasOwn(filtrationOptions, key)) {
+                if ((filtrationOptions as any)[key] != null) {
+                    newUrl += `${key}=${(filtrationOptions as any)[key]}&`;
+                }
+            }
+        });
+    return newUrl;
 }

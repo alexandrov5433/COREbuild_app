@@ -1,0 +1,39 @@
+@import url(../../lib/styling/generalWrapper.module.css);
+
+.mainContainer {
+    & > :not(:last-child) {
+        margin-bottom: 2rem;
+    }
+}
+
+.ticketsContainer {
+    & > *:not(:last-of-type) {
+        margin-bottom: 1rem;
+    }
+}
+
+.paginationContainer {
+    display: flex;
+    justify-content: center;
+    .pagination {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    a:hover {
+        cursor: pointer;
+    }
+}
+
+.noResultsContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    padding: 2rem 0;
+    svg {
+        font-size: 2rem;
+    }
+}

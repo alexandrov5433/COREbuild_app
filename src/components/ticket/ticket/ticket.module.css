@@ -1,0 +1,46 @@
+.mainContainer {
+    padding: 0.5rem;
+    & > *:not(:last-child) {
+        margin-bottom: 0.5rem;
+    }
+    textarea {
+        height: 15rem;
+    }
+}
+
+.infoSection {
+    i {
+        font-style: normal;
+        font-weight: 300;
+    }
+    p {
+        margin: 0;
+        margin-bottom: 0.5rem;
+    }
+    .yellow {
+      color: rgb(211, 201, 12);  
+    }
+    .green {
+      color: var(--green);  
+    }
+}
+
+.closed {
+    color: var(--green);
+}
+
+.open {
+    color: red;
+}
+
+@media (min-width: 600px) {
+
+}
+
+@media (min-width: 1025px) {
+    .mainContainer {
+        border: 1px solid rgba(39, 174, 96, 0.6);
+        border-radius: 6px;
+        padding: 0.5rem 1rem;
+    }
+}
