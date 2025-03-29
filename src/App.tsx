@@ -4,6 +4,8 @@ import { useEffect } from 'react';
 import validateCoookie from './lib/actions/validateCookie';
 import { setUserToGuest, updateUserData } from './redux/userSlice';
 import { PayPalScriptProvider, ReactPayPalScriptOptions } from '@paypal/react-paypal-js';
+import getFavoriteForUser from './lib/actions/favorite/getFavoriteForUser';
+import { updateFavorite } from './redux/favoriteSlice';
 
 import Header from './components/core/header/Header';
 import Main from './components/core/main/Main';
@@ -22,9 +24,7 @@ import EditProduct from './components/product/editProduct/EditProduct';
 import Orders from './components/orders/Orders';
 import Contact from './components/general/contact/Contact';
 import TicketsOverview from './components/ticket/TicketsOverview';
-
-import getFavoriteForUser from './lib/actions/favorite/getFavoriteForUser';
-import { updateFavorite } from './redux/favoriteSlice';
+import About from './components/general/about/About';
 
 const PAYPAL_INIT_OPTIONS: ReactPayPalScriptOptions = {
   clientId: "ATKglcYBI2PZ2DazP0H2hcnyOzjxVk0twgEzIA35pJwjqsjhC-xzwY542wpgc1g0j1agukEIeaWyO1vJ",
@@ -68,6 +68,7 @@ export default function App() {
               <Route path='products-catalog' element={<ProductsCatalog />}></Route>
               <Route path='product-details/:productID?' element={<ProductDetails />}></Route>
               <Route path='contact' element={<Contact />}></Route>
+              <Route path='about' element={<About />}></Route>
               {/* guest only */}
               {
                 !userData.userID ?
