@@ -154,7 +154,7 @@ export default function Terms() {
 
             <hr />
             <h2>16. Contact Information</h2>
-            <p>For questions about these Terms, contact us at:</p>
+            <p>For questions about these Terms, <NavLink to={'/contact'}>contact</NavLink> us at:</p>
             <ul>
                 <li>
                     <p>Email: corebuildshop@gmail.com</p>
