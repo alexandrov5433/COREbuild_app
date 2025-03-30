@@ -3,7 +3,7 @@ import styles from './login.module.css';
 import login from '../../../lib/actions/user/login';
 import { useDispatch } from 'react-redux';
 import { updateUserData } from '../../../redux/userSlice';
-import { useNavigate } from 'react-router';
+import { NavLink, useNavigate } from 'react-router';
 import { setMessageData } from '../../../redux/popupMessageSlice';
 
 export default function Login() {
@@ -53,6 +53,7 @@ export default function Login() {
     return (
         <div className={styles.wrapper}>
             <h1>Log In</h1>
+            <p>No account? <NavLink to={'/register'}>Create one now.</NavLink></p>
             <form action={loginAction}>
                 <div className={`${areLoginCredentialsFalse ? 'is-invalid' : ''
                         }`}>
