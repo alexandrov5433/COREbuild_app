@@ -13,6 +13,13 @@
             align-self: flex-end;
         }  
     }
+    
+    a {
+        color: var(--green);
+        &:hover {
+            text-decoration: underline;
+        }
+    }
 }
 
 .labelWithLogo {

@@ -5,7 +5,7 @@ import register from '../../../lib/actions/user/register';
 import { RegistrationValidationError, UserData } from '../../../lib/definitions';
 import { useAppDispatch } from '../../../lib/hooks/reduxTypedHooks';
 import { updateUserData } from '../../../redux/userSlice';
-import { useNavigate } from 'react-router';
+import { NavLink, useNavigate } from 'react-router';
 import { setMessageData } from '../../../redux/popupMessageSlice';
 
 export default function Register() {
@@ -122,7 +122,7 @@ export default function Register() {
                 }
             });
             setValidationState(newState as any);
-        }else if (registerState.responseStatus === 403) {
+        } else if (registerState.responseStatus === 403) {
             // username and/or email are already in use
             dispatch(setMessageData({
                 duration: 8500,
@@ -134,11 +134,11 @@ export default function Register() {
             setFormState(initFormState);
         }
     }, [registerState]);
-    
+
     useEffect(() => {
         const isFormInvalid = Object.values(validationState).find(field => !field.valid);
         setFormState(state => {
-            const newState = {...state};
+            const newState = { ...state };
             newState.isValid = !isFormInvalid;
             return newState;
         });
@@ -147,7 +147,7 @@ export default function Register() {
 
     function validator(e: React.SyntheticEvent<HTMLInputElement>) {
         const val = (e.target! as HTMLInputElement).value;
-        const fieldName = (e.target! as HTMLInputElement).name;  
+        const fieldName = (e.target! as HTMLInputElement).name;
         const passwordRefVal = (passwordRef.current! as HTMLFormElement)?.value
         const regexpLib = {
             'username': new RegExp(/^[A-Za-z0-9@_+?!-]{1,30}$/),
@@ -171,10 +171,11 @@ export default function Register() {
     return (
         <div className={styles.wrapper}>
             <h1>Register</h1>
+            <p><NavLink to={'/login'}>Log in</NavLink> with existing account.</p>
             <p className={`${styles.mandatoryFielsExplanation}`}>Please fill out all mandatory <i>*</i> fields.</p>
             <form action={registerAction} ref={formRef}>
                 <div className={`form-check ${styles.inputContainer} ${styles.checkboxContainer} ${styles.employeeCheckboxContainer}`}>
-                    <input type="checkbox" className="form-check-input" id="is_employee" name="is_employee" onClick={showHideEmployeeRegister} defaultChecked={isEmployee}/>
+                    <input type="checkbox" className="form-check-input" id="is_employee" name="is_employee" onClick={showHideEmployeeRegister} defaultChecked={isEmployee} />
                     <label className={`form-check-label ${styles.labelWithLogo}`} htmlFor="is_employee">I am an employee of<img src={logo} alt="COREbuild" /></label>
                 </div>
 
@@ -205,7 +206,7 @@ export default function Register() {
                 <div className={styles.inputContainer}>
                     <label htmlFor="repeat_password" className="form-label">Repeat Password <i>*</i></label>
                     <input type={passwordInputType} className={`form-control ${validationState.repeat_password.touched ? (validationState.repeat_password.valid ? 'is-valid' : 'is-invalid') : ''
-                        }`} id="repeat_password" name="repeat_password" aria-describedby="repasswordHelp" onInput={e => validator(e)}/>
+                        }`} id="repeat_password" name="repeat_password" aria-describedby="repasswordHelp" onInput={e => validator(e)} />
                     <div id="repasswordHelp" className="form-text">Please enter the same password as above.</div>
                     <div className="invalid-feedback">
                         {(registerState.validationErrorsData as RegistrationValidationError)?.repeat_password?.msg || ''}
@@ -217,7 +218,7 @@ export default function Register() {
                         <div className={styles.inputContainer}>
                             <label htmlFor="authentication_code" className="form-label">Authentication Code <i>*</i></label>
                             <input type="text" className={`form-control ${(validationState as any).authentication_code.touched ? ((validationState as any).authentication_code.valid ? 'is-valid' : 'is-invalid') : ''
-                                }`} id="authentication_code" name="authentication_code" aria-describedby="authHelp" onInput={e => validator(e)}/>
+                                }`} id="authentication_code" name="authentication_code" aria-describedby="authHelp" onInput={e => validator(e)} />
                             <div id="authHelp" className="form-text">Please enter the authentication code to verify your employee status.</div>
                             <div className="invalid-feedback">
                                 {(registerState.validationErrorsData as RegistrationValidationError)?.authentication_code?.msg || ''}
@@ -252,7 +253,7 @@ export default function Register() {
                                     {(registerState.validationErrorsData as RegistrationValidationError)?.lastname?.msg || ''}
                                 </div>
                             </div>
-                         
+
                             <div className={styles.inputContainer}>
                                 <label htmlFor="address" className="form-label">Address <i>*</i></label>
                                 <input type="text" className={`form-control ${validationState.address.touched ? (validationState.address.valid ? 'is-valid' : 'is-invalid') : ''
@@ -268,6 +269,9 @@ export default function Register() {
                 <div className={`form-check ${styles.inputContainer} ${styles.checkboxContainer}`}>
                     <input type="checkbox" className="form-check-input" id="stayLoggedIn" name='stayLoggedIn' />
                     <label className="form-check-label" htmlFor="stayLoggedIn">Stay logged in</label>
+                </div>
+                <div>
+                    <p>By creating an account you agree to your <NavLink to={'/terms'}>Terms of Service</NavLink> and <NavLink to={'/privacy'}>Privacy Policy</NavLink>.</p>
                 </div>
 
 
