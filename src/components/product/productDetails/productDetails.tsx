@@ -35,6 +35,7 @@ export default function ProductDetails() {
   const [isFavoriteButtonsBlocked, setFavoriteButtonsBlocked] = useState(false);
 
   const [productData, setProductData] = useState({} as ProductData);
+  const [isProductLoading, setProductLoading] = useState(false);
   const [raitngAndReviewsCount, setRaitngAndReviewsCount] = useState({} as GetRatingAndReviewCountForProductActionData);
 
   const [productReviews, setProductReviews] = useState([] as Array<ReviewData>);
@@ -59,6 +60,7 @@ export default function ProductDetails() {
       return;
     }
     (async () => {
+      setProductLoading(true);
       const results = await Promise.all([
         productDetails(productID),
         getCustomerReviewedProduct(productID),
@@ -69,7 +71,6 @@ export default function ProductDetails() {
       const getRatingAndReviewCountForProductAR = results[2];
       if (productDetailsAR.responseStatus === 200) {
         setProductData(productDetailsAR.data!);
-
       } else if ([400, 500].includes(productDetailsAR.responseStatus)) {
         // error
         dispatch(setMessageData({
@@ -85,6 +86,7 @@ export default function ProductDetails() {
       if (getRatingAndReviewCountForProductAR.responseStatus === 200) {
         setRaitngAndReviewsCount(getRatingAndReviewCountForProductAR.data!);
       }
+      setProductLoading(false);
     })();
   }, [productID]);
 
@@ -282,6 +284,7 @@ export default function ProductDetails() {
     <div className={styles.wrapper}>
       <h1>Product Details</h1>
       {
+        isProductLoading ? <Loader/> :
         Object.keys(productData).length <= 0 ?
           <div className={styles.productNotFound}>
             <div className={styles.triangleContainer}>
