@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router';
+import { Routes, Route, useNavigate } from 'react-router';
 import { useAppDispatch, useAppSelector } from './lib/hooks/reduxTypedHooks';
 import { useEffect } from 'react';
 import validateCoookie from './lib/actions/validateCookie';
@@ -6,6 +6,7 @@ import { setUserToGuest, updateUserData } from './redux/userSlice';
 import { PayPalScriptProvider, ReactPayPalScriptOptions } from '@paypal/react-paypal-js';
 import getFavoriteForUser from './lib/actions/favorite/getFavoriteForUser';
 import { updateFavorite } from './redux/favoriteSlice';
+import useEventListerner from './lib/hooks/useEventListener';
 
 import Header from './components/core/header/Header';
 import Main from './components/core/main/Main';
@@ -38,29 +39,39 @@ const PAYPAL_INIT_OPTIONS: ReactPayPalScriptOptions = {
 export default function App() {
   const dispatch = useAppDispatch();
   const userData = useAppSelector(state => state.user);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    async function checkCookieAndData() {
-      const userDataAfterValidation = await validateCoookie();
-      if (userDataAfterValidation?.userID) {
-        dispatch(updateUserData(userDataAfterValidation));
-        if (userDataAfterValidation.is_employee) {
-          return;
-        }
-        const favoriteProductsAction = await getFavoriteForUser(userDataAfterValidation?.userID);
-        if (favoriteProductsAction.responseStatus === 200) {
-          dispatch(updateFavorite(favoriteProductsAction.data!));
-        }
-      } else {
-        dispatch(setUserToGuest());
-      }
-    }
     checkCookieAndData();
   }, []);
 
+  useEventListerner(document, 'visibilitychange', tabChangeEventListner);
+
+  async function checkCookieAndData() {
+    const userDataAfterValidation = await validateCoookie();
+    if (userDataAfterValidation?.userID) {
+      dispatch(updateUserData(userDataAfterValidation));
+      if (userDataAfterValidation.is_employee) {
+        return;
+      }
+      const favoriteProductsAction = await getFavoriteForUser(userDataAfterValidation?.userID);
+      if (favoriteProductsAction.responseStatus === 200) {
+        dispatch(updateFavorite(favoriteProductsAction.data!));
+      }
+    } else {
+      dispatch(setUserToGuest());
+      navigate('/');
+    }
+  }
+
+  async function tabChangeEventListner(_e: Event) {
+    if (document.visibilityState === 'visible') {
+      await checkCookieAndData();
+    }
+  }
+
   return (
     <>
-      <BrowserRouter>
         <PayPalScriptProvider options={PAYPAL_INIT_OPTIONS}>
 
           <Header />
@@ -120,8 +131,7 @@ export default function App() {
 
           <PopupMessage />
 
-        </PayPalScriptProvider>
-      </BrowserRouter>
+        </PayPalScriptProvider> 
     </>
   )
 }
