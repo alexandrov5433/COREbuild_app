@@ -28,6 +28,10 @@
     }
 }
 
+.loginAndRegLink {
+    color: var(--green);
+}
+
 @media (min-width: 992px) {
     .wrapper {
         padding: 5rem 0;
