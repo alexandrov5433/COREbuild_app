@@ -1,3 +1,5 @@
+import styles from './app.module.css';
+
 import { Routes, Route, useNavigate } from 'react-router';
 import { useAppDispatch, useAppSelector } from './lib/hooks/reduxTypedHooks';
 import { useEffect } from 'react';
@@ -66,12 +68,15 @@ export default function App() {
 
   async function tabChangeEventListner(_e: Event) {
     if (document.visibilityState === 'visible') {
+      if (!userData.userID) {
+        return;
+      }
       await checkCookieAndData();
     }
   }
 
   return (
-    <>
+    <div className={styles.wrapper}>
         <PayPalScriptProvider options={PAYPAL_INIT_OPTIONS}>
 
           <Header />
@@ -132,6 +137,6 @@ export default function App() {
           <PopupMessage />
 
         </PayPalScriptProvider> 
-    </>
+    </div>
   )
 }
