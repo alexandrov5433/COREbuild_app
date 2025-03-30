@@ -26,7 +26,7 @@ export default async function register(
     try {
         state.inputValues = Object.fromEntries(formData.entries());
         const res = await fetch(`/api/register`, {
-            method: 'POST',
+            method: 'post',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -38,7 +38,7 @@ export default async function register(
         state.msg = jsonResponse.msg;
         if (res.status === 200) {
             state.userData = jsonResponse.payload as UserData || null;
-        } else if (res.status === 400) {
+        } else if (res.status === 400 || res.status === 403) {
             state.validationErrorsData = jsonResponse.payload as RegistrationValidationError || {};
         }
         return state;
