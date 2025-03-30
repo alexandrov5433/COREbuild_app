@@ -1,4 +1,4 @@
-import { ChangeEvent, useActionState, useEffect, useState } from 'react';
+import { ChangeEvent, SyntheticEvent, useActionState, useEffect, useState } from 'react';
 import styles from './login.module.css';
 import login from '../../../lib/actions/user/login';
 import { useDispatch } from 'react-redux';
@@ -11,6 +11,13 @@ export default function Login() {
     const navigate = useNavigate();
     const [passwordInputType, setPasswordInputType] = useState('password');
     const [areLoginCredentialsFalse, setLoginCredentialsAreFalse] = useState(false);
+
+    const initFormValidity = {
+        isFormValid: false,
+        username: false,
+        password: false
+    }
+    const [formValidity, setFormValidity] = useState(initFormValidity);
 
     const showHidePassword = function (e: ChangeEvent<HTMLInputElement>) {
         const isChecked = e.currentTarget.checked;
@@ -50,6 +57,21 @@ export default function Login() {
         window.scrollTo(0, 0);
     }, []);
 
+    function validator(e: SyntheticEvent<HTMLInputElement, InputEvent>) {
+        const val = e.currentTarget.value;
+        const elementName = e.currentTarget.name;
+        setFormValidity(state => {
+            const newState = {...state};
+            (newState as any)[elementName] = Boolean(val);
+            const isFormValid = [
+                newState.username,
+                newState.password
+            ].includes(false);
+            newState.isFormValid = !isFormValid;
+            return newState;
+        });
+    }
+
     return (
         <div className={styles.wrapper}>
             <h1>Log In</h1>
@@ -59,13 +81,13 @@ export default function Login() {
                         }`}>
                     <label htmlFor="username" className="form-label">Username</label>
                     <input type="text" className={`form-control ${areLoginCredentialsFalse ? 'is-invalid' : ''
-                        }`} id="username" name="username" aria-describedby="usernameHelp" defaultValue={loginState.inputedUsername || ''} />
+                        }`} id="username" name="username" aria-describedby="usernameHelp" defaultValue={loginState.inputedUsername || ''} onInput={validator}/>
                     <div id="usernameHelp" className="form-text">Please enter your username.</div>
                 </div>
                 <div>
                     <label htmlFor="password" className="form-label">Password</label>
                     <input type={passwordInputType} className={`form-control ${areLoginCredentialsFalse ? 'is-invalid' : ''
-                        }`} id="password" name="password" aria-describedby="passwordHelp" />
+                        }`} id="password" name="password" aria-describedby="passwordHelp" onInput={validator}/>
                     <div id="passwordHelp" className="form-text">Please enter your password.</div>
                     <div className={`form-check ${styles.checkboxContainer}`}>
                         <input type="checkbox" className="form-check-input" id="showPassword" onChange={showHidePassword} />
@@ -83,7 +105,7 @@ export default function Login() {
                     <div className="spinner-border text-success" role="status">
                         <span className="visually-hidden">Loading...</span>
                     </div>
-                    : <button type="submit" className={`btn btn-success ${styles.submitButton}`}>Log In</button>
+                    : <button type="submit" className={`btn btn-success ${styles.submitButton}`} disabled= {!formValidity.isFormValid}>Log In</button>
                 }
             </form>
         </div>
