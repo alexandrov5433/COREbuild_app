@@ -190,6 +190,9 @@ export default function ProductDetails() {
       page = productReviewPagesCount;
     }
     setProductReviewCurrentPage(page);
+    (reviewsRef.current! as HTMLDivElement).scrollIntoView({
+      behavior: 'smooth'
+    });
   }
 
   function scrollReviewIntoView() {
@@ -494,13 +497,15 @@ export default function ProductDetails() {
 
                             <ul className={`pagination ${styles.reviewsPagination}`}>
                               <li className="page-item">
-                                <a className={`page-link ${productReviewCurrentPage <= 1 || isProductReviewsloading ? 'disabled' : ''}`} aria-label="Previous" onClick={() => goToGivenPage(productReviewCurrentPage - 1)}>
+                                <a className={`page-link ${productReviewCurrentPage <= 1 || isProductReviewsloading ? 'disabled' : ''}`} aria-label="Previous" onClick={() => 
+                                  goToGivenPage(productReviewCurrentPage - 1)}>
                                   <span aria-hidden="true">&laquo;</span>
                                 </a>
                               </li>
                               <li className="page-item page-link">{productReviewCurrentPage}</li>
                               <li className="page-item">
-                                <a className={`page-link ${productReviewCurrentPage >= productReviewPagesCount || isProductReviewsloading ? 'disabled' : ''}`} aria-label="Next" onClick={() => goToGivenPage(productReviewCurrentPage + 1)}>
+                                <a className={`page-link ${productReviewCurrentPage >= productReviewPagesCount || isProductReviewsloading ? 'disabled' : ''}`} aria-label="Next" onClick={() => 
+                                  goToGivenPage(productReviewCurrentPage + 1)}>
                                   <span aria-hidden="true">&raquo;</span>
                                 </a>
                               </li>
