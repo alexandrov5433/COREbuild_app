@@ -2,7 +2,7 @@ import styles from './app.module.css';
 
 import { Routes, Route, useNavigate } from 'react-router';
 import { useAppDispatch, useAppSelector } from './lib/hooks/reduxTypedHooks';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import validateCoookie from './lib/actions/validateCookie';
 import { setUserToGuest, updateUserData } from './redux/userSlice';
 import { PayPalScriptProvider, ReactPayPalScriptOptions } from '@paypal/react-paypal-js';
@@ -43,34 +43,36 @@ export default function App() {
   const userData = useAppSelector(state => state.user);
   const navigate = useNavigate();
 
+  const isComponentFirstMount = useRef(true);
+
   useEffect(() => {
     checkCookieAndData();
+    isComponentFirstMount.current = false;
   }, []);
 
   useEventListerner(document, 'visibilitychange', tabChangeEventListner);
 
   async function checkCookieAndData() {
-    const userDataAfterValidation = await validateCoookie();
-    if (userDataAfterValidation?.userID) {
-      dispatch(updateUserData(userDataAfterValidation));
-      if (userDataAfterValidation.is_employee) {
+    const action = await validateCoookie();
+    if (action.responseStatus === 200) {
+      dispatch(updateUserData(action.data! || {}));
+      if (action.data!.is_employee) {
         return;
       }
-      const favoriteProductsAction = await getFavoriteForUser(userDataAfterValidation?.userID);
+      const favoriteProductsAction = await getFavoriteForUser(action.data!.userID || 0);
       if (favoriteProductsAction.responseStatus === 200) {
         dispatch(updateFavorite(favoriteProductsAction.data!));
       }
     } else {
       dispatch(setUserToGuest());
-      navigate('/');
+      if (!isComponentFirstMount) {
+        navigate('/');
+      }
     }
   }
 
   async function tabChangeEventListner(_e: Event) {
     if (document.visibilityState === 'visible') {
-      if (!userData.userID) {
-        return;
-      }
       await checkCookieAndData();
     }
   }
