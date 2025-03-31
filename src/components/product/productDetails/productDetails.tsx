@@ -1,6 +1,6 @@
 import styles from './productDetails.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleCheck, faCircleXmark, faEuroSign, faStar as faStarFull, faStarHalfStroke, faCheck, faComments, faTriangleExclamation, faArrowRight, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faCircleCheck, faCircleXmark, faEuroSign, faStar as faStarFull, faStarHalfStroke, faCheck, faComments, faHeart } from '@fortawesome/free-solid-svg-icons';
 import { faStar as faStarHollow, faHeart as faHeartHollow } from '@fortawesome/free-regular-svg-icons';
 import { ChangeEvent, SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { NavLink, useNavigate, useParams } from 'react-router';
@@ -20,6 +20,7 @@ import Loader from '../../general/loader/Loader';
 import addProductToFavorite from '../../../lib/actions/favorite/addProductToFavorite';
 import { updateFavorite } from '../../../redux/favoriteSlice';
 import deleteProductFromFavorite from '../../../lib/actions/favorite/deleteProductFromFavorite';
+import ProductNotFound from '../productNotFound/ProductNotFound';
 
 export default function ProductDetails() {
   const { productID } = useParams();
@@ -286,28 +287,7 @@ export default function ProductDetails() {
       {
         isProductLoading ? <Loader/> :
         Object.keys(productData).length <= 0 ?
-          <div className={styles.productNotFound}>
-            <div className={styles.triangleContainer}>
-              <FontAwesomeIcon icon={faTriangleExclamation} />
-            </div>
-            {
-              !productID ?
-                <p className='lead'>The product ID is required in order to find it. Please, check the URL.</p>
-                :
-                <p className='lead'>Sadly, the product with ID: {productID} you are looking for could not be found.</p>
-            }
-            <p className='lead'>Please, take a look at our products catalog or contact us.</p>
-            <div>
-              <NavLink to='/products-catalog'>
-                <FontAwesomeIcon icon={faArrowRight} />Products
-              </NavLink>
-            </div>
-            <div>
-              <NavLink to='/'>
-                <FontAwesomeIcon icon={faArrowRight} />Home
-              </NavLink>
-            </div>
-          </div>
+          <ProductNotFound idOfNotFoundProduct={productID}></ProductNotFound>
           :
           <div className={styles.contentContainer}>
             <h2>{productData.name}</h2>

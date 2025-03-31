@@ -229,26 +229,6 @@
     }
 }
 
-.productNotFound {
-    margin-top: 2rem;
-    .triangleContainer {
-        color: #ffc107;
-        font-size: 4rem;
-        display: flex;
-        justify-content: center;
-    }
-
-    a {
-        svg {
-            color: var(--green);
-            margin-right: 1rem;
-        }     
-        &:hover {
-            color: var(--green);
-        }
-    }
-}
-
 .heart {
     color: red;
     z-index: 10;
