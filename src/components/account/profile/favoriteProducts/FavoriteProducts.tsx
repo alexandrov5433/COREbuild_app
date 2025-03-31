@@ -15,7 +15,7 @@ export default function FavoriteProducts() {
   const userData = useAppSelector(state => state.user);
   const favoriteData = useAppSelector(state => state.favorite);
 
-  const [isFavoriteHasProducts, _setFavoriteHasProducts] = useState(favoriteData?.products.length ? true : false);
+  const [isFavoriteHasProducts, _setFavoriteHasProducts] = useState(favoriteData?.products?.length ? true : false);
 
   const [fatoviteProductsData, setFatoviteProductsData] = useState([] as Array<ProductData | null>);
   const [isFavoriteProductsDataLoading, setFavoriteProductsDataLoading] = useState(false);
@@ -33,7 +33,6 @@ export default function FavoriteProducts() {
     const action = await getProductDataInBulk(favoriteData.products);
 
     if (action.responseStatus === 200) {
-      console.log(action.data!);
       setFatoviteProductsData(action.data!);
     } else if (action.responseStatus === 400) {
       dispatch(setMessageData({
@@ -51,7 +50,7 @@ export default function FavoriteProducts() {
       return;
     }
     setRemoveFromFavoriteLoading(true);
-    const action = await deleteProductFromFavorite(userData.userID, productID);
+    const action = await deleteProductFromFavorite(userData?.userID, productID);
     if (action.responseStatus === 200) {
       dispatch(setMessageData({
         duration: 4000,
@@ -80,7 +79,7 @@ export default function FavoriteProducts() {
               {
                 fatoviteProductsData.map(product => {
                   return (
-                    <div className={styles.card}>
+                    <div className={styles.card} key={product?.productID}>
                       <NavLink to={`/product-details/${product?.productID}`}>
                         <img src={`/api/file/pic/${product?.thumbnailID}`} className="img-thumbnail" alt={`A picture of the product ${product?.name}.`} />
                       </NavLink>
