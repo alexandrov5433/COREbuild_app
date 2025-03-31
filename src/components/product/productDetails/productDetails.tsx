@@ -41,6 +41,7 @@ export default function ProductDetails() {
 
   const [productReviews, setProductReviews] = useState([] as Array<ReviewData>);
   const [isProductReviewsloading, setIsProductReviewsLoading] = useState(false);
+  const [isReviewSubmittionloading, setReviewSubmittionloading] = useState(false);
   const [productReviewCurrentPage, setProductReviewCurrentPage] = useState(1);
   const [productReviewPagesCount, setProductReviewPagesCount] = useState(1);
 
@@ -92,21 +93,9 @@ export default function ProductDetails() {
   }, [productID]);
 
   useEffect(() => {
-    if (!productID) {
-      return;
-    }
-    (async () => {
-      setIsProductReviewsLoading(true);
-      const getReviewsForProductAR = await getReviewsForProduct(productID, productReviewCurrentPage);
-      if (getReviewsForProductAR.responseStatus === 200) {
-        setProductReviews(getReviewsForProductAR.data?.reviews || []);
-        setProductReviewCurrentPage(getReviewsForProductAR.data?.currentPage || 1);
-        setProductReviewPagesCount(getReviewsForProductAR.data?.pagesCount || 1);
-      }
-      setIsProductReviewsLoading(false);
-    })();
+    getProductReviewsData();
   }, [productReviewCurrentPage]);
-  
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -131,6 +120,20 @@ export default function ProductDetails() {
     setDisplayDescriptionOrComments(choise);
   }
 
+  async function getProductReviewsData() {
+    if (!productID) {
+      return;
+    }
+    setIsProductReviewsLoading(true);
+    const getReviewsForProductAR = await getReviewsForProduct(productID, productReviewCurrentPage);
+    if (getReviewsForProductAR.responseStatus === 200) {
+      setProductReviews(getReviewsForProductAR.data?.reviews || []);
+      setProductReviewCurrentPage(getReviewsForProductAR.data?.currentPage || 1);
+      setProductReviewPagesCount(getReviewsForProductAR.data?.pagesCount || 1);
+    }
+    setIsProductReviewsLoading(false);
+  }
+
   async function submitReview(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!productID) {
@@ -142,6 +145,7 @@ export default function ProductDetails() {
       }));
       return;
     }
+    setReviewSubmittionloading(true);
     const formData = new FormData(e.target as HTMLFormElement);
     const dataObject = Object.fromEntries(formData.entries());
     const submissionResult = await addNewReview({
@@ -157,6 +161,7 @@ export default function ProductDetails() {
         type: 'success'
       }));
       setHasCustomerReviewedProduct(true);
+      await getProductReviewsData()  // trigger review data fetch
     } else if ([400, 500].includes(submissionResult.responseStatus)) {
       dispatch(setMessageData({
         duration: 4500,
@@ -165,6 +170,7 @@ export default function ProductDetails() {
         type: 'error'
       }));
     }
+    setReviewSubmittionloading(false);
   }
 
   function generateRatingAsStars(rating: number) {
@@ -285,230 +291,234 @@ export default function ProductDetails() {
     <div className={styles.wrapper}>
       <h1>Product Details</h1>
       {
-        isProductLoading ? <Loader/> :
-        Object.keys(productData).length <= 0 ?
-          <ProductNotFound idOfNotFoundProduct={productID}></ProductNotFound>
-          :
-          <div className={styles.contentContainer}>
-            <h2>{productData.name}</h2>
-            <div className={styles.middleWrapper}>
+        isProductLoading ? <Loader /> :
+          Object.keys(productData).length <= 0 ?
+            <ProductNotFound idOfNotFoundProduct={productID}></ProductNotFound>
+            :
+            <div className={styles.contentContainer}>
+              <h2>{productData.name}</h2>
+              <div className={styles.middleWrapper}>
 
-              <div className={styles.carouselContainer}>
-                <div id="carousel-product-images" className={`carousel slide ${styles.imagesCarousel}`} data-bs-ride="carousel">
-                  <div className={`carousel-inner ${styles.innerContainer}`}>
-                    <div className={`carousel-item active`} data-bs-interval="10000">
-                      <img src={`/api/file/pic/${productData.thumbnailID}`} className="d-block " alt={`A picture of the product ${productData.name}.`} />
+                <div className={styles.carouselContainer}>
+                  <div id="carousel-product-images" className={`carousel slide ${styles.imagesCarousel}`} data-bs-ride="carousel">
+                    <div className={`carousel-inner ${styles.innerContainer}`}>
+                      <div className={`carousel-item active`} data-bs-interval="10000">
+                        <img src={`/api/file/pic/${productData.thumbnailID}`} className="d-block " alt={`A picture of the product ${productData.name}.`} />
+                      </div>
+                      {
+                        productData.pictures.length <= 0 ? '' :
+                          productData.pictures.map(id =>
+                            <div className={`carousel-item`} data-bs-interval="10000" key={id}>
+                              <img src={`/api/file/pic/${id}`} className="d-block " alt={`A picture of the product ${productData.name}.`} />
+                            </div>
+                          )
+                      }
                     </div>
-                    {
-                      productData.pictures.length <= 0 ? '' :
-                        productData.pictures.map(id =>
-                          <div className={`carousel-item`} data-bs-interval="10000" key={id}>
-                            <img src={`/api/file/pic/${id}`} className="d-block " alt={`A picture of the product ${productData.name}.`} />
-                          </div>
-                        )
-                    }
+                    <button className="carousel-control-prev" type="button" data-bs-target="#carousel-product-images" data-bs-slide="prev">
+                      <span className={`carousel-control-prev-icon`} aria-hidden="true"></span>
+                      <span className="visually-hidden">Previous</span>
+                    </button>
+                    <button className="carousel-control-next" type="button" data-bs-target="#carousel-product-images" data-bs-slide="next">
+                      <span className={`carousel-control-next-icon`} aria-hidden="true"></span>
+                      <span className="visually-hidden">Next</span>
+                    </button>
                   </div>
-                  <button className="carousel-control-prev" type="button" data-bs-target="#carousel-product-images" data-bs-slide="prev">
-                    <span className={`carousel-control-prev-icon`} aria-hidden="true"></span>
-                    <span className="visually-hidden">Previous</span>
-                  </button>
-                  <button className="carousel-control-next" type="button" data-bs-target="#carousel-product-images" data-bs-slide="next">
-                    <span className={`carousel-control-next-icon`} aria-hidden="true"></span>
-                    <span className="visually-hidden">Next</span>
-                  </button>
                 </div>
-              </div>
-              <div className={styles.purchasing}>
-                <p className={`${styles.price}`}>{convertCentToWhole(productData.price)} <FontAwesomeIcon icon={faEuroSign} /></p>
+                <div className={styles.purchasing}>
+                  <p className={`${styles.price}`}>{convertCentToWhole(productData.price)} <FontAwesomeIcon icon={faEuroSign} /></p>
 
-                <p className={`${styles.raiting}`} onClick={scrollReviewIntoView}>Rating: {generateRatingAsStars(raitngAndReviewsCount.rating)} ({raitngAndReviewsCount.reviewsCount})</p>
+                  <p className={`${styles.raiting}`} onClick={scrollReviewIntoView}>Rating: {generateRatingAsStars(raitngAndReviewsCount.rating)} ({raitngAndReviewsCount.reviewsCount})</p>
 
-                <p className={`${styles.availability} ${productData.stockCount > 0 ? styles.inStock : styles.notAvailable}`}>
-                  {
-                    productData.stockCount > 0 ?
-                      <>
-                        <FontAwesomeIcon icon={faCircleCheck} /> {productData.stockCount} In Stock
-                      </>
-                      :
-                      <>
-                        <FontAwesomeIcon icon={faCircleXmark} /> None In Stock
-                      </>
-                  }
-                </p>
-
-                {
-                  productData.stockCount <= 0 ? '' :
-                    !userData?.userID ?
-                      <button className={`btn btn-success ${styles.addToCartButton}`} onClick={() => navigate('/login')}>Login To Purchase</button> :
-                      userData?.is_employee ?
-                        <NavLink className={`btn btn-danger`} to={`/edit-product/${productData.productID}`}>Edit Product</NavLink>
+                  <p className={`${styles.availability} ${productData.stockCount > 0 ? styles.inStock : styles.notAvailable}`}>
+                    {
+                      productData.stockCount > 0 ?
+                        <>
+                          <FontAwesomeIcon icon={faCircleCheck} /> {productData.stockCount} In Stock
+                        </>
                         :
-                        <div className={styles.addToCartContainer}>
-                          <label htmlFor="addToCartCount">Quantity: <input id="addToCartCount" type="number" step={1} defaultValue={addToCartCount} min={1} max={productData.stockCount} onChange={manageAddToCartValChange} /></label>
+                        <>
+                          <FontAwesomeIcon icon={faCircleXmark} /> None In Stock
+                        </>
+                    }
+                  </p>
 
-                          <button className={`btn btn-success ${styles.addToCartButton}`} disabled={isProductAdditionProcessing} onClick={addToCart}>Add {addToCartCount} to cart</button>
-                        </div>
-                }
-                                {
-                    userData.userID && !userData.is_employee ?
-                        (
-                            favoriteData?.products?.includes(productData.productID) ?
-                                <button className={`btn ${styles.heart}`} onClick={() => removeProductToFavorites(productData.productID)} disabled={isFavoriteButtonsBlocked}>
-                                    <FontAwesomeIcon icon={faHeart} />
-                                </button>
-                                :
-                                <button className={`btn ${styles.heart}`} onClick={() => saveProductToFavorites(productData.productID)} disabled={isFavoriteButtonsBlocked}>
-                                    <FontAwesomeIcon icon={faHeartHollow} />
-                                </button>
-                        )
-                        : ''
-                }
-
-              </div>
-              <div className={styles.smallInfos}>
-                <div className={styles.idOfProduct}>
-                  <h3>ID</h3>
-                  <p>{productData.productID}</p>
-                </div>
-                <div className={styles.category}>
-                  <h3>Category</h3>
-                  <p>{productData.category}</p>
-                </div>
-                <div className={styles.manufacturer}>
-                  <h3>Manufacturer</h3>
-                  <p>{productData.manufacturer}</p>
-                </div>
-              </div>
-
-            </div>
-            <div className={styles.specsDoc}>
-              <p>Specifications Document</p>
-              {
-                productData.specsDocID ?
-                  <a href={`/api/file/doc/${productData.specsDocID}`} download={productData.name || 'Product Specifications'}>{productData.name}</a>
-                  :
-                  <p>No document available.</p>
-              }
-            </div>
-            <div className={styles.descriptionAndComments} ref={reviewsRef}>
-              <ul className="nav nav-tabs">
-                <li className="nav-item">
-                  <button className={`nav-link ${displayDescriptionOrComments === 'description' ? 'active' : ''}`} aria-current="page" onClick={() => toggleDescriptionAndComments('description')}>Description</button>
-                </li>
-                <li className="nav-item">
-                  <button className={`nav-link ${displayDescriptionOrComments === 'comments' ? 'active' : ''}`} aria-current="page" onClick={() => toggleDescriptionAndComments('comments')}>Reviews</button>
-                </li>
-              </ul>
-              <div>
-                {
-                  displayDescriptionOrComments === 'description' ?
-                    <p className={styles.description}>{productData.description}</p>
-                    :
-                    <div className={styles.commentsContainer}>
-
-
-                      {
-                        !userData?.userID ?
-                          <p className={`lead ${styles.loginRegToReview}`}>Please, <NavLink to={'/login'}>login</NavLink> or <NavLink to={'/register'}>register</NavLink> to leave a review.</p>
-                          : userData?.is_employee ? '' :
-                            hasCustomerReviewedProduct ? '' :
-                              <form ref={commentFormRef} onSubmit={submitReview}>
-                                <div className="mb-3">
-                                  <label>
-                                    Rate this product
-                                  </label>
-                                  <div className={styles.ratingButtons}>
-                                    <input type="radio" className="btn-check" name="rating" id="rating5" value="5" />
-                                    <label htmlFor="rating5">
-                                      <FontAwesomeIcon icon={faStarFull} />
-                                    </label>
-
-                                    <input type="radio" className="btn-check" name="rating" id="rating4" value="4" />
-                                    <label htmlFor="rating4">
-                                      <FontAwesomeIcon icon={faStarFull} />
-                                    </label>
-
-                                    <input type="radio" className="btn-check" name="rating" id="rating3" value="3" />
-                                    <label htmlFor="rating3">
-                                      <FontAwesomeIcon icon={faStarFull} />
-                                    </label>
-
-                                    <input type="radio" className="btn-check" name="rating" id="rating2" value="2" />
-                                    <label htmlFor="rating2">
-                                      <FontAwesomeIcon icon={faStarFull} />
-                                    </label>
-                                    <input type="radio" className="btn-check" name="rating" id="rating1" value="1" />
-                                    <label htmlFor="rating1">
-                                      <FontAwesomeIcon icon={faStarFull} />
-                                    </label>
-                                  </div>
-
-                                </div>
-                                <div className="mb-3">
-                                  <label htmlFor="form-comment">
-                                    Optional comment
-                                  </label>
-                                  <textarea name="comment" id="form-comment" placeholder="Your comment here..."></textarea>
-                                </div>
-                                <button className={`btn btn-primary ${styles.submitButton}`}>Submit</button>
-                              </form>
-                      }
-
-
-                      {
-                        productReviews.length ?
-                          <div className={styles.userReviewsContainer}>
-
-                            {
-                              isProductReviewsloading ?
-                                <Loader />
-                                :
-                                productReviews.map(rev => <div key={rev.reviewID} className={styles.singleReview}>
-                                  <p className={styles.reviewUsername}>{rev.username || ''}</p>
-                                  <div className={styles.reviewRatingAndDateContainer}>
-                                    <p className={styles.reviewRating}>{generateRatingAsStars(rev.rating)}</p>
-                                    <p className={styles.reviewDate}>{convertTimeToDate(Number(rev.time))}</p>
-                                  </div>
-                                  {
-                                    !rev.isVerifiedPurchase ? '' :
-                                      <p className={styles.reviewPurchaseVerified}><FontAwesomeIcon icon={faCheck} /> Verified Purchase</p>
-                                  }
-                                  <p className={styles.reviewComment}>{rev.comment}</p>
-                                  <hr />
-                                </div>)
-                            }
-
-                            <ul className={`pagination ${styles.reviewsPagination}`}>
-                              <li className="page-item">
-                                <a className={`page-link ${productReviewCurrentPage <= 1 || isProductReviewsloading ? 'disabled' : ''}`} aria-label="Previous" onClick={() => 
-                                  goToGivenPage(productReviewCurrentPage - 1)}>
-                                  <span aria-hidden="true">&laquo;</span>
-                                </a>
-                              </li>
-                              <li className="page-item page-link">{productReviewCurrentPage}</li>
-                              <li className="page-item">
-                                <a className={`page-link ${productReviewCurrentPage >= productReviewPagesCount || isProductReviewsloading ? 'disabled' : ''}`} aria-label="Next" onClick={() => 
-                                  goToGivenPage(productReviewCurrentPage + 1)}>
-                                  <span aria-hidden="true">&raquo;</span>
-                                </a>
-                              </li>
-                            </ul>
-
-                          </div>
+                  {
+                    productData.stockCount <= 0 ? '' :
+                      !userData?.userID ?
+                        <button className={`btn btn-success ${styles.addToCartButton}`} onClick={() => navigate('/login')}>Login To Purchase</button> :
+                        userData?.is_employee ?
+                          <NavLink className={`btn btn-danger`} to={`/edit-product/${productData.productID}`}>Edit Product</NavLink>
                           :
-                          <div className={styles.noReviewsStatement}>
-                            <FontAwesomeIcon icon={faComments} />
-                            <p>There are no reviews for this product yet.</p>
+                          <div className={styles.addToCartContainer}>
+                            <label htmlFor="addToCartCount">Quantity: <input id="addToCartCount" type="number" step={1} defaultValue={addToCartCount} min={1} max={productData.stockCount} onChange={manageAddToCartValChange} /></label>
 
+                            <button className={`btn btn-success ${styles.addToCartButton}`} disabled={isProductAdditionProcessing} onClick={addToCart}>Add {addToCartCount} to cart</button>
                           </div>
-                      }
+                  }
+                  {
+                    userData.userID && !userData.is_employee ?
+                      (
+                        favoriteData?.products?.includes(productData.productID) ?
+                          <button className={`btn ${styles.heart}`} onClick={() => removeProductToFavorites(productData.productID)} disabled={isFavoriteButtonsBlocked}>
+                            <FontAwesomeIcon icon={faHeart} />
+                          </button>
+                          :
+                          <button className={`btn ${styles.heart}`} onClick={() => saveProductToFavorites(productData.productID)} disabled={isFavoriteButtonsBlocked}>
+                            <FontAwesomeIcon icon={faHeartHollow} />
+                          </button>
+                      )
+                      : ''
+                  }
 
+                </div>
+                <div className={styles.smallInfos}>
+                  <div className={styles.idOfProduct}>
+                    <h3>ID</h3>
+                    <p>{productData.productID}</p>
+                  </div>
+                  <div className={styles.category}>
+                    <h3>Category</h3>
+                    <NavLink to={`/products-catalog?currentPage=1&itemsPerPage=12&name=&category=${productData?.category || ''}&priceFrom=&priceTo=&availableInStock=&manufacturer=`}>
+                      <p>{productData.category}</p>
+                    </NavLink>
+                  </div>
+                  <div className={styles.manufacturer}>
+                    <h3>Manufacturer</h3>
+                    <NavLink to={`/products-catalog?currentPage=1&itemsPerPage=12&name=&category=&priceFrom=&priceTo=&availableInStock=&manufacturer=${productData?.manufacturer || ''}`}>
+                    <p>{productData.manufacturer}</p>
+                    </NavLink>
+                  </div>
+                </div>
 
-                    </div>
+              </div>
+              <div className={styles.specsDoc}>
+                <p>Specifications Document</p>
+                {
+                  productData.specsDocID ?
+                    <a href={`/api/file/doc/${productData.specsDocID}`} download={productData.name || 'Product Specifications'}>{productData.name}</a>
+                    :
+                    <p>No document available.</p>
                 }
               </div>
+              <div className={styles.descriptionAndComments} ref={reviewsRef}>
+                <ul className="nav nav-tabs">
+                  <li className="nav-item">
+                    <button className={`nav-link ${displayDescriptionOrComments === 'description' ? 'active' : ''}`} aria-current="page" onClick={() => toggleDescriptionAndComments('description')}>Description</button>
+                  </li>
+                  <li className="nav-item">
+                    <button className={`nav-link ${displayDescriptionOrComments === 'comments' ? 'active' : ''}`} aria-current="page" onClick={() => toggleDescriptionAndComments('comments')}>Reviews</button>
+                  </li>
+                </ul>
+                <div>
+                  {
+                    displayDescriptionOrComments === 'description' ?
+                      <p className={styles.description}>{productData.description}</p>
+                      :
+                      <div className={styles.commentsContainer}>
+
+
+                        {
+                          !userData?.userID ?
+                            <p className={`lead ${styles.loginRegToReview}`}>Please, <NavLink to={'/login'}>login</NavLink> or <NavLink to={'/register'}>register</NavLink> to leave a review.</p>
+                            : userData?.is_employee ? '' :
+                              hasCustomerReviewedProduct ? '' :
+                                <form ref={commentFormRef} onSubmit={submitReview}>
+                                  <div className="mb-3">
+                                    <label>
+                                      Rate this product
+                                    </label>
+                                    <div className={styles.ratingButtons}>
+                                      <input type="radio" className="btn-check" name="rating" id="rating5" value="5" />
+                                      <label htmlFor="rating5">
+                                        <FontAwesomeIcon icon={faStarFull} />
+                                      </label>
+
+                                      <input type="radio" className="btn-check" name="rating" id="rating4" value="4" />
+                                      <label htmlFor="rating4">
+                                        <FontAwesomeIcon icon={faStarFull} />
+                                      </label>
+
+                                      <input type="radio" className="btn-check" name="rating" id="rating3" value="3" />
+                                      <label htmlFor="rating3">
+                                        <FontAwesomeIcon icon={faStarFull} />
+                                      </label>
+
+                                      <input type="radio" className="btn-check" name="rating" id="rating2" value="2" />
+                                      <label htmlFor="rating2">
+                                        <FontAwesomeIcon icon={faStarFull} />
+                                      </label>
+                                      <input type="radio" className="btn-check" name="rating" id="rating1" value="1" />
+                                      <label htmlFor="rating1">
+                                        <FontAwesomeIcon icon={faStarFull} />
+                                      </label>
+                                    </div>
+
+                                  </div>
+                                  <div className="mb-3">
+                                    <label htmlFor="form-comment">
+                                      Optional comment
+                                    </label>
+                                    <textarea name="comment" id="form-comment" placeholder="Your comment here..."></textarea>
+                                  </div>
+                                  <button disabled={isReviewSubmittionloading} className={`btn btn-primary ${styles.submitButton}`}>Submit</button>
+                                </form>
+                        }
+
+
+                        {
+                          productReviews.length ?
+                            <div className={styles.userReviewsContainer}>
+
+                              {
+                                isProductReviewsloading ?
+                                  <Loader />
+                                  :
+                                  productReviews.map(rev => <div key={rev.reviewID} className={styles.singleReview}>
+                                    <p className={styles.reviewUsername}>{rev.username || ''}</p>
+                                    <div className={styles.reviewRatingAndDateContainer}>
+                                      <p className={styles.reviewRating}>{generateRatingAsStars(rev.rating)}</p>
+                                      <p className={styles.reviewDate}>{convertTimeToDate(Number(rev.time))}</p>
+                                    </div>
+                                    {
+                                      !rev.isVerifiedPurchase ? '' :
+                                        <p className={styles.reviewPurchaseVerified}><FontAwesomeIcon icon={faCheck} /> Verified Purchase</p>
+                                    }
+                                    <p className={styles.reviewComment}>{rev.comment}</p>
+                                    <hr />
+                                  </div>)
+                              }
+
+                              <ul className={`pagination ${styles.reviewsPagination}`}>
+                                <li className="page-item">
+                                  <a className={`page-link ${productReviewCurrentPage <= 1 || isProductReviewsloading ? 'disabled' : ''}`} aria-label="Previous" onClick={() =>
+                                    goToGivenPage(productReviewCurrentPage - 1)}>
+                                    <span aria-hidden="true">&laquo;</span>
+                                  </a>
+                                </li>
+                                <li className="page-item page-link">{productReviewCurrentPage}</li>
+                                <li className="page-item">
+                                  <a className={`page-link ${productReviewCurrentPage >= productReviewPagesCount || isProductReviewsloading ? 'disabled' : ''}`} aria-label="Next" onClick={() =>
+                                    goToGivenPage(productReviewCurrentPage + 1)}>
+                                    <span aria-hidden="true">&raquo;</span>
+                                  </a>
+                                </li>
+                              </ul>
+
+                            </div>
+                            :
+                            <div className={styles.noReviewsStatement}>
+                              <FontAwesomeIcon icon={faComments} />
+                              <p>There are no reviews for this product yet.</p>
+
+                            </div>
+                        }
+
+
+                      </div>
+                  }
+                </div>
+              </div>
             </div>
-          </div>
       }
     </div >
   );

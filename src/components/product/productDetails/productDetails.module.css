@@ -95,9 +95,12 @@
 }
 
 .smallInfos {
-    .category {
-        p {
-            text-transform: uppercase;
+    a {
+        text-transform: uppercase;
+        text-decoration: underline;
+
+        &:hover {
+            color: var(--green);
         }
     }
 }
