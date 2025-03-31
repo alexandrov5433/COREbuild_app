@@ -114,7 +114,9 @@ export default function ProductCard(productData: ProductData) {
                         )
                         : ''
                 }
-                <img src={`/api/file/pic/${productData.thumbnailID}`} className="card-img-top" alt={`A picture of the product with name ${productData.name}.`} />
+                <NavLink to={`/product-details/${productData.productID || 0}`}>
+                    <img src={`/api/file/pic/${productData.thumbnailID}`} className="card-img-top" alt={`A picture of the product with name ${productData.name}.`} />
+                </NavLink>
                 <div className={`card-body ${styles.cardBody}`}>
                     <h5 className="card-title">{productData.name}</h5>
                     <h6 className={`card-subtitle mb-3 ${productData.stockCount > 0 ? styles.inStock : styles.notAvailable}`}>
