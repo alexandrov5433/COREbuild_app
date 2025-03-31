@@ -1,9 +1,10 @@
 @import url(../../../lib/styling/generalWrapper.module.css);
 
-.wrapper > * {
-    margin-bottom: 1rem;
-}
-
-@media (min-width: 992px) {
-
+.wrapper {
+    a:hover {
+        cursor: pointer;
+    }
+    &>* {
+        margin-bottom: 1rem;
+    }
 }
