@@ -12,6 +12,7 @@ import addProductPictures from '../../../lib/actions/product/addProductPictures'
 import deleteProductPicture from '../../../lib/actions/product/deleteProductPicture';
 import deleteProductSpecsDoc from '../../../lib/actions/product/deleteProductSpecsDoc';
 import updateProductSpecsDoc from '../../../lib/actions/product/updateProductSpecsDoc';
+import ProductNotFound from '../productNotFound/ProductNotFound';
 
 export default function EditProduct() {
   const { productID } = useParams();
@@ -350,6 +351,7 @@ export default function EditProduct() {
             </div>
           </div>
           :
+          (productData && productData.productID) ?
           <div className={styles.editingContainer}>
             <div >
               <h2>ID: {productData.productID}</h2>
@@ -476,6 +478,8 @@ export default function EditProduct() {
             </div>
 
           </div>
+          :
+          <ProductNotFound idOfNotFoundProduct={productID}></ProductNotFound>
       }
     </div>
   );
