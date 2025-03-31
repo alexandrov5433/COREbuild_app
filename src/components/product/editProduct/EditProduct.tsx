@@ -365,7 +365,7 @@ export default function EditProduct() {
                 </div>
                 <div className={styles.uploadControls}>
                   <div className="input-group">
-                    <input type="file" className="form-control" onChange={e => validateFile(e, ['image/png', 'image/jpeg'], 0.5)} ref={thumbnailInputRef} />
+                    <input type="file" className="form-control" onChange={e => validateFile(e, ['image/png', 'image/jpeg'], 0.5)} ref={thumbnailInputRef} accept='.png,.jpg,.jpeg'/>
                   </div>
                   <button className="btn btn-success" type="button" disabled={isBlockFileUploadButtons} onClick={uploadNewThumbnail}>Upload</button>
                 </div>
@@ -394,7 +394,7 @@ export default function EditProduct() {
                     :
                     <div className={styles.uploadControls}>
                       <form className="input-group" ref={picturesFormRef}>
-                        <input type="file" className="form-control" multiple onChange={e => validateFile(e, ['image/png', 'image/jpeg'], 0.5)} name='pictures' />
+                        <input type="file" className="form-control" multiple onChange={e => validateFile(e, ['image/png', 'image/jpeg'], 0.5)} name='pictures' accept='.png,.jpg,.jpeg' />
                       </form>
                       <button className="btn btn-success" type="button" disabled={isBlockFileUploadButtons} onClick={uploadNewPicture}>Upload</button>
                     </div>
@@ -417,7 +417,7 @@ export default function EditProduct() {
                 </div>
                 <div className={styles.uploadControls}>
                   <div className="input-group">
-                    <input type="file" className="form-control" onChange={e => validateFile(e, ['application/pdf'], 4)} ref={specsDocInputRef} />
+                    <input type="file" className="form-control" onChange={e => validateFile(e, ['application/pdf'], 4)} ref={specsDocInputRef} accept='.pdf'/>
                   </div>
                   <button className="btn btn-success" type="button" disabled={isBlockFileUploadButtons} onClick={uploadNewSpecsDoc}>Upload</button>
                 </div>
