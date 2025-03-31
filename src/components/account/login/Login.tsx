@@ -90,7 +90,7 @@ export default function Login() {
                         }`} id="password" name="password" aria-describedby="passwordHelp" onInput={validator}/>
                     <div id="passwordHelp" className="form-text">Please enter your password.</div>
                     <div className={`form-check ${styles.checkboxContainer}`}>
-                        <input type="checkbox" className="form-check-input" id="showPassword" onChange={showHidePassword} />
+                        <input type="checkbox" className="form-check-input" id="showPassword" onChange={showHidePassword} defaultChecked={passwordInputType === 'text' ? true : false}/>
                         <label className="form-check-label" htmlFor="showPassword">Show password</label>
                     </div>
                 </div>
