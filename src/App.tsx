@@ -46,26 +46,39 @@ export default function App() {
   const isComponentFirstMount = useRef(true);
 
   useEffect(() => {
-    checkCookieAndData();
-    isComponentFirstMount.current = false;
+    (async () => {
+      await checkCookieAndData();
+      isComponentFirstMount.current = false;
+    })();
   }, []);
 
+  useEffect(() => {
+    getFavoriteForCutomer();
+  }, [userData]);
+
   useEventListerner(document, 'visibilitychange', tabChangeEventListner);
+
+  async function getFavoriteForCutomer() {
+    if (userData && userData.userID && !userData.is_employee) {
+      const favoriteProductsAction = await getFavoriteForUser(userData.userID || 0);
+      if (favoriteProductsAction.responseStatus === 200) {
+        dispatch(updateFavorite(favoriteProductsAction.data!));
+      }
+    }
+  }
 
   async function checkCookieAndData() {
     const action = await validateCoookie();
     if (action.responseStatus === 200) {
       dispatch(updateUserData(action.data! || {}));
-      if (action.data!.is_employee) {
-        return;
-      }
-      const favoriteProductsAction = await getFavoriteForUser(action.data!.userID || 0);
-      if (favoriteProductsAction.responseStatus === 200) {
-        dispatch(updateFavorite(favoriteProductsAction.data!));
+      const pathIncludedInRedirectListUser = /^\/login|\/register$/.test(window.location.pathname);
+      if (pathIncludedInRedirectListUser) {
+        navigate('/');
       }
     } else {
       dispatch(setUserToGuest());
-      if (!isComponentFirstMount) {
+      const pathIncludedInRedirectListGuest = /^\/profile|\/orders|\/add-product|\/edit-product\/.+|\/tickets|\/shopping-cart$/.test(window.location.pathname);
+      if (!isComponentFirstMount.current && pathIncludedInRedirectListGuest) {
         navigate('/');
       }
     }
