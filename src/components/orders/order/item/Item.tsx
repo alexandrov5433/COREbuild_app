@@ -32,13 +32,15 @@ export default function Item({ productID, count }: { productID: number, count: n
         isProductDataLoading ?
           <Loader />
           :
-          productData.productID ?
+          productData?.productID ?
             <div className={styles.mainContainer}>
-              <img src={`/api/file/pic/${productData.thumbnailID}`} className="img-thumbnail" alt={`Image of ${productData.name}`} />
+              <NavLink to={`/product-details/${productData.productID || 0}`}>
+                <img src={`/api/file/pic/${productData.thumbnailID}`} className="img-thumbnail" alt={`Image of ${productData.name}`} />
+              </NavLink>
               <div className={styles.info}>
                 <NavLink className="lead" to={`/product-details/${productData.productID}`}>{productData.name}</NavLink>
                 <p><i>Quantity ordered:</i> {count}</p>
-                <p><i>Price of one:</i> {convertCentToWhole(productData.price)} <FontAwesomeIcon icon={faEuroSign}/></p>
+                <p><i>Price of one:</i> {convertCentToWhole(productData.price)} <FontAwesomeIcon icon={faEuroSign} /></p>
               </div>
             </div>
             :
