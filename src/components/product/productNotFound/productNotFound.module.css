@@ -1,0 +1,22 @@
+.productNotFound {
+    margin-top: 1rem;
+    div:not(:last-child) {
+        margin-bottom: 1rem;
+    }
+    .triangleContainer {
+        color: #ffc107;
+        font-size: 4rem;
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    a {
+        svg {
+            color: var(--green);
+            margin-right: 1rem;
+        }     
+        &:hover {
+            color: var(--green);
+        }
+    }
+}
