@@ -385,7 +385,7 @@ export default function ProductDetails() {
                   <div className={styles.manufacturer}>
                     <h3>Manufacturer</h3>
                     <NavLink to={`/products-catalog?currentPage=1&itemsPerPage=12&name=&category=&priceFrom=&priceTo=&availableInStock=&manufacturer=${productData?.manufacturer || ''}`}>
-                    <p>{productData.manufacturer}</p>
+                      <p>{productData.manufacturer}</p>
                     </NavLink>
                   </div>
                 </div>
@@ -485,7 +485,10 @@ export default function ProductDetails() {
                                       !rev.isVerifiedPurchase ? '' :
                                         <p className={styles.reviewPurchaseVerified}><FontAwesomeIcon icon={faCheck} /> Verified Purchase</p>
                                     }
-                                    <p className={styles.reviewComment}>{rev.comment}</p>
+                                    {/* <p className={styles.reviewComment}>{rev.comment}</p> */}
+                                    <div className={styles.customCommentContainer} data-description-value={rev.comment}>
+                                      <textarea className={styles.comment} value={rev.comment} readOnly></textarea>
+                                    </div>
                                     <hr />
                                   </div>)
                               }
