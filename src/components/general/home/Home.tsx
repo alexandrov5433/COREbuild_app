@@ -115,7 +115,7 @@ export default function Home() {
                 <section className={styles.infos}>
                     <h4>Prebuilt Gaming PC</h4>
                     <p className='lead'>Start your gaming journey with one of our professionally designed prebuilt systems.</p>
-                    <NavLink to={`/products-catalog?currentPage=1&itemsPerPage=12&name=&category=prebuild&priceFrom=&priceTo=&availableInStock=yes&manufacturer=`} className="btn btn-outline-warning">Shop Now</NavLink>
+                    <NavLink to={`/products-catalog?currentPage=1&itemsPerPage=12&name=&category=prebuilt&priceFrom=&priceTo=&availableInStock=yes&manufacturer=`} className="btn btn-outline-warning">Shop Now</NavLink>
                 </section>
             </div>
             <div className={styles.servicesContainer}>
@@ -151,7 +151,7 @@ export default function Home() {
                     </>
             }
             <div className={styles.browseProdcutsButtonContainer}>
-                <NavLink className="btn btn-success" to={'/products-catalog'}>Browse All Prodcuts</NavLink>
+                <NavLink className="btn btn-success" to={'/products-catalog'}>Browse All Products</NavLink>
             </div>
       
             <div className={styles.contactUsContainer}>
