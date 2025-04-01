@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import productDetails from "../../../../lib/actions/product/productDetails";
 import { ProductData } from "../../../../lib/definitions";
 import Loader from "../../../general/loader/Loader";
-import { convertCentToWhole } from '../../../../lib/util/currency';
+import { convertCentToWholeString } from '../../../../lib/util/currency';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEuroSign } from '@fortawesome/free-solid-svg-icons';
 import { NavLink } from 'react-router';
@@ -40,7 +40,7 @@ export default function Item({ productID, count }: { productID: number, count: n
               <div className={styles.info}>
                 <NavLink className="lead" to={`/product-details/${productData.productID}`}>{productData.name}</NavLink>
                 <p><i>Quantity ordered:</i> {count}</p>
-                <p><i>Price of one:</i> {convertCentToWhole(productData.price)} <FontAwesomeIcon icon={faEuroSign} /></p>
+                <p><i>Price of one:</i> {convertCentToWholeString(productData.price)} <FontAwesomeIcon icon={faEuroSign} /></p>
               </div>
             </div>
             :

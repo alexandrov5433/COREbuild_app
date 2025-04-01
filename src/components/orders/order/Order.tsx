@@ -2,7 +2,7 @@ import styles from './order.module.css';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { OrderData, UserData } from '../../../lib/definitions';
 import Item from './item/Item';
-import { convertCentToWhole } from '../../../lib/util/currency';
+import { convertCentToWholeString } from '../../../lib/util/currency';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEuroSign, faTruckFast, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
@@ -113,7 +113,7 @@ export default function Order({
               }
             </section>
             <section className={styles.infoSection}>
-              <h5><i>Total:</i> {convertCentToWhole(order.total_price)} <FontAwesomeIcon icon={faEuroSign} /></h5>
+              <h5><i>Total:</i> {convertCentToWholeString(order.total_price)} <FontAwesomeIcon icon={faEuroSign} /></h5>
 
               <p><i>Payment Status:</i> <span className={order.payment_status == 'paid' ? styles.green : styles.yellow}>{order.payment_status} {
                 order.payment_status == 'paid' ? <FontAwesomeIcon icon={faCheckCircle} /> : <FontAwesomeIcon icon={faClock} />

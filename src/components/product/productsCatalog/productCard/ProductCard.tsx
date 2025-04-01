@@ -3,7 +3,7 @@ import { ProductData, ShoppingCart } from "../../../../lib/definitions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEuroSign, faCircleCheck, faCircleXmark, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as faHeartHollow } from '@fortawesome/free-regular-svg-icons';
-import { convertCentToWhole } from '../../../../lib/util/currency';
+import { convertCentToWholeString } from '../../../../lib/util/currency';
 import { useAppDispatch, useAppSelector } from '../../../../lib/hooks/reduxTypedHooks';
 import { useEffect, useState } from 'react';
 import addProductToCart from '../../../../lib/actions/cart/addProductToCart';
@@ -135,7 +135,7 @@ export default function ProductCard(productData: ProductData) {
                     </h6>
                     <p className={`card-text ${styles.price}`}>
                         <FontAwesomeIcon icon={faEuroSign} />
-                        {convertCentToWhole(productData.price)}
+                        {convertCentToWholeString(productData.price)}
                     </p>
                     <div className={styles.overlay}>
                         <NavLink className={`btn btn-primary ${styles.button}`} to={`/product-details/${productData.productID}`}>View Details</NavLink>

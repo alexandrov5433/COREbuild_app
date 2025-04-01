@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ProductData } from '../../../lib/definitions';
 import productDetails from '../../../lib/actions/product/productDetails';
 import { setMessageData } from '../../../redux/popupMessageSlice';
-import { convertCentToWhole } from '../../../lib/util/currency';
+import { convertCentToWholeString } from '../../../lib/util/currency';
 import editProductInfos from '../../../lib/actions/product/editProductInfos';
 import updateProductThumbnail from '../../../lib/actions/product/updateProductThumbnail';
 import addProductPictures from '../../../lib/actions/product/addProductPictures';
@@ -452,7 +452,7 @@ export default function EditProduct() {
 
                 <div className="mb-4">
                   <label htmlFor="price" className="form-label">Price</label>
-                  <input type="text" className={`form-control ${infoFormState.price.isValid ? '' : 'is-invalid'}`} id="price" name="price" defaultValue={convertCentToWhole(productData.price || 0)} onInput={e => infoValueValidator(e)} />
+                  <input type="text" className={`form-control ${infoFormState.price.isValid ? '' : 'is-invalid'}`} id="price" name="price" defaultValue={convertCentToWholeString(productData.price || 0)} onInput={e => infoValueValidator(e)} />
                   <p className="form-text">Two digits after the dot are allowed. Please use a dot as a decimal separator.</p>
                 </div>
 

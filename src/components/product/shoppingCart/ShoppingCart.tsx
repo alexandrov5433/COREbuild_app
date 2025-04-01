@@ -5,7 +5,7 @@ import emptyCartImage from '../../../assets/emptyCart.svg';
 import { useAppSelector } from '../../../lib/hooks/reduxTypedHooks';
 import ShoppingCartProductCard from './shoppingCartProductCard/ShoppingCartProductCard';
 import { useEffect, useRef, useState } from 'react';
-import { convertCentToWhole } from '../../../lib/util/currency';
+import { convertCentToWholeString } from '../../../lib/util/currency';
 import { NavLink } from 'react-router';
 import Checkout from './checkout/Checkout';
 
@@ -77,7 +77,7 @@ export default function ShoppingCart() {
 
                     <nav className={`navbar sticky-bottom ${styles.totalCostBar}`}>
                         <div className={`container-fluid ${styles.innerContainer}`}>
-                            <p className="">Total: {convertCentToWhole(totalPrice)} <FontAwesomeIcon icon={faEuroSign} /></p>
+                            <p className="">Total: {convertCentToWholeString(totalPrice)} <FontAwesomeIcon icon={faEuroSign} /></p>
                             <p className="lead">With tax and free shipping.</p>
                             <button className={`btn btn-success ${styles.buttonGreenGlow}`} onClick={() => {
                                 (paypayCheckoutRef.current! as HTMLDivElement).scrollIntoView({

@@ -1,7 +1,7 @@
 import styles from './shoppingCartProductCard.module.css';
 import { useEffect, useState } from "react";
 import { ProductData, ShoppingCart } from "../../../../lib/definitions";
-import { convertCentToWhole } from "../../../../lib/util/currency";
+import { convertCentToWholeString } from "../../../../lib/util/currency";
 import productDetails from "../../../../lib/actions/product/productDetails";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faEuroSign } from '@fortawesome/free-solid-svg-icons';
@@ -128,7 +128,7 @@ export default function ShoppingCartProductCard({
                     <div className="card-body">
                         <h5 className="card-title">{productData.name}</h5>
                         <p className={`card-text ${styles.price}`}>ID: {productData.productID}</p>
-                        <p className={`card-text ${styles.price}`}>Price: {convertCentToWhole(productData.price)} <FontAwesomeIcon icon={faEuroSign} /></p>
+                        <p className={`card-text ${styles.price}`}>Price: {convertCentToWholeString(productData.price)} <FontAwesomeIcon icon={faEuroSign} /></p>
                         <div className={styles.quantityWrapper}>
                             <p className={`card-text ${styles.count}`}>Count: {count}</p>
                             {

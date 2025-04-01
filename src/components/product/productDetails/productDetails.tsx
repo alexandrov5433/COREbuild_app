@@ -8,7 +8,7 @@ import { GetRatingAndReviewCountForProductActionData, ProductData, ReviewData, S
 import productDetails from '../../../lib/actions/product/productDetails';
 import { useAppDispatch, useAppSelector } from '../../../lib/hooks/reduxTypedHooks';
 import { setMessageData } from '../../../redux/popupMessageSlice';
-import { convertCentToWhole } from '../../../lib/util/currency';
+import { convertCentToWholeString } from '../../../lib/util/currency';
 import getCustomerReviewedProduct from '../../../lib/actions/review/getCustomerReviewedProduct';
 import getRatingAndReviewCountForProduct from '../../../lib/actions/review/getRatingAndReviewCountForProduct';
 import getReviewsForProduct from '../../../lib/actions/review/getReviewsForProduct';
@@ -325,7 +325,7 @@ export default function ProductDetails() {
                   </div>
                 </div>
                 <div className={styles.purchasing}>
-                  <p className={`${styles.price}`}>{convertCentToWhole(productData.price)} <FontAwesomeIcon icon={faEuroSign} /></p>
+                  <p className={`${styles.price}`}>{convertCentToWholeString(productData.price)} <FontAwesomeIcon icon={faEuroSign} /></p>
 
                   <p className={`${styles.raiting}`} onClick={scrollReviewIntoView}>Rating: {generateRatingAsStars(raitngAndReviewsCount.rating)} ({raitngAndReviewsCount.reviewsCount})</p>
 
