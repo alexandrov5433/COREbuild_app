@@ -22,7 +22,10 @@ export default function FavoriteProducts() {
   const [isRemoveFromFavoriteLoading, setRemoveFromFavoriteLoading] = useState(false);
 
   useEffect(() => {
-    __getProductsDataForFavorite();
+    if (favoriteData?.products?.length > 0) {
+      __getProductsDataForFavorite();
+    }
+    _setFavoriteHasProducts(favoriteData?.products?.length ? true : false);
   }, [favoriteData]);
 
   async function __getProductsDataForFavorite() {
