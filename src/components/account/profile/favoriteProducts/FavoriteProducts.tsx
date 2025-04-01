@@ -95,7 +95,12 @@ export default function FavoriteProducts() {
               }
             </>)
           :
-          <p>No products saved.</p>
+          <div>
+            <p className="lead">No products saved.</p>
+              <NavLink to={'/products-catalog'} className="btn btn-success">
+                Browse Products
+              </NavLink>
+          </div>
       }
     </div>
   );
