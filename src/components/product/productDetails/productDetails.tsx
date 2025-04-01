@@ -395,7 +395,7 @@ export default function ProductDetails() {
                 <p>Specifications Document</p>
                 {
                   productData.specsDocID ?
-                    <a href={`/api/file/doc/${productData.specsDocID}`} download={productData.name || 'Product Specifications'}>{productData.name}</a>
+                    <a href={`/api/file/doc/${productData.specsDocID}`} download={productData.name.replaceAll('.', '_') || 'Product Specifications'}>{productData.name}</a>
                     :
                     <p>No document available.</p>
                 }
