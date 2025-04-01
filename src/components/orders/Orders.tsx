@@ -11,6 +11,7 @@ import { setMessageData } from '../../redux/popupMessageSlice';
 import Loader from '../general/loader/Loader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { NavLink } from 'react-router';
 
 export default function Orders() {
     const dispatch = useAppDispatch();
@@ -127,7 +128,7 @@ export default function Orders() {
         <div className={`${styles.wrapper} ${styles.mainContainer}`}>
             <h1>{userData.is_employee ? '' : 'My '}Orders</h1>
             <div className={styles.filterContainer}>
-                <OrdersFilter updateFilter={updateFilter} filterClearTrigger={filterClearTrigger}/>
+                <OrdersFilter updateFilter={updateFilter} filterClearTrigger={filterClearTrigger} />
             </div>
             {
                 isPageLoading ? <Loader /> :
@@ -179,7 +180,7 @@ export default function Orders() {
                         <div className={styles.noResultsContainer}>
                             <FontAwesomeIcon icon={faMagnifyingGlass} />
                             <p className='lead'>No orders were found.</p>
-                            <button className={`btn btn-outline-warning`} type="button" onClick={() => {
+                            <button className={`btn btn-outline-warning mb-3`} type="button" onClick={() => {
                                 setFilterClearTrigger(state => !state);
                                 updateFilter({
                                     orderID: null,
@@ -190,6 +191,9 @@ export default function Orders() {
                             }}>
                                 Clear Filters
                             </button>
+                            <NavLink to={'/products-catalog'} className="btn btn-success">
+                                Browse Products
+                            </NavLink>
                         </div>
             }
 
