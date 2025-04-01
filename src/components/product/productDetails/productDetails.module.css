@@ -124,8 +124,21 @@
 
 .descriptionAndComments {
 
-    .description {
-        margin-top: 1rem;
+    .customDescriptonContainer {
+        display: grid;
+        padding-top: 1rem;
+        &::after {
+            grid-area: 1 / 1 / 2 / 2;
+            content: attr(data-description-value) ' ';
+            white-space: pre-wrap;
+            visibility: hidden;
+          }
+
+        .description {
+            grid-area: 1 / 1 / 2 / 2;
+            pointer-events: none;
+            resize: none;
+        }
     }
 
     .commentsContainer {

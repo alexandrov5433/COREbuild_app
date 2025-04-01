@@ -412,7 +412,9 @@ export default function ProductDetails() {
                 <div>
                   {
                     displayDescriptionOrComments === 'description' ?
-                      <p className={styles.description}>{productData.description}</p>
+                      <div className={styles.customDescriptonContainer} data-description-value={productData.description}>
+                        <textarea className={styles.description} value={productData.description} readOnly></textarea>
+                      </div>
                       :
                       <div className={styles.commentsContainer}>
 
