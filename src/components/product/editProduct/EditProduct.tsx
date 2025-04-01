@@ -131,7 +131,7 @@ export default function EditProduct() {
     const nameAttribute = (e.target as HTMLInputElement | HTMLTextAreaElement).name;
     const regex = {
       'name': new RegExp(/^[^%&\$\*_'"]{1,200}$/),
-      'description': new RegExp(/^.+$/),
+      'description': new RegExp(/.+/),
       'category': new RegExp(/^[A-Za-z ]{1,200}$/),
       'price': new RegExp(/^[0-9]+(?:\.[0-9]{2}){0,1}$/),
       'stockCount': new RegExp(/^[0-9]+$/),
@@ -410,7 +410,7 @@ export default function EditProduct() {
                   {
                     productData.specsDocID ?
                       <>
-                        <a href={`/api/file/doc/${productData.specsDocID}`} download={productData.name || 'Product Specifications'}>{productData.name}</a>
+                        <a href={`/api/file/doc/${productData.specsDocID}`} download={productData.name.replaceAll('.', '_') || 'Product Specifications'}>{productData.name}</a>
                         <button className="btn btn-danger" type="button" disabled={isBlockDeleteButtons} onClick={() => deleteSpecsDoc(productData.specsDocID)}>Delete Document</button>
                       </>
                       :
