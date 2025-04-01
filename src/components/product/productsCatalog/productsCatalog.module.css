@@ -24,6 +24,7 @@
 
         li a,
         li span {
+            cursor: pointer;
             font-size: inherit;
         }
     }

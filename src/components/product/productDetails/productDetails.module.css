@@ -209,7 +209,9 @@
             .reviewsPagination {
                 margin-top: 2rem;
                 justify-content: center;
-
+                a {
+                    cursor: pointer;
+                }
                 span {
                     padding: 0 1rem;
                 }
