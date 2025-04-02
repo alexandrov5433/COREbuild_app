@@ -148,6 +148,16 @@ export default function ProductDetails() {
     setReviewSubmittionloading(true);
     const formData = new FormData(e.target as HTMLFormElement);
     const dataObject = Object.fromEntries(formData.entries());
+    if (!dataObject.rating || !dataObject.comment) {
+      dispatch(setMessageData({
+        duration: 4500,
+        isShown: true,
+        text: 'Both rating and comment are needed to submit a review.',
+        type: 'neutral'
+      }));
+      setReviewSubmittionloading(false);
+      return;
+    }
     const submissionResult = await addNewReview({
       rating: dataObject.rating.toString(),
       comment: dataObject.comment.toString(),
@@ -417,8 +427,6 @@ export default function ProductDetails() {
                       </div>
                       :
                       <div className={styles.commentsContainer}>
-
-
                         {
                           !userData?.userID ?
                             <p className={`lead ${styles.loginRegToReview}`}>Please, <NavLink to={'/login'}>login</NavLink> or <NavLink to={'/register'}>register</NavLink> to leave a review.</p>
@@ -465,7 +473,6 @@ export default function ProductDetails() {
                                   <button disabled={isReviewSubmittionloading} className={`btn btn-primary ${styles.submitButton}`}>Submit</button>
                                 </form>
                         }
-
 
                         {
                           productReviews.length ?
