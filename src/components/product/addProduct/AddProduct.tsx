@@ -142,7 +142,7 @@ export default function AddProduct() {
                 type: 'success',
                 text: addProductState.msg
             }));
-            navigate('/');
+            navigate(`/product-details/${addProductState.data?.productID || 0}`);
         } else if (
             addProductState.isError
             || addProductState.responseStatus === 400
