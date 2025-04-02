@@ -79,6 +79,7 @@ export default function ProductsCatalog() {
         }[e.target.value] || 12;
         setSearchParams(state => {
             state.set('itemsPerPage', itemsPerPageToSet.toString());
+            state.set('currentPage', '1');
             return state;
         });
         window.scrollTo(0, 0);
