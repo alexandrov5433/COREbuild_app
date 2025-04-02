@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from '../../../lib/hooks/reduxTypedHoo
 import getUserData from '../../../lib/actions/user/getUserData';
 import updateOrderShippingDetails from '../../../lib/actions/order/updateOrderShippingDetails';
 import { setMessageData } from '../../../redux/popupMessageSlice';
+import { convertTimeToDate } from '../../../lib/util/time';
 
 export default function Order({
   order,
@@ -114,6 +115,8 @@ export default function Order({
             </section>
             <section className={styles.infoSection}>
               <h5><i>Total:</i> {convertCentToWholeString(order.total_price)} <FontAwesomeIcon icon={faEuroSign} /></h5>
+
+              <p><i>Time Of Placement:</i> {convertTimeToDate(order.placement_time || 0)}</p>
 
               <p><i>Payment Status:</i> <span className={order.payment_status == 'paid' ? styles.green : styles.yellow}>{order.payment_status} {
                 order.payment_status == 'paid' ? <FontAwesomeIcon icon={faCheckCircle} /> : <FontAwesomeIcon icon={faClock} />
