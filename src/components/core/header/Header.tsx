@@ -125,7 +125,7 @@ export default function Header() {
                         </ul>
 
                         <form className="d-flex me-auto searchBarForm" role="search" onSubmit={searchWithEnterHandler}>
-                            <input className="form-control me-2" type="search" placeholder="Name of product" aria-label="Search" name='name' />
+                            <input className="form-control me-2" type="search" placeholder="Name a product" aria-label="Search" name='name' />
                             <button className="btn btn-outline-success" type="button" onClick={searchButtonHandler}><FontAwesomeIcon icon={faMagnifyingGlass} /></button>
                         </form>
                         {
