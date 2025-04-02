@@ -44,6 +44,7 @@ export default function TicketsOverview() {
         setFiltrationOptions(state => {
             const newState = { ...state };
             Object.assign(newState, options);
+            newState.currentPage = 1;
             return newState;
         });
     }
@@ -115,6 +116,7 @@ export default function TicketsOverview() {
         setFiltrationOptions(state => {
             const newState = { ...state };
             newState.itemsPerPage = itemsPerPageToSet;
+            newState.currentPage = 1;
             return newState;
         });
         window.scrollTo(0, 0);
