@@ -13,4 +13,8 @@
         color: red;
         font-style: normal;
     }
+
+    textarea {
+        height: 20rem;
+    }
 }
