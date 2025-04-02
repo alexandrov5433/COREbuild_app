@@ -302,13 +302,13 @@ export default function ProductDetails() {
                 <div className={styles.carouselContainer}>
                   <div id="carousel-product-images" className={`carousel slide ${styles.imagesCarousel}`} data-bs-ride="carousel">
                     <div className={`carousel-inner ${styles.innerContainer}`}>
-                      <div className={`carousel-item active`} data-bs-interval="5000">
+                      <div className={`carousel-item active ${styles.carouselitem}`} data-bs-interval="5000">
                         <img src={`/api/file/pic/${productData.thumbnailID}`} className="d-block " alt={`A picture of the product ${productData.name}.`} />
                       </div>
                       {
                         productData.pictures.length <= 0 ? '' :
                           productData.pictures.map(id =>
-                            <div className={`carousel-item`} data-bs-interval="5000" key={id}>
+                            <div className={`carousel-item ${styles.carouselitem}`} data-bs-interval="5000" key={id}>
                               <img src={`/api/file/pic/${id}`} className="d-block " alt={`A picture of the product ${productData.name}.`} />
                             </div>
                           )
