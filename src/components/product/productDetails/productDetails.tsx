@@ -500,21 +500,24 @@ export default function ProductDetails() {
                                   </div>)
                               }
 
-                              <ul className={`pagination ${styles.reviewsPagination}`}>
-                                <li className="page-item">
-                                  <a className={`page-link ${productReviewCurrentPage <= 1 || isProductReviewsloading ? 'disabled' : ''}`} aria-label="Previous" onClick={() =>
-                                    goToGivenPage(productReviewCurrentPage - 1)}>
-                                    <span aria-hidden="true">&laquo;</span>
-                                  </a>
-                                </li>
-                                <li className="page-item page-link">{productReviewCurrentPage}</li>
-                                <li className="page-item">
-                                  <a className={`page-link ${productReviewCurrentPage >= productReviewPagesCount || isProductReviewsloading ? 'disabled' : ''}`} aria-label="Next" onClick={() =>
-                                    goToGivenPage(productReviewCurrentPage + 1)}>
-                                    <span aria-hidden="true">&raquo;</span>
-                                  </a>
-                                </li>
-                              </ul>
+                              {
+                                productReviewPagesCount <= 1 ? '' :
+                                <ul className={`pagination ${styles.reviewsPagination}`}>
+                                  <li className="page-item">
+                                    <a className={`page-link ${productReviewCurrentPage <= 1 || isProductReviewsloading ? 'disabled' : ''}`} aria-label="Previous" onClick={() =>
+                                      goToGivenPage(productReviewCurrentPage - 1)}>
+                                      <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                  </li>
+                                  <li className="page-item page-link">{productReviewCurrentPage}</li>
+                                  <li className="page-item">
+                                    <a className={`page-link ${productReviewCurrentPage >= productReviewPagesCount || isProductReviewsloading ? 'disabled' : ''}`} aria-label="Next" onClick={() =>
+                                      goToGivenPage(productReviewCurrentPage + 1)}>
+                                      <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                  </li>
+                                </ul>
+                              }
 
                             </div>
                             :
