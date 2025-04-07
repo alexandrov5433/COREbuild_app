@@ -66,10 +66,6 @@
 .browseProdcutsButtonContainer {
     display: flex;
     justify-content: center;
-
-    a {
-        font-size: 2rem;
-    }
 }
 
 .servicesContainer {
@@ -87,10 +83,6 @@
     svg {
         color: var(--green);
         margin-right: 0.5rem;
-    }
-
-    a {
-        font-size: 1.4rem;
     }
 }
 
@@ -155,17 +147,5 @@
 
     .featuredProdcutsContainer>* {
         width: 25%;
-    }
-
-    .browseProdcutsButtonContainer {
-        a {
-            font-size: 1rem;
-        }
-    }
-
-    .contentContainer {
-        a {
-            font-size: 1rem;
-        }
     }
 }
