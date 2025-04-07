@@ -119,7 +119,7 @@ export default function ProductFilters({
                         </div>
                     </div>
 
-                    <div className={`row-md-6 ${styles.availableInStockWrapper}`}>
+                    <div className={`row-md-6 ${styles.availableInStockWrapper} ${styles.checkboxContainer}`}>
                         <input className="form-check-input" type="checkbox" value="yes" name="availableInStock" id="availableInStock" defaultChecked={Boolean(currentQueryParams.availableInStock) || false}/>
                         <label className="form-check-label" htmlFor="availableInStock">
                             Show only in stock

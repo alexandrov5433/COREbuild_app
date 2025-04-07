@@ -2,7 +2,6 @@
 
 .filtersButton {
     margin-bottom: 2rem;
-    font-size: 1.5rem;
     margin-right: 1rem;
 }
 
@@ -11,7 +10,6 @@
     display: flex;
     flex-direction: column-reverse;
     gap: 2rem;
-    font-size: 2rem;
 
     select {
         width: fit-content;
@@ -53,12 +51,7 @@
         width: 25%;
     }
 
-    .filtersButton {
-        font-size: 1rem;
-    }
-
     .pagination {
         gap: 1rem;
-        font-size: 1rem;
     }
 }
