@@ -77,7 +77,7 @@ export default function ShoppingCart() {
 
                     <nav className={`navbar sticky-bottom ${styles.totalCostBar}`}>
                         <div className={`container-fluid ${styles.innerContainer}`}>
-                            <p className="">Total: {convertCentToWholeString(totalPrice)} <FontAwesomeIcon icon={faEuroSign} /></p>
+                            <p className="lead">Total: {convertCentToWholeString(totalPrice)} <FontAwesomeIcon icon={faEuroSign}/></p>
                             <p className="lead">With tax and free shipping.</p>
                             <button className={`btn btn-success ${styles.buttonGreenGlow}`} onClick={() => {
                                 (paypayCheckoutRef.current! as HTMLDivElement).scrollIntoView({
