@@ -145,6 +145,7 @@
             grid-area: 1 / 1 / 2 / 2;
             pointer-events: none;
             resize: none;
+            overflow: hidden;
         }
     }
 
@@ -236,7 +237,7 @@
                     grid-area: 1 / 1 / 2 / 2;
                     pointer-events: none;
                     resize: none;
-                    
+                    overflow: hidden;
                 }
             }
 
