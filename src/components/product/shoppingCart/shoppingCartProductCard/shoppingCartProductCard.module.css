@@ -1,7 +1,4 @@
 .cardWrapper {
-    h5, p, button {
-        font-size: 2rem;
-    }
     .imageWrapper {
         display: flex;
         align-items: center;
@@ -38,16 +35,10 @@
 
 @media (min-width: 1025px) {
     .cardWrapper {
-       
-
         img {
             width: 15rem;
             /* object-fit: contain; */
         }
-
-        h5, p, button {
-            font-size: 1rem;
-        } 
 
         .quantityWrapper {
             margin-bottom: 1rem;
