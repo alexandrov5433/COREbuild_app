@@ -10,6 +10,7 @@ import { useAppDispatch } from '../../../../lib/hooks/reduxTypedHooks';
 import { updateCart } from '../../../../redux/cartSlice';
 import { setMessageData } from '../../../../redux/popupMessageSlice';
 import removeProductFromCart from '../../../../lib/actions/cart/removeProductFromCart';
+import { NavLink } from 'react-router';
 
 export default function ShoppingCartProductCard({
     productID,
@@ -122,11 +123,15 @@ export default function ShoppingCartProductCard({
         <div className={`card mb-3 ${styles.cardWrapper}`}>
             <div className={`row g-0 `}>
                 <div className={`col-md-4 ${styles.imageWrapper}`}>
-                    <img src={`/api/file/pic/${productData.thumbnailID}`} className="img-fluid rounded-start" alt={`A picture of ${productData.name}`} />
+                    <NavLink to={`/product-details/${productID}`}>
+                        <img src={`/api/file/pic/${productData.thumbnailID}`} className="img-fluid rounded-start" alt={`A picture of ${productData.name}`} />
+                    </NavLink>
                 </div>
                 <div className="col-md-8">
                     <div className="card-body">
-                        <h5 className="card-title">{productData.name}</h5>
+                        <NavLink to={`/product-details/${productID}`}>
+                            <h5 className="card-title">{productData.name}</h5>
+                        </NavLink>
                         <p className={`card-text ${styles.price}`}>ID: {productData.productID}</p>
                         <p className={`card-text ${styles.price}`}>Price: {convertCentToWholeString(productData.price)} <FontAwesomeIcon icon={faEuroSign} /></p>
                         <div className={styles.quantityWrapper}>
